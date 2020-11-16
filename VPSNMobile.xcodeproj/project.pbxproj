@@ -8,12 +8,38 @@
 
 /* Begin PBXBuildFile section */
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
+		8C21284725469D250073D755 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283B25469D250073D755 /* Entities.swift */; };
+		8C21284925469D250073D755 /* Network+getPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283E25469D250073D755 /* Network+getPosition.swift */; };
+		8C21284A25469D260073D755 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283F25469D250073D755 /* Network.swift */; };
+		8C21284B25469D260073D755 /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284125469D250073D755 /* common.swift */; };
+		8C21284C25469D260073D755 /* VPSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284225469D250073D755 /* VPSResponse.swift */; };
+		8C21284D25469D260073D755 /* VPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284325469D250073D755 /* VPS.swift */; };
+		8C21284E25469D260073D755 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284425469D250073D755 /* Const.swift */; };
+		8C21284F25469D260073D755 /* VPSServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284525469D250073D755 /* VPSServiceExtension.swift */; };
+		8C21285225469F370073D755 /* neuro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21285125469F370073D755 /* neuro.swift */; };
+		8C21285A2546A3D10073D755 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2128592546A3D10073D755 /* Extension.swift */; };
+		E6CAB3C653ADB5C4BE3399AA /* Pods_VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE16785754E75945471AC0F /* Pods_VPSNMobile.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01A2B70EAA310FF8AA4432AE /* Pods-VPSNMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.release.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.release.xcconfig"; sourceTree = "<group>"; };
 		8C21282A25469B7A0073D755 /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282D25469B7A0073D755 /* VPSNMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPSNMobile.h; sourceTree = "<group>"; };
 		8C21282E25469B7A0073D755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C21283A25469D250073D755 /* VPSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSService.swift; sourceTree = "<group>"; };
+		8C21283B25469D250073D755 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		8C21283E25469D250073D755 /* Network+getPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Network+getPosition.swift"; sourceTree = "<group>"; };
+		8C21283F25469D250073D755 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		8C21284125469D250073D755 /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
+		8C21284225469D250073D755 /* VPSResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSResponse.swift; sourceTree = "<group>"; };
+		8C21284325469D250073D755 /* VPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPS.swift; sourceTree = "<group>"; };
+		8C21284425469D250073D755 /* Const.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		8C21284525469D250073D755 /* VPSServiceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSServiceExtension.swift; sourceTree = "<group>"; };
+		8C21285125469F370073D755 /* neuro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = neuro.swift; sourceTree = "<group>"; };
+		8C2128592546A3D10073D755 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		BCE16785754E75945471AC0F /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF501784B089FF8DE952E5D2 /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,17 +47,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6CAB3C653ADB5C4BE3399AA /* Pods_VPSNMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EF77BDC8533A624093764E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCE16785754E75945471AC0F /* Pods_VPSNMobile.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8C21282025469B7A0073D755 = {
 			isa = PBXGroup;
 			children = (
 				8C21282C25469B7A0073D755 /* VPSNMobile */,
 				8C21282B25469B7A0073D755 /* Products */,
+				98AADC8995441A98D8E12F9F /* Pods */,
+				5EF77BDC8533A624093764E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -46,10 +83,46 @@
 		8C21282C25469B7A0073D755 /* VPSNMobile */ = {
 			isa = PBXGroup;
 			children = (
+				8C21284425469D250073D755 /* Const.swift */,
+				8C2128592546A3D10073D755 /* Extension.swift */,
+				8C21283B25469D250073D755 /* Entities.swift */,
+				8C21283D25469D250073D755 /* Network */,
+				8C21284325469D250073D755 /* VPS.swift */,
+				8C21285125469F370073D755 /* neuro.swift */,
+				8C21283A25469D250073D755 /* VPSService.swift */,
+				8C21284525469D250073D755 /* VPSServiceExtension.swift */,
 				8C21282D25469B7A0073D755 /* VPSNMobile.h */,
 				8C21282E25469B7A0073D755 /* Info.plist */,
 			);
 			path = VPSNMobile;
+			sourceTree = "<group>";
+		};
+		8C21283D25469D250073D755 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8C21283E25469D250073D755 /* Network+getPosition.swift */,
+				8C21283F25469D250073D755 /* Network.swift */,
+				8C21284025469D250073D755 /* parsing */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		8C21284025469D250073D755 /* parsing */ = {
+			isa = PBXGroup;
+			children = (
+				8C21284125469D250073D755 /* common.swift */,
+				8C21284225469D250073D755 /* VPSResponse.swift */,
+			);
+			path = parsing;
+			sourceTree = "<group>";
+		};
+		98AADC8995441A98D8E12F9F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DF501784B089FF8DE952E5D2 /* Pods-VPSNMobile.debug.xcconfig */,
+				01A2B70EAA310FF8AA4432AE /* Pods-VPSNMobile.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,6 +143,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C21283225469B7A0073D755 /* Build configuration list for PBXNativeTarget "VPSNMobile" */;
 			buildPhases = (
+				04BEACABD03977893A7D04D7 /* [CP] Check Pods Manifest.lock */,
 				8C21282525469B7A0073D755 /* Headers */,
 				8C21282625469B7A0073D755 /* Sources */,
 				8C21282725469B7A0073D755 /* Frameworks */,
@@ -94,6 +168,7 @@
 				TargetAttributes = {
 					8C21282925469B7A0073D755 = {
 						CreatedOnToolsVersion = 12.1;
+						LastSwiftMigration = 1210;
 					};
 				};
 			};
@@ -125,11 +200,47 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		04BEACABD03977893A7D04D7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VPSNMobile-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8C21282625469B7A0073D755 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C21284A25469D260073D755 /* Network.swift in Sources */,
+				8C21284F25469D260073D755 /* VPSServiceExtension.swift in Sources */,
+				8C21284B25469D260073D755 /* common.swift in Sources */,
+				8C21284725469D250073D755 /* Entities.swift in Sources */,
+				8C21285A2546A3D10073D755 /* Extension.swift in Sources */,
+				8C21284925469D250073D755 /* Network+getPosition.swift in Sources */,
+				8C21284D25469D260073D755 /* VPS.swift in Sources */,
+				8C21284625469D250073D755 /* VPSService.swift in Sources */,
+				8C21284C25469D260073D755 /* VPSResponse.swift in Sources */,
+				8C21284E25469D260073D755 /* Const.swift in Sources */,
+				8C21285225469F370073D755 /* neuro.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,8 +371,10 @@
 		};
 		8C21283325469B7A0073D755 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF501784B089FF8DE952E5D2 /* Pods-VPSNMobile.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G6HAS4FMP3;
@@ -280,6 +393,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -287,8 +401,10 @@
 		};
 		8C21283425469B7A0073D755 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01A2B70EAA310FF8AA4432AE /* Pods-VPSNMobile.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G6HAS4FMP3;

@@ -26,7 +26,7 @@ struct UploadVPSPhoto {
     var instrinsicsFY: Float
     var instrinsicsCX: Float
     var instrinsicsCY: Float
-    var image: UIImage
+    var image: UIImage?
     var gps:GPS?
     var compas:Compas?
     var forceLocalization:Bool

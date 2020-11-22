@@ -26,32 +26,13 @@ class Neuro {
     
     
     // MARK: - Initialization
-    static func newInstance(completion: @escaping ((Result<Neuro>) -> Void)) {
-        let tfLiteQueue = DispatchQueue(label: "org.tensorflow.examples.lite.image_segmentation")
+    static func newInstance(path:String, completion: @escaping ((Result<Neuro>) -> Void)) {
+        let tfLiteQueue = DispatchQueue(label: "tfliteQueue")
         print("START: newInstance")
         tfLiteQueue.async {
-            guard
-                let modelPath = Bundle.main.path(
-                    forResource: Constants.modelFileName,
-                    ofType: Constants.modelFileExtension
-                )
-            else {
-                print(
-                    "Failed to load the model file with name: "
-                        + "\(Constants.modelFileName).\(Constants.modelFileExtension)")
-                DispatchQueue.main.async {
-                    completion(
-                        .error(
-                            InitializationError.invalidModel(
-                                "\(Constants.modelFileName).\(Constants.modelFileExtension)"
-                            )))
-                }
-                return
-            }
-            
             do {
                 print("DEBUG:Create Inrepreter")
-                let interpreter = try Interpreter(modelPath: modelPath,
+                let interpreter = try Interpreter(modelPath: path,
                                                   options: nil,
                                                   delegates: nil)
                 print("DEBUG:interpreter, ", interpreter)
@@ -108,19 +89,16 @@ class Neuro {
     
     func run(buf:CVPixelBuffer, completion: @escaping ((Result<NResult>) -> Void)) {
         tfLiteQueue.async { [self] in
-            let startTime3: Date = Date()
-            let image = UIImage.createFromPB(pixelBuffer: buf)!
+            let image = UIImage.createFromPB(pixelBuffer: buf)!.rotate(radians: .pi/2)!
             var outputTensor: Tensor
-            let inputTensor: Tensor
+            var inputTensor: Tensor
             
             var gl = [Float32]()
             var key = [Float32]()
             var ld = [Float32]()
             var sc = [Float32]()
-            var neurotime = Date()
             do {
                 let data = image.scaledData(with: CGSize(width: self.inputImageHeight, height: self.inputImageWidth))!
-                neurotime = Date()
                 try self.interpreter.copy(data, toInputAt: 0)
                 
                 try self.interpreter.invoke()
@@ -166,13 +144,7 @@ class Neuro {
                 }
                 return
             }
-            let now = Date()
-            
-            print("all",now.timeIntervalSince(startTime3))
-            print("neuro", now.timeIntervalSince(neurotime))
             let result = NResult(
-                allNeuro: now.timeIntervalSince(startTime3),
-                neurotime: now.timeIntervalSince(neurotime),
                 global_descriptor: gl,
                 keypoints: key,
                 local_descriptors: ld,
@@ -187,8 +159,6 @@ class Neuro {
     }
 }
 struct NResult {
-    let allNeuro: TimeInterval
-    let neurotime: TimeInterval
     let global_descriptor: [Float32]
     let keypoints: [Float32]
     let local_descriptors: [Float32]

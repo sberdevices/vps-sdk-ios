@@ -19,8 +19,16 @@ public class VPSService {
     /// set delegate to get the position
     public weak var delegate:VPSServiceDelegate? = nil
     
-    public init(arsession: ARSession, location:LocationType) {
-        setupScene(arsession: arsession, location: location)
+    public init(arsession: ARSession,
+                url: String,
+                locationID:String,
+                onlyForce:Bool = false,
+                recognizeType:RecognizeType) {
+        setupScene(arsession: arsession,
+                   url: url,
+                   locationID: locationID,
+                   onlyForce: onlyForce,
+                   recognizeType:recognizeType)
     }
     /// start tracking position
     public func Start() {
@@ -37,6 +45,10 @@ public class VPSService {
     /// Set custom position
     public func SetupMock(mock:ResponseVPSPhoto) {
         vps?.setupMock(mock: mock)
+    }
+    
+    public func forceLocalize(enabled: Bool) {
+        vps?.forceLocalize(enabled: enabled)
     }
     
     deinit {
@@ -65,8 +77,7 @@ public struct ResponseVPSPhoto {
     }
 }
 
-public enum LocationType {
-    case EugeneKitchen
-    case BootCamp
-    case Polytech
+public enum RecognizeType {
+    case server
+    case mobile
 }

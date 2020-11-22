@@ -22,3 +22,7 @@ struct Const {
         }
     }
 }
+
+struct ModelsFolder {
+    static let name = "TFModels"
+}

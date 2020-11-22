@@ -28,24 +28,65 @@ class VPS: NSObject {
     var firstLocalize = true
     var mock = false
     
-    var network:NetVPSService = Network()
+    var recognizeType:RecognizeType
+    
     var neuro: Neuro?
-    var result: NResult?
+
+    var onlyForceMode = false
+    
+    var getAnswer = true
+    
+    var network: NetVPSService
+    
+    var queue = DispatchQueue(label: "VPSQueue")
     
     weak var delegate:VPSDelegate? = nil
     
-    init(arsession: ARSession, location:LocationType) {
+    init(arsession: ARSession,
+         url: String,
+         locationID:String,
+         onlyForce:Bool,
+         recognizeType:RecognizeType) {
         self.arsession = arsession
+        self.network = Network(url: url, locationID: locationID)
+        self.recognizeType = recognizeType
         super.init()
-        self.locationType = getLocationType(location: location)
+        onlyForceMode = onlyForce
+        self.locationType = locationID
         attemptLocationAccess()
-        Neuro.newInstance { result in
-            switch result {
-            case let .success(segmentator):
-                self.neuro = segmentator
-            case .error(_):
-                print("Failed to initialize.")
+        if recognizeType == .mobile {
+            neuroInit()
+        }
+    }
+    
+    func neuroInit() {
+        if let url = modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
+            Neuro.newInstance(path: url.path) { result in
+                switch result {
+                case let .success(segmentator):
+                    self.neuro = segmentator
+                case .error(_):
+                    print("Failed to initialize.")
+                }
             }
+        } else {
+            network.downloadNeuroModel { (url) in
+                if let path = saveModel(from: url, name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
+                    Neuro.newInstance(path: path.path) { result in
+                        switch result {
+                        case let .success(segmentator):
+                            self.neuro = segmentator
+                        case .error(_):
+                            print("Failed to initialize.")
+                        }
+                    }
+                } else {
+                    print("cant save model")
+                }
+            } failure: { (err) in
+                self.delegate?.error(err: err)
+            }
+
         }
     }
     
@@ -71,6 +112,7 @@ class VPS: NSObject {
         self.timer = nil
         firstLocalize = true
         force = true
+        self.getAnswer = true
     }
     
     func getLatestPose() {
@@ -83,6 +125,7 @@ class VPS: NSObject {
         self.timer?.invalidate()
         self.timer = nil
         self.mock = true
+        self.getAnswer = true
         guard let frame = arsession.currentFrame else {
             return
         }
@@ -91,14 +134,61 @@ class VPS: NSObject {
         setupWorld(from: mock, transform: camera.transform)
     }
     
-    @objc func updateTimer() {
-        getPosition()
+    func forceLocalize(enabled: Bool) {
+        onlyForceMode = enabled
+        if !enabled {
+            force = true
+        }
     }
     
-    func getPosition() {
+    @objc func updateTimer() {
+        if getAnswer {
+            queue.async {
+                self.sendRequest()
+            }
+        }
+    }
+    func sendRequest() {
+        switch recognizeType {
+        case .server:
+            sendPhoto()
+        case .mobile:
+            sendNeuro()
+        }
+    }
+    
+    func sendPhoto(){
         guard let frame = arsession.currentFrame else {
             return
         }
+        var up = getPosition(frame: frame)
+        let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
+            .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+        up.image = image
+        network.uploadPanPhoto(photo: up, success: { (ph) in
+            self.getAnswer = true
+            if self.mock { return }
+            if ph.status {
+                self.failerCount = 0
+                if !self.onlyForceMode {
+                    self.force = false
+                }
+                self.firstLocalize = false
+                self.delegate?.positionVPS(pos: ph)
+                self.setupWorld(from: ph, transform: self.photoTransform)
+            } else {
+                self.delegate?.positionVPS(pos: ph)
+                self.failerCount += 1
+            }
+        }) { (error) in
+            self.delegate?.error(err: error)
+            self.getAnswer = true
+        }
+    }
+    
+    func getPosition(frame: ARFrame) -> UploadVPSPhoto {
+        
+        getAnswer = false
         let camera = SCNNode()
         camera.simdTransform = frame.camera.transform
         if !firstLocalize {
@@ -106,8 +196,7 @@ class VPS: NSObject {
                 force = true
             }
         }
-        let ci = CIImage(cvPixelBuffer: frame.capturedImage)
-        let image = UIImage(ciImage: ci)
+        
         var newpos = SCNVector3(0,0,0)
         var newangl = SCNVector3(0,0,0)
         if !force {
@@ -134,7 +223,7 @@ class VPS: NSObject {
                                 instrinsicsFY: frame.camera.intrinsics.columns.1.y,
                                 instrinsicsCX: frame.camera.intrinsics.columns.2.x,
                                 instrinsicsCY: frame.camera.intrinsics.columns.2.y,
-                                image: image,
+                                image: nil,
                                 forceLocalization: force)
         if let loc = locationManager.location {
             up.gps = GPS(lat: loc.coordinate.latitude,
@@ -143,27 +232,49 @@ class VPS: NSObject {
                          acc: loc.horizontalAccuracy,
                          timestamp: loc.timestamp.timeIntervalSince1970)
         }
-        network.uploadPanPhoto(photo: up, success: { (ph) in
-            if self.mock { return }
-            if ph.status {
-                self.failerCount = 0
-                self.force = false
-                self.firstLocalize = false
-                self.delegate?.positionVPS(pos: ph)
-                self.setupWorld(from: ph, transform: self.photoTransform)
-            } else {
-                self.delegate?.positionVPS(pos: ph)
-                self.failerCount += 1
-            }
-        }) { (error) in
-            self.delegate?.error(err: error)
+        return up
+    }
+    
+    
+    func sendNeuro() {
+        guard let frame = arsession.currentFrame else {
+            return
         }
+        let up = getPosition(frame: frame)
+        self.neuro?.run(buf: frame.capturedImage, completion: { result in
+            switch result {
+            case let .success(segmentationResult):
+                print("s",segmentationResult.global_descriptor.first)
+                self.network.uploadNeuroPhoto(photo: up,
+                                              coreml: segmentationResult.global_descriptor,
+                                              keyPoints: segmentationResult.keypoints,
+                                              scores: segmentationResult.scores,
+                                              desc: segmentationResult.local_descriptors) { (ph) in
+                    
+                    if self.mock { return }
+                    if ph.status {
+                        self.failerCount = 0
+                        self.force = false
+                        self.firstLocalize = false
+                        self.delegate?.positionVPS(pos: ph)
+                        self.setupWorld(from: ph, transform: self.photoTransform)
+                    } else {
+                        self.delegate?.positionVPS(pos: ph)
+                        self.failerCount += 1
+                    }
+                } failure: { (NSError) in
+                    
+                }
+
+            case let .error(error):
+                print("Everything was wrong, Dude!")
+            }
+        })
     }
     ///delete timer for fixing memory leak
     func deInit(){
         self.timer?.invalidate()
         self.timer = nil
-        self.neuro = nil
     }
     
     func setupWorld(from ph:ResponseVPSPhoto, transform: SCNMatrix4) {
@@ -214,18 +325,6 @@ class VPS: NSObject {
             locationManager.startUpdatingHeading()
         default:
             locationManager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    ///enter all locations here
-    func getLocationType(location:LocationType) -> String {
-        switch location {
-        case .BootCamp:
-            return "eeb38592-4a3c-4d4b-b4c6-38fd68331521"
-        case .EugeneKitchen:
-            return "vps_kitchen_test"
-        case .Polytech:
-            return "Polytech"
         }
     }
 }

@@ -9,8 +9,16 @@
 import ARKit
 
 extension VPSService {
-    func setupScene(arsession: ARSession, location:LocationType){
-        vps = VPS(arsession: arsession, location: location)
+    func setupScene(arsession: ARSession,
+                    url: String,
+                    locationID:String,
+                    onlyForce:Bool,
+                    recognizeType:RecognizeType){
+        vps = VPS(arsession: arsession,
+                  url: url,
+                  locationID: locationID,
+                  onlyForce: onlyForce,
+                  recognizeType:recognizeType)
         vps?.delegate = self
     }
 }

@@ -9,12 +9,40 @@
 import UIKit
 
 class Network: NSObject {
-    static let sharedInstance = Network()
-    let session = URLSession.shared
+    var session = URLSession.shared
     
-    private let baseURL = "http://api.polytech.vps.arvr.sberlabs.com/vps/api/v1/job"
+    var baseURL = "http://api.polytech.vps.arvr.sberlabs.com/vps/api/v1/job"
     
-    func get(photo:UploadVPSPhoto,
+    
+    init(url: String,
+         locationID:String) {
+        super.init()
+        baseURL = "\(url)\(locationID.lowercased())/vps/api/v1/job"
+    }
+    var observation:NSKeyValueObservation!
+    func downloadNeuro(url: @escaping ((URL) -> Void),
+                       failure: @escaping ((NSError) -> Void)) {
+        let path = URL(string: "http://metaservices.arvr.sberlabs.com/upload/weights/hfnet_i8_960.tflite")!
+        put { [weak self] in
+            let task = self?.session.downloadTask(with: path, completionHandler: { (URL, Responce, Error) in
+                if let err = Error {
+                    print(err)
+                    self?.f(err as NSError, failure)
+                    self?.executeNext()
+                }
+                if let path = URL {
+                    url(path)
+                    self?.executeNext()
+                }
+            })
+            task?.resume()
+            self?.observation = task?.progress.observe(\.fractionCompleted) { progress, _ in
+                print(progress.fractionCompleted)
+            }
+        }
+    }
+    
+    func uploadPhoto(photo:UploadVPSPhoto,
              success: @escaping ((ResponseVPSPhoto) -> Void),
              failure: @escaping ((NSError) -> Void)) {
         let params = getParams(from: photo)
@@ -25,11 +53,12 @@ class Network: NSObject {
         let boundary = generateBoundary()
         
         put { [weak self] in
-            let media = Media(withImage: photo.image, forKey: "image")
+            guard let img = photo.image else { return }
+            let media = Media(withImage: img, forKey: "image")
             
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             
-            let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary)
+            let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary, neuroParams: [:])
             request.httpBody = dataBody
             self?.session.dataTask(with: request) { (data, response, error) in
                 if let response = response {
@@ -69,7 +98,67 @@ class Network: NSObject {
         
     }
     
-    private func createDataBody(withParameters params: [String:Any], media: [Media], boundary: String) -> Data {
+    func uploadNeuro(photo:UploadVPSPhoto,
+             coreml:[Float32],
+             keyPoints:[Float32],
+             scores:[Float32],
+             desc:[Float32],
+             success: @escaping ((ResponseVPSPhoto) -> Void),
+             failure: @escaping ((NSError) -> Void)) {
+        let params = getParams(from: photo)
+        let arrays = ["globalDescriptor":coreml,
+                      "keyPoints":keyPoints,
+                      "scores":scores,
+                      "descriptors":desc] as [String : [Float32]]
+        var request = URLRequest(url: URL(string: baseURL)!)
+        request.httpMethod = "POST"
+        
+        let boundary = generateBoundary()
+        
+        put { [weak self] in
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            let dataBody = self?.createDataBody(withParameters: params, media: [], boundary: boundary, neuroParams: arrays)
+            request.httpBody = dataBody
+            self?.session.dataTask(with: request) { (data, response, error) in
+                if let response = response {
+                    //                print("resp",response)
+                }
+                
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
+                        //                    print("json",json)
+                        self?.commonParsingResponse(
+                            (data: json, response: response),
+                            success: { (ans) in
+                                //                            print("ans",ans)
+                                if ans.count > 0 {
+                                    if let model = parseVPSResponse(from: ans[0]) {
+                                        self?.s(model, success)
+                                        self?.executeNext()
+                                    }
+                                } else {
+                                    
+                                }
+                        }) { (err) in
+                            print("err",err)
+                            self?.f(err, failure)
+                            self?.executeNext()
+                        }
+                    } catch {
+                        print(error)
+                        self?.f(error as NSError, failure)
+                        self?.executeNext()
+                    }
+                }
+            }.resume()
+        }
+        
+        
+    }
+    
+    private func createDataBody(withParameters params: [String:Any], media: [Media], boundary: String, neuroParams: [String:[Float32]]) -> Data {
         
         let lineBreak = "\r\n"
         var body = Data()
@@ -84,7 +173,17 @@ class Network: NSObject {
                 }
             }
         }
-        
+        for (key, value) in neuroParams {
+            body.append("--\(boundary + lineBreak)")
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
+            let data: Data = value.withUnsafeBufferPointer { pointer in
+                return Data(buffer: pointer)
+            }
+            let base64String = data.base64EncodedString()
+
+            body.append(base64String)
+            body.append(lineBreak)
+        }
         
         for photo in media {
             body.append("--\(boundary + lineBreak)")

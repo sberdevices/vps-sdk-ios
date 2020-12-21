@@ -10,6 +10,7 @@ import ARKit
 protocol VPSDelegate: class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
+    func sending()
 }
 class VPS: NSObject {
     private let locationManager = CLLocationManager()
@@ -156,15 +157,28 @@ class VPS: NSObject {
             sendNeuro()
         }
     }
+    func sendUIImage(im:UIImage) {
+        force = true
+        sendPhoto(im: im)
+    }
     
-    func sendPhoto(){
+    func sendPhoto(im:UIImage? = nil){
         guard let frame = arsession.currentFrame else {
             return
         }
         var up = getPosition(frame: frame)
-        let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
-            .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+        var image:UIImage!
+        if let im = im {
+            image = im
+        } else {
+            image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
+                .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+        }
         up.image = image
+        DispatchQueue.main.async {
+            self.delegate?.sending()
+        }
+        print(up.forceLocalization)
         network.uploadPanPhoto(photo: up, success: { (ph) in
             self.getAnswer = true
             if self.mock { return }
@@ -240,10 +254,10 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        let up = getPosition(frame: frame)
         self.neuro?.run(buf: frame.capturedImage, completion: { result in
             switch result {
             case let .success(segmentationResult):
+                let up = self.getPosition(frame: frame)
                 print("s",segmentationResult.global_descriptor.first)
                 self.network.uploadNeuroPhoto(photo: up,
                                               coreml: segmentationResult.global_descriptor,

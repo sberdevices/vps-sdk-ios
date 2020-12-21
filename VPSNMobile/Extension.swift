@@ -42,7 +42,7 @@ extension String {
 }
 
 extension UIImage {
-    public func scaledData(with size: CGSize) -> Data? {
+    func scaledData(with size: CGSize) -> Data? {
         guard let cgImage = self.cgImage, cgImage.width > 0, cgImage.height > 0 else { return nil }
         
         let bitmapInfo = CGBitmapInfo(

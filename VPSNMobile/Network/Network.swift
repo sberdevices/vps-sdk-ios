@@ -18,6 +18,7 @@ class Network: NSObject {
          locationID:String) {
         super.init()
         baseURL = "\(url)\(locationID.lowercased())/vps/api/v1/job"
+//        baseURL = "\(url)"
     }
     var observation:NSKeyValueObservation!
     func downloadNeuro(url: @escaping ((URL) -> Void),
@@ -58,7 +59,7 @@ class Network: NSObject {
             
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             
-            let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary, neuroParams: [:])
+            let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary, neuroParams: [])
             request.httpBody = dataBody
             self?.session.dataTask(with: request) { (data, response, error) in
                 if let response = response {
@@ -106,10 +107,15 @@ class Network: NSObject {
              success: @escaping ((ResponseVPSPhoto) -> Void),
              failure: @escaping ((NSError) -> Void)) {
         let params = getParams(from: photo)
-        let arrays = ["globalDescriptor":coreml,
-                      "keyPoints":keyPoints,
-                      "scores":scores,
-                      "descriptors":desc] as [String : [Float32]]
+//        let arrays = ["globalDescriptor":coreml,
+//                      "keyPoints":keyPoints,
+//                      "scores":scores,
+//                      "descriptors":desc] as [String : [Float32]]
+        let arrays = [
+            keyPoints,
+            scores,
+            desc,
+            coreml]
         var request = URLRequest(url: URL(string: baseURL)!)
         request.httpMethod = "POST"
         
@@ -158,30 +164,53 @@ class Network: NSObject {
         
     }
     
-    private func createDataBody(withParameters params: [String:Any], media: [Media], boundary: String, neuroParams: [String:[Float32]]) -> Data {
+    private func createDataBody(withParameters params: [String:Any], media: [Media], boundary: String, neuroParams: [[Float32]]) -> Data {
         
         let lineBreak = "\r\n"
         var body = Data()
+        
         for (key, value) in params {
             if let d = value as? NSDictionary {
                 if let data = try? JSONSerialization.data(withJSONObject: d,
-                                                          options: []) {
+                                                          options: [.fragmentsAllowed]) {
                     body.append("--\(boundary + lineBreak)")
                     body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
                     body.append(data)
                     body.append(lineBreak)
+                    print("param",params)
                 }
             }
         }
-        for (key, value) in neuroParams {
+        
+        if !neuroParams.isEmpty {
             body.append("--\(boundary + lineBreak)")
-            body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
-            let data: Data = value.withUnsafeBufferPointer { pointer in
-                return Data(buffer: pointer)
+            let filename = "data.embd"
+            let key = "embedding"
+            body.append("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(filename)\"\(lineBreak)")
+            let contype = "image/jpeg"
+            body.append("Content-Type: \(contype + lineBreak + lineBreak)")
+            var filedata = Data()
+            var version:UInt8 = UInt8(0)
+            let versionData = Data(bytes: &version,
+                                 count: MemoryLayout.size(ofValue: version))
+            filedata.append(versionData)
+            var ident:UInt8 = UInt8(0)
+            let identData = Data(bytes: &ident,
+                                 count: MemoryLayout.size(ofValue: ident))
+            filedata.append(identData)
+            for value in neuroParams {
+                let data: Data = value.withUnsafeBufferPointer { pointer in
+                    return Data(buffer: pointer)
+                }
+                let base64String = data.base64EncodedString()
+                let bstrdata = base64String.data(using: .utf8) ?? Data()
+                var count = UInt32(bstrdata.count).bigEndian
+                let countData = Data(bytes: &count,
+                                     count: MemoryLayout.size(ofValue: count))
+                filedata.append(countData)
+                filedata.append(bstrdata)
             }
-            let base64String = data.base64EncodedString()
-
-            body.append(base64String)
+            body.append(filedata)
             body.append(lineBreak)
         }
         
@@ -241,7 +270,7 @@ class Network: NSObject {
                     "attributes":attributes] as [String : Any]
         let json = ["data":data]
         let parameters = ["json":json] as [String : Any]
-        print("json",parameters as NSDictionary)
+//        print("json",parameters as NSDictionary)
         return parameters
     }
     

@@ -11,6 +11,7 @@ import ARKit
 public protocol VPSServiceDelegate:class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
+    func sending()
 }
 
 public class VPSService {
@@ -47,6 +48,10 @@ public class VPSService {
         vps?.setupMock(mock: mock)
     }
     
+    public func SendUIImage(im:UIImage) {
+        vps?.sendUIImage(im: im)
+    }
+    
     public func forceLocalize(enabled: Bool) {
         vps?.forceLocalize(enabled: enabled)
     }
@@ -65,6 +70,12 @@ public struct ResponseVPSPhoto {
     public var posRoll: Float
     public var posPitch: Float
     public var posYaw: Float
+    public var gps:gpsResponse?
+    
+    public struct gpsResponse {
+        public var lat:Double
+        public var long:Double
+    }
     
     public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float) {
         self.status = status

@@ -24,6 +24,10 @@ extension VPSService {
 }
 
 extension VPSService: VPSDelegate {
+    func sending() {
+        delegate?.sending()
+    }
+    
     func error(err: NSError) {
         delegate?.error(err: err)
     }

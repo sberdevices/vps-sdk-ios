@@ -21,11 +21,19 @@ func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
     let y = parseDouble(relative, key: "y")
     let z = parseDouble(relative, key: "z")
     let status = parseString(attributes, for: "status")
-    return ResponseVPSPhoto(status: status == "done",
-                            posX: Float(x),
-                            posY: Float(y),
-                            posZ: Float(z),
-                            posRoll: Float(roll),
-                            posPitch: Float(pitch),
-                            posYaw: Float(yaw))
+    var resp = ResponseVPSPhoto(status: status == "done",
+                                posX: Float(x),
+                                posY: Float(y),
+                                posZ: Float(z),
+                                posRoll: Float(roll),
+                                posPitch: Float(pitch),
+                                posYaw: Float(yaw))
+    if let gps = location["gps"] as? NSDictionary {
+        let lat = parseDouble(gps, key: "latitude")
+        let long = parseDouble(gps, key: "longitude")
+        resp.gps = ResponseVPSPhoto.gpsResponse(lat: lat, long: long)
+    } else {
+        print("no gps")
+    }
+    return resp
 }

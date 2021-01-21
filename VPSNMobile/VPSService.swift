@@ -47,6 +47,10 @@ public class VPSService {
     public func SetupMock(mock:ResponseVPSPhoto) {
         vps?.setupMock(mock: mock)
     }
+    /// Set for vps can update position
+    public func frameUpdated() {
+        vps?.frameUpdated()
+    }
     
     public func SendUIImage(im:UIImage) {
         vps?.sendUIImage(im: im)

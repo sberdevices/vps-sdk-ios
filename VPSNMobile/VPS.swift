@@ -23,6 +23,11 @@ class VPS: NSObject {
     var lastpose:ResponseVPSPhoto?
     ///if we have already set the position, it is needed for the reverse transformation
     var simdWorldTransform: simd_float4x4?
+    var movedWorldTransform: simd_float4x4!
+    var rotateWorldTransform: simd_float4x4!
+    
+    var moveWorld = false
+    var tickCount:Float = 0
     
     var force = true
     var failerCount = 0
@@ -139,6 +144,20 @@ class VPS: NSObject {
         onlyForceMode = enabled
         if !enabled {
             force = true
+        }
+    }
+    
+    func frameUpdated() {
+        guard moveWorld else { return }
+        if tickCount > 0 {
+            if tickCount > 15 {
+                arsession.setWorldOrigin(relativeTransform: movedWorldTransform)
+            } else {
+                arsession.setWorldOrigin(relativeTransform: rotateWorldTransform)
+            }
+            tickCount -= 1
+        } else {
+            moveWorld = false
         }
     }
     
@@ -296,23 +315,68 @@ class VPS: NSObject {
                                                          ph.posYaw*Float.pi/180.0,
                                                          ph.posRoll*Float.pi/180.0))
         let cameraangl = self.getAngleFrom(transform: transform)
+        let targetPos = SIMD3<Float>(ph.posX,ph.posY,ph.posZ)
+        let myPos = SIMD3<Float>(transform.m41,
+                                 transform.m42,
+                                 transform.m43)
         let node = SCNNode()
-        node.position = SCNVector3(-ph.posX,-ph.posY,-ph.posZ)
+        node.position = SCNVector3(-targetPos)
         let rnode = SCNNode()
         rnode.addChildNode(node)
-        rnode.position = SCNVector3(transform.m41,
-                                    transform.m42,
-                                    transform.m43)
+        rnode.position = SCNVector3(myPos)
         //turn the world to an adjusted angle consisting of the server angle and the user angle
         rnode.eulerAngles = SCNVector3(0,-yangl+cameraangl,0)
-        
         if let tr = self.simdWorldTransform {
-            self.arsession.setWorldOrigin(relativeTransform: tr.inverse)
+            let leng = length(myPos - targetPos)
+            if leng > 4 {
+                self.arsession.setWorldOrigin(relativeTransform: tr.inverse)
+                self.arsession.setWorldOrigin(relativeTransform: node.simdWorldTransform)
+                self.simdWorldTransform = node.simdWorldTransform
+            } else {
+            interpolate(targetangl: yangl,
+                        targetpos: targetPos)
+            }
+        } else {
+            self.arsession.setWorldOrigin(relativeTransform: node.simdWorldTransform)
+            self.simdWorldTransform = node.simdWorldTransform
         }
-        self.arsession.setWorldOrigin(relativeTransform: node.simdWorldTransform)
-        self.simdWorldTransform = node.simdWorldTransform
     }
     
+    func interpolate(targetangl:Float, targetpos:SIMD3<Float>) {
+        let transf = arsession.currentFrame!.camera.transform
+        let curent = getAngleFrom(transform: transf)
+        var dif = curent - targetangl
+        if dif < -.pi/2 { dif += .pi }
+        if dif > .pi/2 { dif -= .pi }
+        
+        let targAng = SIMD3<Float>(0,dif,0)
+
+        let all:Float = 0.5
+        let t:Float = 1 / 60
+        tickCount = all / t
+        
+        let myPos = SIMD3<Float>(transf[3][0],transf[3][1],transf[3][2])
+        let moving = (myPos - targetpos) / tickCount * 2
+        let moveN = SCNNode()
+        moveN.position = SCNVector3(moving)
+        movedWorldTransform = moveN.simdWorldTransform
+        
+        let orig = SCNNode()
+        orig.position = SCNVector3(-targetpos)
+        let cameraRot = SCNNode()
+        cameraRot.addChildNode(orig)
+        cameraRot.position = SCNVector3(targetpos)
+        cameraRot.eulerAngles = SCNVector3(targAng/tickCount*2)
+        rotateWorldTransform = orig.simdWorldTransform
+        
+        let fn = SCNNode()
+        fn.position = SCNVector3(-targetpos)
+        fn.eulerAngles = SCNVector3(0,targetangl,0)
+        simdWorldTransform = fn.simdWorldTransform
+        
+        moveWorld = true
+        
+    }
     func getAngleFrom(eulere: SCNVector3) -> Float {
         let node = SCNNode()
         node.eulerAngles = eulere
@@ -321,6 +385,11 @@ class VPS: NSObject {
 
     func getAngleFrom(transform: SCNMatrix4) -> Float {
         let orientation = SCNVector3(transform.m31, transform.m32, transform.m33)
+        return atan2f(orientation.x, orientation.z)
+    }
+    
+    func getAngleFrom(transform: simd_float4x4) -> Float {
+        let orientation = SIMD3<Float>(transform[2][0],transform[2][1],transform[2][2])
         return atan2f(orientation.x, orientation.z)
     }
     

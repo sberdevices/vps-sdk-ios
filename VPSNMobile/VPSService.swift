@@ -17,6 +17,7 @@ public protocol VPSServiceDelegate:class {
 public struct Settings {
     public static var animationTime:Float = 0.5
     public static var sendPhotoDelay:TimeInterval = 6.0
+    public static var distanceForInterp:Float = 4
 }
 
 public class VPSService {

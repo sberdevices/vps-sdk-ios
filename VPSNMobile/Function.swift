@@ -5,7 +5,7 @@
 //  Created by Eugene Smolyakov on 20.11.2020.
 //
 
-import Foundation
+import SceneKit
 
 func modelPath(name:String, folder: String) -> URL? {
     guard let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
@@ -40,4 +40,38 @@ func saveModel(from:URL, name:String, folder: String) -> URL? {
         print("err",error)
         return nil
     }
+}
+
+func getAngleFrom(eulere: SCNVector3) -> Float {
+    let node = SCNNode()
+    node.eulerAngles = eulere
+    return getAngleFrom(transform: node.transform)
+}
+
+func getAngleFrom(transform: SCNMatrix4) -> Float {
+    let orientation = SCNVector3(transform.m31, transform.m32, transform.m33)
+    return atan2f(orientation.x, orientation.z)
+}
+
+func getAngleFrom(transform: simd_float4x4) -> Float {
+    let orientation = SIMD3<Float>(transform[2][0],transform[2][1],transform[2][2])
+    return atan2f(orientation.x, orientation.z)
+}
+
+func getTransformPosition(from transform: simd_float4x4) -> SIMD3<Float> {
+    return SIMD3<Float>(transform[3][0],
+                        transform[3][1],
+                        transform[3][2])
+}
+
+func getWorldTransform(childPos:SIMD3<Float> = .zero,
+                       parentPos:SIMD3<Float> = .zero,
+                       parentEuler:SIMD3<Float> = .zero) -> simd_float4x4 {
+    let child = SCNNode()
+    child.position = SCNVector3(-childPos)
+    let parent = SCNNode()
+    parent.addChildNode(child)
+    parent.position = SCNVector3(parentPos)
+    parent.eulerAngles = SCNVector3(parentEuler)
+    return child.simdWorldTransform
 }

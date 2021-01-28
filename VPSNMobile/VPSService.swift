@@ -14,6 +14,11 @@ public protocol VPSServiceDelegate:class {
     func sending()
 }
 
+public struct Settings {
+    public static var animationTime:Float = 0.5
+    public static var sendPhotoDelay:TimeInterval = 6.0
+}
+
 public class VPSService {
     var vps:VPS?
     

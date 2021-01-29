@@ -341,21 +341,21 @@ class VPS: NSObject {
         let t:Float = 1 / 60
         let tick = t / all
         
-        let wtransf = lastWorldTransform * photoTransform
-        let mycurrentpos = getTransformPosition(from: wtransf)
-        let cameraangl = getAngleFrom(transform: wtransf)
-        let fangl = SIMD3<Float>(0,-targAngl.y+cameraangl,0)
+        let photoTransformWorld = lastWorldTransform * photoTransform
+        let photoTransformWorldPosition = getTransformPosition(from: photoTransformWorld)
+        let photoTransformWorldEul = getAngleFrom(transform: photoTransformWorld)
+        let fangl = SIMD3<Float>(0,-targAngl.y+photoTransformWorldEul,0)
         let endtransform = getWorldTransform(childPos: targetPos,
-                                             parentPos: mycurrentpos,
+                                             parentPos: photoTransformWorldPosition,
                                              parentEuler: fangl)
-        let v1 = getTransformPosition(from: lastWorldTransform)
-        let v2 = getTransformPosition(from: endtransform)
+        let startPos = getTransformPosition(from: lastWorldTransform)
+        let endPos = getTransformPosition(from: endtransform)
         
         let fn = SCNNode()
         var arr2 = [simd_float4x4]()
         for t: Float in stride(from: tick, through: 1, by: tick) {
             let orient = simd_slerp(simd_quatf(lastWorldTransform), simd_quatf(endtransform), t)
-            let pos = mix(v1, v2, t: t)
+            let pos = mix(startPos, endPos, t: t)
             fn.position = SCNVector3(pos)
             fn.simdOrientation = orient
             arr2.append(fn.simdWorldTransform)

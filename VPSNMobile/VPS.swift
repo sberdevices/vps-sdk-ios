@@ -272,7 +272,7 @@ class VPS: NSObject {
             switch result {
             case let .success(segmentationResult):
                 let up = self.getPosition(frame: frame)
-                print("s",segmentationResult.global_descriptor.first)
+//                print("s",segmentationResult.global_descriptor.first)
                 self.network.uploadNeuroPhoto(photo: up,
                                               coreml: segmentationResult.global_descriptor,
                                               keyPoints: segmentationResult.keypoints,
@@ -295,7 +295,7 @@ class VPS: NSObject {
                 }
 
             case let .error(error):
-                print("Everything was wrong, Dude!")
+                print("Everything was wrong, \(error)!")
             }
         })
     }
@@ -309,45 +309,46 @@ class VPS: NSObject {
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
                                                     ph.posYaw*Float.pi/180.0,
                                                     ph.posRoll*Float.pi/180.0))
-        let cameraangl = getAngleFrom(transform: transform)
         let targetPos = SIMD3<Float>(ph.posX,ph.posY,ph.posZ)
         let myPos = getTransformPosition(from: transform)
-        let target = getWorldTransform(childPos: targetPos,
-                                       parentPos: myPos,
-                                       parentEuler: SIMD3<Float>(0,-yangl+cameraangl,0))
+        
         if let lastTransform = self.simdWorldTransform {
+            let photoTransformWorld = lastTransform * photoTransform
+            let photoTransformWorldPosition = getTransformPosition(from: photoTransformWorld)
+            let photoTransformWorldEul = getAngleFrom(transform: photoTransformWorld)
+            let fangl = SIMD3<Float>(0,-yangl+photoTransformWorldEul,0)
+            let endtransform = getWorldTransform(childPos: targetPos,
+                                                 parentPos: photoTransformWorldPosition,
+                                                 parentEuler: fangl)
+            
             let leng = length(myPos - targetPos)
             if leng > Settings.distanceForInterp {
-                self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse)
-                self.arsession.setWorldOrigin(relativeTransform: target)
-                self.simdWorldTransform = target
+                self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
+                self.simdWorldTransform = endtransform
             } else {
                 interpolate(lastWorldTransform: lastTransform,
-                            photoTransform: transform,
+                            endtransform: endtransform,
                             targetPos: targetPos,
                             targAngl: SIMD3<Float>(0,yangl,0))
             }
         } else {
+            let cameraangl = getAngleFrom(transform: transform)
+            let target = getWorldTransform(childPos: targetPos,
+                                           parentPos: myPos,
+                                           parentEuler: SIMD3<Float>(0,-yangl+cameraangl,0))
             self.arsession.setWorldOrigin(relativeTransform: target)
             self.simdWorldTransform = target
         }
     }
     
     func interpolate(lastWorldTransform:simd_float4x4,
-                     photoTransform:simd_float4x4,
+                     endtransform:simd_float4x4,
                      targetPos:SIMD3<Float>,
                      targAngl:SIMD3<Float>){
         let all:Float = Settings.animationTime
         let t:Float = 1 / 60
         let tick = t / all
         
-        let photoTransformWorld = lastWorldTransform * photoTransform
-        let photoTransformWorldPosition = getTransformPosition(from: photoTransformWorld)
-        let photoTransformWorldEul = getAngleFrom(transform: photoTransformWorld)
-        let fangl = SIMD3<Float>(0,-targAngl.y+photoTransformWorldEul,0)
-        let endtransform = getWorldTransform(childPos: targetPos,
-                                             parentPos: photoTransformWorldPosition,
-                                             parentEuler: fangl)
         let startPos = getTransformPosition(from: lastWorldTransform)
         let endPos = getTransformPosition(from: endtransform)
         

@@ -85,6 +85,10 @@ public struct ResponseVPSPhoto {
     public struct gpsResponse {
         public var lat:Double
         public var long:Double
+        public init(lat: Double, long: Double) {
+            self.lat = lat
+            self.long = long
+        }
     }
     
     public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float) {

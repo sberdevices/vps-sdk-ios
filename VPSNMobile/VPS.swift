@@ -136,6 +136,7 @@ class VPS: NSObject {
             return
         }
         setupWorld(from: mock, transform: frame.camera.transform)
+        delegate?.positionVPS(pos: mock)
     }
     
     func forceLocalize(enabled: Bool) {

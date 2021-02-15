@@ -24,6 +24,10 @@ extension VPSService {
 }
 
 extension VPSService: VPSDelegate {
+    func downloadProgr(value: Double) {
+        delegate?.downloadProgr(value: value)
+    }
+    
     func sending() {
         delegate?.sending()
     }

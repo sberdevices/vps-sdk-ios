@@ -11,7 +11,7 @@ import UIKit
 class Network: NSObject {
     var session = URLSession.shared
     
-    var baseURL = "http://api.polytech.vps.arvr.sberlabs.com/vps/api/v1/job"
+    var baseURL = ""
     
     
     init(url: String,
@@ -22,6 +22,7 @@ class Network: NSObject {
     }
     var observation:NSKeyValueObservation!
     func downloadNeuro(url: @escaping ((URL) -> Void),
+                       downProgr: @escaping ((Double) -> Void),
                        failure: @escaping ((NSError) -> Void)) {
         let path = URL(string: "http://metaservices.arvr.sberlabs.com/upload/weights/hfnet_i8_960.tflite")!
         put { [weak self] in
@@ -38,7 +39,7 @@ class Network: NSObject {
             })
             task?.resume()
             self?.observation = task?.progress.observe(\.fractionCompleted) { progress, _ in
-                print(progress.fractionCompleted)
+                downProgr(progress.fractionCompleted)
             }
         }
     }

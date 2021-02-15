@@ -12,6 +12,7 @@ public protocol VPSServiceDelegate:class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
     func sending()
+    func downloadProgr(value: Double)
 }
 
 public struct Settings {

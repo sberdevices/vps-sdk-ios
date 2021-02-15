@@ -11,6 +11,7 @@ protocol VPSDelegate: class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
     func sending()
+    func downloadProgr(value:Double)
 }
 class VPS: NSObject {
     private let locationManager = CLLocationManager()
@@ -89,6 +90,8 @@ class VPS: NSObject {
                 } else {
                     print("cant save model")
                 }
+            } downProgr: { (pr) in
+                self.delegate?.downloadProgr(value: pr)
             } failure: { (err) in
                 self.delegate?.error(err: err)
             }
@@ -274,6 +277,9 @@ class VPS: NSObject {
             case let .success(segmentationResult):
                 let up = self.getPosition(frame: frame)
 //                print("s",segmentationResult.global_descriptor.first)
+                DispatchQueue.main.async {
+                    self.delegate?.sending()
+                }
                 self.network.uploadNeuroPhoto(photo: up,
                                               coreml: segmentationResult.global_descriptor,
                                               keyPoints: segmentationResult.keypoints,
@@ -287,12 +293,14 @@ class VPS: NSObject {
                         self.firstLocalize = false
                         self.delegate?.positionVPS(pos: ph)
                         self.setupWorld(from: ph, transform: self.photoTransform)
+                        self.getAnswer = true
                     } else {
                         self.delegate?.positionVPS(pos: ph)
                         self.failerCount += 1
+                        self.getAnswer = true
                     }
                 } failure: { (NSError) in
-                    
+                    self.getAnswer = true
                 }
 
             case let .error(error):

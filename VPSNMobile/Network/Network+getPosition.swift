@@ -19,15 +19,19 @@ protocol NetVPSService {
                         success: ((ResponseVPSPhoto) -> Void)?,
                         failure: ((NSError) -> Void)?)
     func downloadNeuroModel(url: ((URL) -> Void)?,
+                            downProgr: ((Double) -> Void)?,
                             failure: ((NSError) -> Void)?)
     
 }
 
 extension Network:NetVPSService {
     func downloadNeuroModel(url: ((URL) -> Void)?,
+                            downProgr: ((Double) -> Void)?,
                             failure: ((NSError) -> Void)?) {
         downloadNeuro { (path) in
             url?(path)
+        } downProgr: { (pr) in
+            downProgr?(pr)
         } failure: { (err) in
             failure?(err)
         }

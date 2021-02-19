@@ -12,6 +12,13 @@ public protocol VPSServiceDelegate:class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
     func sending()
+    func downloadProgr(value: Double)
+}
+
+public struct Settings {
+    public static var animationTime:Float = 0.5
+    public static var sendPhotoDelay:TimeInterval = 6.0
+    public static var distanceForInterp:Float = 4
 }
 
 public class VPSService {
@@ -47,6 +54,10 @@ public class VPSService {
     public func SetupMock(mock:ResponseVPSPhoto) {
         vps?.setupMock(mock: mock)
     }
+    /// Set for vps can update position
+    public func frameUpdated() {
+        vps?.frameUpdated()
+    }
     
     public func SendUIImage(im:UIImage) {
         vps?.sendUIImage(im: im)
@@ -75,6 +86,10 @@ public struct ResponseVPSPhoto {
     public struct gpsResponse {
         public var lat:Double
         public var long:Double
+        public init(lat: Double, long: Double) {
+            self.lat = lat
+            self.long = long
+        }
     }
     
     public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float) {

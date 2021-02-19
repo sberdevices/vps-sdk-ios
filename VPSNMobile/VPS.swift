@@ -11,6 +11,7 @@ protocol VPSDelegate: class {
     func positionVPS(pos: ResponseVPSPhoto)
     func error(err:NSError)
     func sending()
+    func downloadProgr(value:Double)
 }
 class VPS: NSObject {
     private let locationManager = CLLocationManager()
@@ -19,10 +20,15 @@ class VPS: NSObject {
     var arsession: ARSession
     var timer:Timer?
     ///need for async setting position
-    var photoTransform:SCNMatrix4!
+    var photoTransform:simd_float4x4!
     var lastpose:ResponseVPSPhoto?
     ///if we have already set the position, it is needed for the reverse transformation
     var simdWorldTransform: simd_float4x4?
+    
+    var moveWorld = false
+    var tickCount:Int = 0
+    var array: [simd_float4x4]!
+    var currenttick = 0
     
     var force = true
     var failerCount = 0
@@ -84,6 +90,8 @@ class VPS: NSObject {
                 } else {
                     print("cant save model")
                 }
+            } downProgr: { (pr) in
+                self.delegate?.downloadProgr(value: pr)
             } failure: { (err) in
                 self.delegate?.error(err: err)
             }
@@ -94,7 +102,7 @@ class VPS: NSObject {
     func start() {
         mock = false
         if timer == nil {
-            let timer = Timer(timeInterval: 6.0,
+            let timer = Timer(timeInterval: Settings.sendPhotoDelay,
                               target: self,
                               selector: #selector(updateTimer),
                               userInfo: nil,
@@ -130,15 +138,28 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        let camera = SCNNode()
-        camera.simdTransform = frame.camera.transform
-        setupWorld(from: mock, transform: camera.transform)
+        photoTransform = frame.camera.transform
+        setupWorld(from: mock, transform: frame.camera.transform)
+        delegate?.positionVPS(pos: mock)
     }
     
     func forceLocalize(enabled: Bool) {
         onlyForceMode = enabled
         if !enabled {
             force = true
+        }
+    }
+    
+    func frameUpdated() {
+        guard moveWorld else { return }
+        if currenttick < tickCount,
+           let wt = simdWorldTransform {
+            arsession.setWorldOrigin(relativeTransform: wt.inverse*array[currenttick])
+            self.simdWorldTransform = array[currenttick]
+            currenttick += 1
+        } else {
+            moveWorld = false
+            currenttick = 0
         }
     }
     
@@ -203,8 +224,6 @@ class VPS: NSObject {
     func getPosition(frame: ARFrame) -> UploadVPSPhoto {
         
         getAnswer = false
-        let camera = SCNNode()
-        camera.simdTransform = frame.camera.transform
         if !firstLocalize {
             if failerCount >= 3 {
                 force = true
@@ -215,11 +234,11 @@ class VPS: NSObject {
         var newangl = SCNVector3(0,0,0)
         if !force {
             let node = SCNNode()
-            node.simdTransform = camera.simdTransform
+            node.simdTransform = frame.camera.transform
             newpos = node.position
             newangl = node.eulerAngles
         }
-        photoTransform = camera.transform
+        photoTransform = frame.camera.transform
         var up = UploadVPSPhoto(job_id: UUID().uuidString,
                                 locationType: "relative",
                                 locationID: locationType,
@@ -258,7 +277,10 @@ class VPS: NSObject {
             switch result {
             case let .success(segmentationResult):
                 let up = self.getPosition(frame: frame)
-                print("s",segmentationResult.global_descriptor.first)
+//                print("s",segmentationResult.global_descriptor.first)
+                DispatchQueue.main.async {
+                    self.delegate?.sending()
+                }
                 self.network.uploadNeuroPhoto(photo: up,
                                               coreml: segmentationResult.global_descriptor,
                                               keyPoints: segmentationResult.keypoints,
@@ -272,16 +294,18 @@ class VPS: NSObject {
                         self.firstLocalize = false
                         self.delegate?.positionVPS(pos: ph)
                         self.setupWorld(from: ph, transform: self.photoTransform)
+                        self.getAnswer = true
                     } else {
                         self.delegate?.positionVPS(pos: ph)
                         self.failerCount += 1
+                        self.getAnswer = true
                     }
                 } failure: { (NSError) in
-                    
+                    self.getAnswer = true
                 }
 
             case let .error(error):
-                print("Everything was wrong, Dude!")
+                print("Everything was wrong, \(error)!")
             }
         })
     }
@@ -291,37 +315,65 @@ class VPS: NSObject {
         self.timer = nil
     }
     
-    func setupWorld(from ph:ResponseVPSPhoto, transform: SCNMatrix4) {
-        let yangl = self.getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
-                                                         ph.posYaw*Float.pi/180.0,
-                                                         ph.posRoll*Float.pi/180.0))
-        let cameraangl = self.getAngleFrom(transform: transform)
-        let node = SCNNode()
-        node.position = SCNVector3(-ph.posX,-ph.posY,-ph.posZ)
-        let rnode = SCNNode()
-        rnode.addChildNode(node)
-        rnode.position = SCNVector3(transform.m41,
-                                    transform.m42,
-                                    transform.m43)
-        //turn the world to an adjusted angle consisting of the server angle and the user angle
-        rnode.eulerAngles = SCNVector3(0,-yangl+cameraangl,0)
+    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4) {
+        let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
+                                                    ph.posYaw*Float.pi/180.0,
+                                                    ph.posRoll*Float.pi/180.0))
+        let targetPos = SIMD3<Float>(ph.posX,ph.posY,ph.posZ)
+        let myPos = getTransformPosition(from: transform)
         
-        if let tr = self.simdWorldTransform {
-            self.arsession.setWorldOrigin(relativeTransform: tr.inverse)
+        if let lastTransform = self.simdWorldTransform {
+            let photoTransformWorld = lastTransform * photoTransform
+            let photoTransformWorldPosition = getTransformPosition(from: photoTransformWorld)
+            let photoTransformWorldEul = getAngleFrom(transform: photoTransformWorld)
+            let fangl = SIMD3<Float>(0,-yangl+photoTransformWorldEul,0)
+            let endtransform = getWorldTransform(childPos: targetPos,
+                                                 parentPos: photoTransformWorldPosition,
+                                                 parentEuler: fangl)
+            
+            let leng = length(myPos - targetPos)
+            if leng > Settings.distanceForInterp {
+                self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
+                self.simdWorldTransform = endtransform
+            } else {
+                interpolate(lastWorldTransform: lastTransform,
+                            endtransform: endtransform,
+                            targetPos: targetPos,
+                            targAngl: SIMD3<Float>(0,yangl,0))
+            }
+        } else {
+            let cameraangl = getAngleFrom(transform: transform)
+            let target = getWorldTransform(childPos: targetPos,
+                                           parentPos: myPos,
+                                           parentEuler: SIMD3<Float>(0,-yangl+cameraangl,0))
+            self.arsession.setWorldOrigin(relativeTransform: target)
+            self.simdWorldTransform = target
         }
-        self.arsession.setWorldOrigin(relativeTransform: node.simdWorldTransform)
-        self.simdWorldTransform = node.simdWorldTransform
     }
     
-    func getAngleFrom(eulere: SCNVector3) -> Float {
-        let node = SCNNode()
-        node.eulerAngles = eulere
-        return getAngleFrom(transform: node.transform)
-    }
-
-    func getAngleFrom(transform: SCNMatrix4) -> Float {
-        let orientation = SCNVector3(transform.m31, transform.m32, transform.m33)
-        return atan2f(orientation.x, orientation.z)
+    func interpolate(lastWorldTransform:simd_float4x4,
+                     endtransform:simd_float4x4,
+                     targetPos:SIMD3<Float>,
+                     targAngl:SIMD3<Float>){
+        let all:Float = Settings.animationTime
+        let t:Float = 1 / 60
+        let tick = t / all
+        
+        let startPos = getTransformPosition(from: lastWorldTransform)
+        let endPos = getTransformPosition(from: endtransform)
+        
+        let fn = SCNNode()
+        var arr2 = [simd_float4x4]()
+        for t: Float in stride(from: tick, through: 1, by: tick) {
+            let orient = simd_slerp(simd_quatf(lastWorldTransform), simd_quatf(endtransform), t)
+            let pos = mix(startPos, endPos, t: t)
+            fn.position = SCNVector3(pos)
+            fn.simdOrientation = orient
+            arr2.append(fn.simdWorldTransform)
+        }
+        array = arr2
+        tickCount = arr2.count
+        moveWorld = true
     }
     
     private func attemptLocationAccess() {

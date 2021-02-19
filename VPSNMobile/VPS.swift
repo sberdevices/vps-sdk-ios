@@ -138,6 +138,7 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
+        photoTransform = frame.camera.transform
         setupWorld(from: mock, transform: frame.camera.transform)
         delegate?.positionVPS(pos: mock)
     }

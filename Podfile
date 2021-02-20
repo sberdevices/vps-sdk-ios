@@ -6,5 +6,5 @@ target 'VPSNMobile' do
   use_frameworks!
 
   # Pods for VPSNMobile
-	pod 'TensorFlowLiteSwift', '~> 0.0.1-nightly'
+	pod 'TensorFlowLiteSwift', '2.4.0'
 end

@@ -63,9 +63,9 @@ class Network: NSObject {
             let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary, neuroParams: [])
             request.httpBody = dataBody
             self?.session.dataTask(with: request) { (data, response, error) in
-                if let response = response {
+//                if let response = response {
                     //                print("resp",response)
-                }
+//                }
                 
                 if let data = data {
                     do {
@@ -128,9 +128,9 @@ class Network: NSObject {
             let dataBody = self?.createDataBody(withParameters: params, media: [], boundary: boundary, neuroParams: arrays)
             request.httpBody = dataBody
             self?.session.dataTask(with: request) { (data, response, error) in
-                if let response = response {
+//                if let response = response {
                     //                print("resp",response)
-                }
+//                }
                 
                 if let data = data {
                     do {
@@ -178,7 +178,6 @@ class Network: NSObject {
                     body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
                     body.append(data)
                     body.append(lineBreak)
-                    print("param",params)
                 }
             }
         }

@@ -180,7 +180,11 @@ class VPS: NSObject {
     }
     func sendUIImage(im:UIImage) {
         force = true
+        #if targetEnvironment(simulator)
+        sendPhotoMock(im: im)
+        #else
         sendPhoto(im: im)
+        #endif
     }
     
     func sendPhoto(im:UIImage? = nil){
@@ -190,7 +194,7 @@ class VPS: NSObject {
         var up = getPosition(frame: frame)
         var image:UIImage!
         if let im = im {
-            image = im
+            image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
         } else {
             image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
                 .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
@@ -258,7 +262,7 @@ class VPS: NSObject {
                                 instrinsicsCY: frame.camera.intrinsics.columns.2.y,
                                 image: nil,
                                 forceLocalization: force)
-        if let loc = locationManager.location {
+        if let loc = locationManager.location, Settings.gpsUsage {
             up.gps = GPS(lat: loc.coordinate.latitude,
                          long: loc.coordinate.longitude,
                          alt: loc.altitude,
@@ -392,6 +396,47 @@ class VPS: NSObject {
         default:
             locationManager.requestWhenInUseAuthorization()
         }
+    }
+    
+    func sendPhotoMock(im:UIImage) {
+        print("simulator")
+        var up = UploadVPSPhoto(job_id: UUID().uuidString,
+                                locationType: "relative",
+                                locationID: locationType,
+                                locationClientCoordSystem: "arkit",
+                                locPosX: 0,
+                                locPosY: 0,
+                                locPosZ: 0,
+                                locPosRoll: 0,
+                                locPosPitch: 0,
+                                locPosYaw: 0,
+                                imageTransfOrientation: 1,
+                                imageTransfMirrorX: false,
+                                imageTransfMirrorY: false,
+                                instrinsicsFX: 0,
+                                instrinsicsFY: 0,
+                                instrinsicsCX: 0,
+                                instrinsicsCY: 0,
+                                image: nil,
+                                forceLocalization: true)
+        let image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+        up.image = image
+        DispatchQueue.main.async {
+            self.delegate?.sending()
+        }
+        network.uploadPanPhoto(photo: up, success: { (ph) in
+            self.getAnswer = true
+            if self.mock { return }
+            if ph.status {
+                self.delegate?.positionVPS(pos: ph)
+            } else {
+                self.delegate?.positionVPS(pos: ph)
+            }
+        }) { (error) in
+            self.delegate?.error(err: error)
+            self.getAnswer = true
+        }
+
     }
 }
 

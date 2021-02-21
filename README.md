@@ -1,8 +1,6 @@
 # VPS SDK (iOS)
 
-Our SDK allows to determine the users position using a photo via VPS api
-
-**Current version '0.0.2'**
+Our SDK allows to determine users position via Visual Positioning System (VPS) API.
 
 ## Requirements
 

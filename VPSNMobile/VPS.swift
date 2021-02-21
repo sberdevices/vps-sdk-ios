@@ -18,13 +18,16 @@ class VPS: NSObject {
     ///what location are we scanning
     var locationType:String!
     var arsession: ARSession
+    ///Need for sending request
     var timer:Timer?
     ///need for async setting position
     var photoTransform:simd_float4x4!
+    ///Saved last success responce
     var lastpose:ResponseVPSPhoto?
     ///if we have already set the position, it is needed for the reverse transformation
     var simdWorldTransform: simd_float4x4?
     
+    ///Unlock interpolation
     var moveWorld = false
     var tickCount:Int = 0
     var array: [simd_float4x4]!
@@ -41,10 +44,12 @@ class VPS: NSObject {
 
     var onlyForceMode = false
     
+    ///Send the next request only after receiving a response
     var getAnswer = true
     
     var network: NetVPSService
     
+    ///Need for image processing
     var queue = DispatchQueue(label: "VPSQueue")
     
     weak var delegate:VPSDelegate? = nil
@@ -65,7 +70,7 @@ class VPS: NSObject {
             neuroInit()
         }
     }
-    
+    ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
     func neuroInit() {
         if let url = modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
             Neuro.newInstance(path: url.path) { result in
@@ -150,6 +155,7 @@ class VPS: NSObject {
         }
     }
     
+    ///Used for interpolation capability
     func frameUpdated() {
         guard moveWorld else { return }
         if currenttick < tickCount,
@@ -179,26 +185,19 @@ class VPS: NSObject {
         }
     }
     func sendUIImage(im:UIImage) {
+        self.timer?.invalidate()
+        self.timer = nil
         force = true
-        #if targetEnvironment(simulator)
         sendPhotoMock(im: im)
-        #else
-        sendPhoto(im: im)
-        #endif
     }
     
-    func sendPhoto(im:UIImage? = nil){
+    func sendPhoto(){
         guard let frame = arsession.currentFrame else {
             return
         }
         var up = getPosition(frame: frame)
-        var image:UIImage!
-        if let im = im {
-            image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
-        } else {
-            image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
-                .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
-        }
+        let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
+            .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
         up.image = image
         DispatchQueue.main.async {
             self.delegate?.sending()
@@ -224,7 +223,7 @@ class VPS: NSObject {
             self.getAnswer = true
         }
     }
-    
+    ///Forms a request for the current frame
     func getPosition(frame: ARFrame) -> UploadVPSPhoto {
         
         getAnswer = false
@@ -319,6 +318,10 @@ class VPS: NSObject {
         self.timer = nil
     }
     
+    /// Change WorldOrigin
+    /// - Parameters:
+    ///   - ph: Position to change
+    ///   - transform: Position when the photo was sent
     func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4) {
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
                                                     ph.posYaw*Float.pi/180.0,
@@ -341,9 +344,7 @@ class VPS: NSObject {
                 self.simdWorldTransform = endtransform
             } else {
                 interpolate(lastWorldTransform: lastTransform,
-                            endtransform: endtransform,
-                            targetPos: targetPos,
-                            targAngl: SIMD3<Float>(0,yangl,0))
+                            endtransform: endtransform)
             }
         } else {
             let cameraangl = getAngleFrom(transform: transform)
@@ -355,10 +356,11 @@ class VPS: NSObject {
         }
     }
     
+    /// - Parameters:
+    ///   - lastWorldTransform: Last applied transformation
+    ///   - endtransform: Target transformation
     func interpolate(lastWorldTransform:simd_float4x4,
-                     endtransform:simd_float4x4,
-                     targetPos:SIMD3<Float>,
-                     targAngl:SIMD3<Float>){
+                     endtransform:simd_float4x4){
         let all:Float = Settings.animationTime
         let t:Float = 1 / 60
         let tick = t / all
@@ -399,7 +401,10 @@ class VPS: NSObject {
     }
     
     func sendPhotoMock(im:UIImage) {
-        print("simulator")
+        let frame = arsession.currentFrame
+        if let fr = frame {
+            photoTransform = fr.camera.transform
+        }
         var up = UploadVPSPhoto(job_id: UUID().uuidString,
                                 locationType: "relative",
                                 locationID: locationType,
@@ -413,10 +418,10 @@ class VPS: NSObject {
                                 imageTransfOrientation: 1,
                                 imageTransfMirrorX: false,
                                 imageTransfMirrorY: false,
-                                instrinsicsFX: 0,
-                                instrinsicsFY: 0,
-                                instrinsicsCX: 0,
-                                instrinsicsCY: 0,
+                                instrinsicsFX: frame?.camera.intrinsics.columns.0.x ?? 0,
+                                instrinsicsFY: frame?.camera.intrinsics.columns.1.y ?? 0,
+                                instrinsicsCX: frame?.camera.intrinsics.columns.2.x ?? 0,
+                                instrinsicsCY: frame?.camera.intrinsics.columns.2.y ?? 0,
                                 image: nil,
                                 forceLocalization: true)
         let image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
@@ -425,16 +430,12 @@ class VPS: NSObject {
             self.delegate?.sending()
         }
         network.uploadPanPhoto(photo: up, success: { (ph) in
-            self.getAnswer = true
-            if self.mock { return }
-            if ph.status {
-                self.delegate?.positionVPS(pos: ph)
-            } else {
-                self.delegate?.positionVPS(pos: ph)
+            self.delegate?.positionVPS(pos: ph)
+            if frame != nil {
+                self.setupWorld(from: ph, transform: self.photoTransform)
             }
         }) { (error) in
             self.delegate?.error(err: error)
-            self.getAnswer = true
         }
 
     }

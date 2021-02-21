@@ -184,9 +184,3 @@ enum SegmentationError: Error {
     case resultVisualizationError
 }
 
-// MARK: - Constants
-private enum Constants {
-    static let modelFileName = "hfnet_i8_960"
-    static let modelFileExtension = "tflite"
-}
-

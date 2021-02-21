@@ -131,3 +131,22 @@ public enum RecognizeType {
     case server
     case mobile
 }
+
+/// Return default configuration if available
+public func getDefaultConfiguration() -> ARWorldTrackingConfiguration? {
+    let configuration = ARWorldTrackingConfiguration()
+    configuration.isAutoFocusEnabled = false
+    var format: ARConfiguration.VideoFormat?
+    for frm in ARWorldTrackingConfiguration.supportedVideoFormats {
+        if frm.imageResolution == CGSize(width: 1920, height: 1080) {
+            format = frm
+            break
+        }
+    }
+    if let format = format {
+        configuration.videoFormat = format
+        return configuration
+    } else {
+        return nil
+    }
+}

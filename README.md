@@ -1,6 +1,7 @@
-# VPSNMobile
+# VPS SDK (iOS)
 
-Our SDK, which allows you to determine the position of the camera from the photo via api
+Our SDK allows to determine the users position using a photo via VPS api
+
 **Current version '0.0.2'**
 
 ## Requirements
@@ -13,9 +14,9 @@ Our SDK, which allows you to determine the position of the camera from the photo
 
 ### CocoaPods
 
-[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate VPSNMobile into your Xcode project using CocoaPods, specify it in your `Podfile`:
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate VPS SDK into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
-```ruby
+```
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://gitlab.com/labsallday/vps-client-apps/labpodspecs'
 pod 'VPSNMobile'
@@ -50,7 +51,7 @@ func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
     vps.frameUpdated()
 }
 ```
-* You must set the correct session configuration
+* You must set the correct session configuration (`imageResolution:` FullHD)
 
 ```swift
 let configuration = ARWorldTrackingConfiguration()

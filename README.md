@@ -1,7 +1,7 @@
 # VPSNMobile
 
 Our SDK, which allows you to determine the position of the camera from the photo via api
-Current version 0.0.2
+**Current version '0.0.2'**
 
 ## Requirements
 
@@ -23,7 +23,6 @@ And run `pod install` from project directory
 ## Usage
 
 ```swift
-
 import VPSNMobile
 
 class Example {
@@ -40,7 +39,7 @@ class Example {
     }
 }
 ```
-**Attention (bold)**
+**Attention**
 
 * You must define a session delegate or a scene delegate and call the method
 
@@ -60,5 +59,5 @@ for format in ARWorldTrackingConfiguration.supportedVideoFormats {
         break
     }
 }
-sceneView.session.run(configuration)
+arview.session.run(configuration)
 ```

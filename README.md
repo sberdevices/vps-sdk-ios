@@ -49,16 +49,14 @@ func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
     vps.frameUpdated()
 }
 ```
-* You must set the correct session configuration (`imageResolution:` FullHD)
+* Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported (`imageResolution:` FullHD)
 
 ```swift
-let configuration = ARWorldTrackingConfiguration()
-configuration.isAutoFocusEnabled = false
-for format in ARWorldTrackingConfiguration.supportedVideoFormats {
-    if format.imageResolution == CGSize(width: 1920, height: 1080) {
-        configuration.videoFormat = format
-        break
-    }
+let configuration: ARWorldTrackingConfiguration!
+if let config = getDefaultConfiguration() {
+    configuration = config
+} else {
+    fatalError()
 }
 arview.session.run(configuration)
 ```

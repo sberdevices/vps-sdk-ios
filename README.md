@@ -16,6 +16,8 @@ Our SDK, which allows you to determine the position of the camera from the photo
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://gitlab.com/labsallday/vps-client-apps/labpodspecs'
 pod 'VPSNMobile'
 ```
 And run `pod install` from project directory

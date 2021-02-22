@@ -53,7 +53,7 @@ func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
 
 ```swift
 let configuration: ARWorldTrackingConfiguration!
-if let config = getDefaultConfiguration() {
+if let config = VPSService.getDefaultConfiguration() {
     configuration = config
 } else {
     fatalError()

@@ -29,10 +29,13 @@ And run `pod install` from project directory
 
 ```swift
 import VPSNMobile
-class Example {
+import UIKit
+import ARKit
+
+class Example:UIViewController {
     var arview: ARSCNView!
-    let configuration: ARWorldTrackingConfiguration!
-    vps: VPSService?
+    var configuration: ARWorldTrackingConfiguration!
+    var vps: VPSService?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +57,7 @@ class Example {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        vps.frameUpdated()
+        vps?.frameUpdated()
     }
 }
 ```

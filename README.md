@@ -54,6 +54,7 @@ class Example:UIViewController, ARSCNViewDelegate {
                     locationID: "ID",
                     onlyForce: true,
                     recognizeType: .server)
+        vps?.Start()
     }
     
     override func viewWillAppear(_ animated: Bool) {

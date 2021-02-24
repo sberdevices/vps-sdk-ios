@@ -17,7 +17,7 @@ Our SDK allows to determine users position via Visual Positioning System (VPS) A
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://gitlab.com/labsallday/vps-client-apps-public/vpsnmobile'
+source 'https://gitlab.com/labsallday/vps-client-apps-public/labpodspecs'
 pod 'VPSNMobile'
 ```
 And run `pod install` from project directory

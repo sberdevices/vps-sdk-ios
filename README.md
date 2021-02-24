@@ -17,7 +17,7 @@ Our SDK allows to determine users position via Visual Positioning System (VPS) A
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://gitlab.com/labsallday/vps-client-apps/labpodspecs'
+source 'https://gitlab.com/labsallday/vps-client-apps-public/vpsnmobile'
 pod 'VPSNMobile'
 ```
 And run `pod install` from project directory
@@ -54,10 +54,16 @@ func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
 
 ```swift
 let configuration: ARWorldTrackingConfiguration!
-if let config = VPSService.getDefaultConfiguration() {
-    configuration = config
-} else {
-    fatalError()
+override func viewDidLoad() {
+    super.viewDidLoad()
+    if let config = VPSService.getDefaultConfiguration() {
+        configuration = config
+    } else {
+        fatalError()
+    }
 }
-arview.session.run(configuration)
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    arview.session.run(configuration)
+}
 ```

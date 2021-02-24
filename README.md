@@ -24,46 +24,37 @@ And run `pod install` from project directory
 
 ## Usage
 
-```swift
-import VPSNMobile
-
-class Example {
-    var arview: ARSCNView!
-    
-    var vps = VPSService(arsession: arview.session,
-                        url: "http://...",
-                        locationID: "ID",
-                        onlyForce: true,
-                        recognizeType: .server)
-                        
-    func run() {
-        vps.Start()
-    }
-}
-```
-**Attention**
-
 * You must define a session delegate or a scene delegate and call the method
-
-```swift
-func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-    vps.frameUpdated()
-}
-```
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported (`imageResolution:` FullHD)
 
 ```swift
-let configuration: ARWorldTrackingConfiguration!
-override func viewDidLoad() {
-    super.viewDidLoad()
-    if let config = VPSService.getDefaultConfiguration() {
-        configuration = config
-    } else {
-        fatalError()
+import VPSNMobile
+class Example {
+    var arview: ARSCNView!
+    let configuration: ARWorldTrackingConfiguration!
+    vps: VPSService?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let config = VPSService.getDefaultConfiguration() {
+            configuration = config
+        } else {
+            fatalError()
+        }
+        vps = VPSService(arsession: arview.session,
+                    url: "http://...",
+                    locationID: "ID",
+                    onlyForce: true,
+                    recognizeType: .server)
     }
-}
-override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    arview.session.run(configuration)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        arview.session.run(configuration)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        vps.frameUpdated()
+    }
 }
 ```

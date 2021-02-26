@@ -195,14 +195,13 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        var up = getPosition(frame: frame)
+        guard var up = self.getPosition(frame: frame) else { return }
         let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
             .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
         up.image = image
         DispatchQueue.main.async {
             self.delegate?.sending()
         }
-        print(up.forceLocalization)
         network.uploadPanPhoto(photo: up, success: { (ph) in
             self.getAnswer = true
             if self.mock { return }
@@ -224,7 +223,7 @@ class VPS: NSObject {
         }
     }
     ///Forms a request for the current frame
-    func getPosition(frame: ARFrame) -> UploadVPSPhoto {
+    func getPosition(frame: ARFrame) -> UploadVPSPhoto? {
         
         getAnswer = false
         if !firstLocalize {
@@ -261,7 +260,10 @@ class VPS: NSObject {
                                 instrinsicsCY: frame.camera.intrinsics.columns.2.y,
                                 image: nil,
                                 forceLocalization: force)
-        if let loc = locationManager.location, Settings.gpsUsage {
+        if let loc = locationManager.location, Settings.gpsUsage, canGetCorrectGPS() {
+            if loc.horizontalAccuracy > Settings.gpsAccuracyBarrier {
+                return nil
+            }
             up.gps = GPS(lat: loc.coordinate.latitude,
                          long: loc.coordinate.longitude,
                          alt: loc.altitude,
@@ -276,10 +278,10 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
+        guard let up = self.getPosition(frame: frame) else { return }
         self.neuro?.run(buf: frame.capturedImage, completion: { result in
             switch result {
             case let .success(segmentationResult):
-                let up = self.getPosition(frame: frame)
 //                print("s",segmentationResult.global_descriptor.first)
                 DispatchQueue.main.async {
                     self.delegate?.sending()
@@ -393,10 +395,33 @@ class VPS: NSObject {
         }
         switch CLLocationManager.authorizationStatus() {
         case .authorizedAlways, .authorizedWhenInUse:
+            if #available(iOS 14.0, *) {
+                if locationManager.accuracyAuthorization == .reducedAccuracy {
+                    locationManager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: "TemporaryAuth") { (err) in
+                        if err == nil {
+                            self.locationManager.startUpdatingLocation()
+                            self.locationManager.startUpdatingHeading()
+                        }
+                    }
+                    return
+                }
+            }
             locationManager.startUpdatingLocation()
             locationManager.startUpdatingHeading()
+            
         default:
             locationManager.requestWhenInUseAuthorization()
+        }
+    }
+    
+    private func canGetCorrectGPS() -> Bool {
+        if #available(iOS 14.0, *) {
+            let authStatus = locationManager.authorizationStatus
+            let accAuth = locationManager.accuracyAuthorization
+            return authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse && accAuth == .fullAccuracy
+        } else {
+            let authStatus = CLLocationManager.authorizationStatus()
+            return authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse
         }
     }
     
@@ -448,9 +473,19 @@ extension VPS: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager,
                     didChangeAuthorization status: CLAuthorizationStatus) {
-        print("Authorization status changed to \(status.rawValue)")
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
+            if #available(iOS 14.0, *) {
+                if locationManager.accuracyAuthorization == .reducedAccuracy {
+                    locationManager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: "TemporaryAuth") { (err) in
+                        if err == nil {
+                            self.locationManager.startUpdatingLocation()
+                            self.locationManager.startUpdatingHeading()
+                        }
+                    }
+                    return
+                }
+            }
             locationManager.startUpdatingLocation()
             locationManager.startUpdatingHeading()
         default:

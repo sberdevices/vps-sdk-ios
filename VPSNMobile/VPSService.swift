@@ -22,12 +22,14 @@ public protocol VPSServiceDelegate:class {
 public struct Settings {
     ///Time of interpolation
     public static var animationTime:Float = 0.5
-    ///Вelay between sending photos
+    ///Delay between sending photos
     public static var sendPhotoDelay:TimeInterval = 6.0
     ///Distance to which position interpolation works
     public static var distanceForInterp:Float = 4
     ///Send of not gps
     public static var gpsUsage: Bool = true
+    ///gpsAccuracyBarrier
+    public static var gpsAccuracyBarrier = 20.0
 }
 
 public class VPSService {
@@ -84,6 +86,7 @@ public class VPSService {
     
     /// Return default configuration if available
     public static func getDefaultConfiguration() -> ARWorldTrackingConfiguration? {
+        if !ARWorldTrackingConfiguration.isSupported { return nil }
         let configuration = ARWorldTrackingConfiguration()
         configuration.isAutoFocusEnabled = false
         var format: ARConfiguration.VideoFormat?

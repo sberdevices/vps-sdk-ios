@@ -195,7 +195,10 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        guard var up = self.getPosition(frame: frame) else { return }
+        guard var up = self.getPosition(frame: frame) else {
+            getAnswer = true
+            return
+        }
         let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
             .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
         up.image = image
@@ -278,7 +281,10 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        guard let up = self.getPosition(frame: frame) else { return }
+        guard let up = self.getPosition(frame: frame) else {
+            getAnswer = true
+            return
+        }
         self.neuro?.run(buf: frame.capturedImage, completion: { result in
             switch result {
             case let .success(segmentationResult):
@@ -295,7 +301,9 @@ class VPS: NSObject {
                     if self.mock { return }
                     if ph.status {
                         self.failerCount = 0
-                        self.force = false
+                        if !self.onlyForceMode {
+                            self.force = false
+                        }
                         self.firstLocalize = false
                         self.delegate?.positionVPS(pos: ph)
                         self.setupWorld(from: ph, transform: self.photoTransform)

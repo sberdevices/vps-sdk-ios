@@ -35,6 +35,7 @@ public struct Settings {
 public class VPSService {
     var vps:VPS?
     
+    public var onlyForce = false
     /// set delegate to get the position
     public weak var delegate:VPSServiceDelegate? = nil
     
@@ -54,6 +55,7 @@ public class VPSService {
                    locationID: locationID,
                    onlyForce: onlyForce,
                    recognizeType:recognizeType)
+        self.onlyForce = onlyForce
     }
     /// start tracking position
     public func Start() {
@@ -82,6 +84,7 @@ public class VPSService {
     ///Turns of or onf the recalibration mode
     public func forceLocalize(enabled: Bool) {
         vps?.forceLocalize(enabled: enabled)
+        self.onlyForce = enabled
     }
     
     /// Return default configuration if available

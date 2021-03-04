@@ -21,7 +21,6 @@ public class DebugPopVC: UIViewController {
     
     let closebtn = UIButton(type: .system)
     
-    
     public required init(docalibrateON:Bool,
                          autoFocusOn:Bool,
                          showModels:Bool,

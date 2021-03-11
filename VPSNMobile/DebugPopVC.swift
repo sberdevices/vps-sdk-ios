@@ -11,11 +11,11 @@ public class DebugPopVC: UIViewController {
     var mainStack: UIStackView!
     
     let docalibrlbl = UILabel()
-    let docalibrsw = UISwitch()
+    public let docalibrsw = UISwitch()
     let focuslbl = UILabel()
-    let focussw = UISwitch()
+    public let focussw = UISwitch()
     let showmodellbl = UILabel()
-    let showmodelsw = UISwitch()
+    public let showmodelsw = UISwitch()
     let gpslbl = UILabel()
     public let gpssw = UISwitch()
     
@@ -44,7 +44,7 @@ public class DebugPopVC: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         docalibrsw.addTarget(self, action: #selector(docalibract), for: .valueChanged)
         focussw.addTarget(self, action: #selector(focusact), for: .valueChanged)
@@ -60,9 +60,9 @@ public class DebugPopVC: UIViewController {
         mainStack.axis = .vertical
         mainStack.distribution = .fillEqually
         if #available(iOS 13.0, *) {
-            mainStack.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
+            mainStack.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
         } else {
-            mainStack.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+            mainStack.backgroundColor = UIColor.white.withAlphaComponent(0.8)
             // Fallback on earlier versions
         }
         mainStack.translatesAutoresizingMaskIntoConstraints = false

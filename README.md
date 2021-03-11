@@ -1,5 +1,5 @@
 # VPS SDK (iOS)
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.0.2-brightgreen)](https://img.shields.io/badge/pod-0.0.2-brightgreen)  
+[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.0.3-brightgreen)](https://img.shields.io/badge/pod-0.0.3-brightgreen)  
 
 Our SDK allows to determine users position via Visual Positioning System (VPS) API.
 

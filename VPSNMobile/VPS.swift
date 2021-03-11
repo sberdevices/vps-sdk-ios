@@ -65,7 +65,9 @@ class VPS: NSObject {
         super.init()
         onlyForceMode = onlyForce
         self.locationType = locationID
-        attemptLocationAccess()
+        if Settings.gpsUsage {
+            attemptLocationAccess()
+        }
         if recognizeType == .mobile {
             neuroInit()
         }
@@ -195,7 +197,7 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        guard var up = self.getPosition(frame: frame) else {
+        guard var up = self.getPosition(frame: frame, orient: 0) else {
             getAnswer = true
             return
         }
@@ -226,7 +228,29 @@ class VPS: NSObject {
         }
     }
     ///Forms a request for the current frame
-    func getPosition(frame: ARFrame) -> UploadVPSPhoto? {
+    func getPosition(frame: ARFrame?, orient: Int) -> UploadVPSPhoto? {
+        var intrinsics:(fx:Float, fy:Float, cx:Float, cy:Float) =
+            (fx: 1592.2678,
+             fy: 1592.2678,
+             cx: 935.7558,
+             cy: 538.8366)
+        if let fr = frame {
+            intrinsics = (fr.camera.intrinsics.columns.0.x,
+                          fr.camera.intrinsics.columns.1.y,
+                          fr.camera.intrinsics.columns.2.x,
+                          fr.camera.intrinsics.columns.2.y)
+        }
+        switch orient {
+        case 1:
+            var intr = intrinsics
+            intr.fx = intrinsics.fy
+            intr.fy = intrinsics.fx
+            intr.cx = intrinsics.cy
+            intr.cy = intrinsics.cx
+            intrinsics = intr
+        default:
+            break
+        }
         
         getAnswer = false
         if !firstLocalize {
@@ -237,13 +261,13 @@ class VPS: NSObject {
         
         var newpos = SCNVector3(0,0,0)
         var newangl = SCNVector3(0,0,0)
-        if !force {
+        if !force && frame != nil {
             let node = SCNNode()
-            node.simdTransform = frame.camera.transform
+            node.simdTransform = frame!.camera.transform
             newpos = node.position
             newangl = node.eulerAngles
         }
-        photoTransform = frame.camera.transform
+        photoTransform = frame?.camera.transform
         var up = UploadVPSPhoto(job_id: UUID().uuidString,
                                 locationType: "relative",
                                 locationID: locationType,
@@ -254,16 +278,17 @@ class VPS: NSObject {
                                 locPosRoll: newangl.z,
                                 locPosPitch: newangl.x,
                                 locPosYaw: newangl.y,
-                                imageTransfOrientation: 0,
+                                imageTransfOrientation: orient,
                                 imageTransfMirrorX: false,
                                 imageTransfMirrorY: false,
-                                instrinsicsFX: frame.camera.intrinsics.columns.0.x,
-                                instrinsicsFY: frame.camera.intrinsics.columns.1.y,
-                                instrinsicsCX: frame.camera.intrinsics.columns.2.x,
-                                instrinsicsCY: frame.camera.intrinsics.columns.2.y,
+                                instrinsicsFX: intrinsics.fx,
+                                instrinsicsFY: intrinsics.fy,
+                                instrinsicsCX: intrinsics.cx,
+                                instrinsicsCY: intrinsics.cy,
                                 image: nil,
                                 forceLocalization: force)
-        if let loc = locationManager.location, Settings.gpsUsage, canGetCorrectGPS() {
+        if Settings.gpsUsage, canGetCorrectGPS() {
+            guard let loc = locationManager.location else { return nil }
             if loc.horizontalAccuracy > Settings.gpsAccuracyBarrier {
                 return nil
             }
@@ -281,7 +306,7 @@ class VPS: NSObject {
         guard let frame = arsession.currentFrame else {
             return
         }
-        guard let up = self.getPosition(frame: frame) else {
+        guard let up = self.getPosition(frame: frame, orient: 1) else {
             getAnswer = true
             return
         }
@@ -434,43 +459,60 @@ class VPS: NSObject {
     }
     
     func sendPhotoMock(im:UIImage) {
+        guard var up = self.getPosition(frame: nil, orient: 1) else {
+            getAnswer = true
+            return
+        }
         let frame = arsession.currentFrame
         if let fr = frame {
             photoTransform = fr.camera.transform
         }
-        var up = UploadVPSPhoto(job_id: UUID().uuidString,
-                                locationType: "relative",
-                                locationID: locationType,
-                                locationClientCoordSystem: "arkit",
-                                locPosX: 0,
-                                locPosY: 0,
-                                locPosZ: 0,
-                                locPosRoll: 0,
-                                locPosPitch: 0,
-                                locPosYaw: 0,
-                                imageTransfOrientation: 1,
-                                imageTransfMirrorX: false,
-                                imageTransfMirrorY: false,
-                                instrinsicsFX: frame?.camera.intrinsics.columns.0.x ?? 0,
-                                instrinsicsFY: frame?.camera.intrinsics.columns.1.y ?? 0,
-                                instrinsicsCX: frame?.camera.intrinsics.columns.2.x ?? 0,
-                                instrinsicsCY: frame?.camera.intrinsics.columns.2.y ?? 0,
-                                image: nil,
-                                forceLocalization: true)
-        let image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
-        up.image = image
-        DispatchQueue.main.async {
-            self.delegate?.sending()
-        }
-        network.uploadPanPhoto(photo: up, success: { (ph) in
-            self.delegate?.positionVPS(pos: ph)
-            if frame != nil {
-                self.setupWorld(from: ph, transform: self.photoTransform)
+        
+        switch recognizeType {
+        case .server:
+            let image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+            up.image = image
+            DispatchQueue.main.async {
+                self.delegate?.sending()
             }
-        }) { (error) in
-            self.delegate?.error(err: error)
-        }
+            network.uploadPanPhoto(photo: up, success: { (ph) in
+                self.delegate?.positionVPS(pos: ph)
+                if frame != nil {
+                    self.setupWorld(from: ph, transform: self.photoTransform)
+                }
+            }) { (error) in
+                self.getAnswer = true
+                self.delegate?.error(err: error)
+            }
+        case .mobile:
+            self.neuro?.run(useImage: im, completion: { (result) in
+                switch result {
+                case let .success(segmentationResult):
+                    DispatchQueue.main.async {
+                        self.delegate?.sending()
+                    }
+                    self.network.uploadNeuroPhoto(photo: up,
+                                                  coreml: segmentationResult.global_descriptor,
+                                                  keyPoints: segmentationResult.keypoints,
+                                                  scores: segmentationResult.scores,
+                                                  desc: segmentationResult.local_descriptors) { (ph) in
+                        self.getAnswer = true
+                        self.delegate?.positionVPS(pos: ph)
+                        if frame != nil {
+                            self.setupWorld(from: ph, transform: self.photoTransform)
+                        }
 
+                    } failure: { (NSError) in
+                        self.getAnswer = true
+                        self.delegate?.error(err: NSError)
+                    }
+
+                case let .error(error):
+                    self.getAnswer = true
+                    print("Everything was wrong, \(error)!")
+                }
+            })
+        }
     }
 }
 

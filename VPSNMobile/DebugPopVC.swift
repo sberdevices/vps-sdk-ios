@@ -17,7 +17,7 @@ public class DebugPopVC: UIViewController {
     let showmodellbl = UILabel()
     let showmodelsw = UISwitch()
     let gpslbl = UILabel()
-    let gpssw = UISwitch()
+    public let gpssw = UISwitch()
     
     let closebtn = UIButton(type: .system)
     

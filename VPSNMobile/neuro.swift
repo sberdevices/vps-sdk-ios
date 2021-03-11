@@ -87,9 +87,16 @@ class Neuro {
     
     // MARK: - Image Segmentation
     
-    func run(buf:CVPixelBuffer, completion: @escaping ((Result<NResult>) -> Void)) {
+    func run(buf:CVPixelBuffer? = nil, useImage:UIImage? = nil, completion: @escaping ((Result<NResult>) -> Void)) {
         tfLiteQueue.async { [self] in
-            let image = UIImage.createFromPB(pixelBuffer: buf)!.rotate(radians: .pi/2)!
+            var image: UIImage!
+            if let ui = useImage {
+                image = ui
+            } else if let bf = buf {
+                image = UIImage.createFromPB(pixelBuffer: bf)!.rotate(radians: .pi/2)!
+            } else {
+                return
+            }
             var outputTensor: Tensor
             var inputTensor: Tensor
             

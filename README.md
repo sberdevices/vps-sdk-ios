@@ -18,12 +18,27 @@ Our SDK allows to determine users position via Visual Positioning System (VPS) A
 ```
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://gitlab.com/labsallday/vps-client-apps-public/labpodspecs'
-target 'Projectname' do
+target 'YOUR PROJECT NAME HERE' do
   use_frameworks!
 pod 'VPSNMobile'
 end
 ```
 And run `pod install` from project directory
+
+### User permissions
+
+Our framework might request camera and location permission from user. You would need to add them to your app `info.plist`.
+```xml
+<key>NSCameraUsageDescription</key>
+	<string></string>
+<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>TemporaryAuth</key>
+		<string></string>
+	</dict>
+```
 
 ## Usage
 
@@ -50,7 +65,7 @@ class Example:UIViewController, ARSCNViewDelegate {
             fatalError()
         }
         vps = VPSService(arsession: arview.session,
-                    url: "http://...",
+                    url: "https://...",
                     locationID: "ID",
                     onlyForce: true,
                     recognizeType: .server)

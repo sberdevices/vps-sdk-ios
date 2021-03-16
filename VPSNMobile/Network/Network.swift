@@ -10,7 +10,7 @@ import UIKit
 
 class Network: NSObject {
     var session = URLSession.shared
-    
+    var APIversion = 1
     var baseURL = ""
     
     
@@ -262,6 +262,7 @@ class Network: NSObject {
                           "cx":photo.instrinsicsCX,
                           "cy":photo.instrinsicsCY]
         let attributes = ["location":location,
+                          "version":self.APIversion,
                           "imageTransform":imtransform,
                           "intrinsics":intrinsics,
                           "forced_localization":photo.forceLocalization] as [String : Any]

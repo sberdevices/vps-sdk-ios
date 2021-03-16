@@ -281,10 +281,10 @@ class VPS: NSObject {
                                 imageTransfOrientation: orient,
                                 imageTransfMirrorX: false,
                                 imageTransfMirrorY: false,
-                                instrinsicsFX: intrinsics.fx,
-                                instrinsicsFY: intrinsics.fy,
-                                instrinsicsCX: intrinsics.cx,
-                                instrinsicsCY: intrinsics.cy,
+                                instrinsicsFX: intrinsics.fx/2,
+                                instrinsicsFY: intrinsics.fy/2,
+                                instrinsicsCX: intrinsics.cx/2,
+                                instrinsicsCY: intrinsics.cy/2,
                                 image: nil,
                                 forceLocalization: force)
         if Settings.gpsUsage, canGetCorrectGPS() {
@@ -470,7 +470,7 @@ class VPS: NSObject {
         
         switch recognizeType {
         case .server:
-            let image = im.convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+            let image = im.convertToGrayScale(withSize: CGSize(width: 540, height: 960))!
             up.image = image
             DispatchQueue.main.async {
                 self.delegate?.sending()

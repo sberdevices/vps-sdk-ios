@@ -13,13 +13,17 @@ protocol VPSDelegate: class {
     func sending()
     func downloadProgr(value:Double)
 }
-class VPS: NSObject {
-    private let locationManager = CLLocationManager()
+
+class VPS  {
+    public var settings: Settings
+    
+    ///Used for gps tracking
+    var locationManager:LocationManagering!
     ///what location are we scanning
     var locationType:String!
     var arsession: ARSession
     ///Need for sending request
-    var timer:Timer?
+    var timer:TimerManager = TimerManager()
     ///need for async setting position
     var photoTransform:simd_float4x4!
     ///Saved last success responce
@@ -41,8 +45,6 @@ class VPS: NSObject {
     var recognizeType:RecognizeType
     
     var neuro: Neuro?
-
-    var onlyForceMode = false
     
     ///Send the next request only after receiving a response
     var getAnswer = true
@@ -52,35 +54,36 @@ class VPS: NSObject {
     ///Need for image processing
     var queue = DispatchQueue(label: "VPSQueue")
     
-    weak var delegate:VPSDelegate? = nil
+    weak var delegate:VPSServiceDelegate? = nil
     
     init(arsession: ARSession,
          url: String,
          locationID:String,
-         onlyForce:Bool,
-         recognizeType:RecognizeType) {
+         recognizeType:RecognizeType,
+         settings:Settings) {
         self.arsession = arsession
         self.network = Network(url: url, locationID: locationID)
         self.recognizeType = recognizeType
-        super.init()
-        onlyForceMode = onlyForce
+        self.settings = settings
         self.locationType = locationID
-        if Settings.gpsUsage {
-            attemptLocationAccess()
-        }
-        if recognizeType == .mobile {
-            neuroInit()
+        self.locationManager = LocationManager()
+        if settings.gpsUsage {
+            locationManager.attemptLocationAccess()
         }
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
-    func neuroInit() {
+    func neuroInit(succes: ((Bool) -> Void)?,
+                   downProgr: ((Double) -> Void)?,
+                   failure: ((NSError) -> Void)?) {
         if let url = modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
             Neuro.newInstance(path: url.path) { result in
                 switch result {
                 case let .success(segmentator):
                     self.neuro = segmentator
+                    succes?(true)
                 case .error(_):
-                    print("Failed to initialize.")
+                    let er = makeErr(with: Errors.e1)
+                    failure?(er)
                 }
             }
         } else {
@@ -90,94 +93,30 @@ class VPS: NSObject {
                         switch result {
                         case let .success(segmentator):
                             self.neuro = segmentator
+                            succes?(true)
                         case .error(_):
-                            print("Failed to initialize.")
+                            let er = makeErr(with: Errors.e1)
+                            failure?(er)
                         }
                     }
                 } else {
-                    print("cant save model")
+                    let er = makeErr(with: Errors.e2)
+                    failure?(er)
                 }
             } downProgr: { (pr) in
-                self.delegate?.downloadProgr(value: pr)
+                downProgr?(pr)
             } failure: { (err) in
-                self.delegate?.error(err: err)
+                failure?(err)
             }
-
         }
     }
-    
-    func start() {
-        mock = false
-        if timer == nil {
-            let timer = Timer(timeInterval: Settings.sendPhotoDelay,
-                              target: self,
-                              selector: #selector(updateTimer),
-                              userInfo: nil,
-                              repeats: true)
-            RunLoop.current.add(timer, forMode: .common)
-            timer.tolerance = 0.1
-            self.timer = timer
-            self.timer?.fire()
-        } else {
-            print("таймер создан")
-        }
-    }
-    
-    func stop() {
-        self.timer?.invalidate()
-        self.timer = nil
-        firstLocalize = true
-        force = true
-        self.getAnswer = true
-    }
-    
-    func getLatestPose() {
-        if let last = lastpose {
-            delegate?.positionVPS(pos: last)
-        }
-    }
-    
-    func setupMock(mock:ResponseVPSPhoto) {
-        self.timer?.invalidate()
-        self.timer = nil
-        self.mock = true
-        self.getAnswer = true
-        guard let frame = arsession.currentFrame else {
-            return
-        }
-        photoTransform = frame.camera.transform
-        setupWorld(from: mock, transform: frame.camera.transform)
-        delegate?.positionVPS(pos: mock)
-    }
-    
+        
     func forceLocalize(enabled: Bool) {
-        onlyForceMode = enabled
         if !enabled {
             force = true
         }
     }
-    
-    ///Used for interpolation capability
-    func frameUpdated() {
-        guard moveWorld else { return }
-        if currenttick < tickCount,
-           let wt = simdWorldTransform {
-            arsession.setWorldOrigin(relativeTransform: wt.inverse*array[currenttick])
-            self.simdWorldTransform = array[currenttick]
-            currenttick += 1
-        } else {
-            moveWorld = false
-            currenttick = 0
-        }
-    }
-    
-    @objc func updateTimer() {
-        if getAnswer {
-            queue.async {
-                self.sendRequest()
-            }
-        }
-    }
+        
     func sendRequest() {
         switch recognizeType {
         case .server:
@@ -185,12 +124,6 @@ class VPS: NSObject {
         case .mobile:
             sendNeuro()
         }
-    }
-    func sendUIImage(im:UIImage) {
-        self.timer?.invalidate()
-        self.timer = nil
-        force = true
-        sendPhotoMock(im: im)
     }
     
     func sendPhoto(){
@@ -212,7 +145,7 @@ class VPS: NSObject {
             if self.mock { return }
             if ph.status {
                 self.failerCount = 0
-                if !self.onlyForceMode {
+                if !self.settings.onlyForceMode {
                     self.force = false
                 }
                 self.firstLocalize = false
@@ -287,9 +220,9 @@ class VPS: NSObject {
                                 instrinsicsCY: intrinsics.cy/2,
                                 image: nil,
                                 forceLocalization: force)
-        if Settings.gpsUsage, canGetCorrectGPS() {
-            guard let loc = locationManager.location else { return nil }
-            if loc.horizontalAccuracy > Settings.gpsAccuracyBarrier {
+        if settings.gpsUsage, locationManager.canGetCorrectGPS() {
+            guard let loc = locationManager.getLocation() else { return nil }
+            if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {
                 return nil
             }
             up.gps = GPS(lat: loc.coordinate.latitude,
@@ -313,7 +246,6 @@ class VPS: NSObject {
         self.neuro?.run(buf: frame.capturedImage, completion: { result in
             switch result {
             case let .success(segmentationResult):
-//                print("s",segmentationResult.global_descriptor.first)
                 DispatchQueue.main.async {
                     self.delegate?.sending()
                 }
@@ -326,7 +258,7 @@ class VPS: NSObject {
                     if self.mock { return }
                     if ph.status {
                         self.failerCount = 0
-                        if !self.onlyForceMode {
+                        if !self.settings.onlyForceMode {
                             self.force = false
                         }
                         self.firstLocalize = false
@@ -338,19 +270,21 @@ class VPS: NSObject {
                         self.failerCount += 1
                         self.getAnswer = true
                     }
-                } failure: { (NSError) in
+                } failure: { (error) in
                     self.getAnswer = true
+                    self.delegate?.error(err: error)
                 }
 
             case let .error(error):
+                let er = makeErr(with: Errors.e3)
+                self.delegate?.error(err: er)
                 print("Everything was wrong, \(error)!")
             }
         })
     }
     ///delete timer for fixing memory leak
-    func deInit(){
-        self.timer?.invalidate()
-        self.timer = nil
+    deinit {
+        timer.invalidateTimer()
     }
     
     /// Change WorldOrigin
@@ -374,7 +308,7 @@ class VPS: NSObject {
                                                  parentEuler: fangl)
             
             let leng = length(myPos - targetPos)
-            if leng > Settings.distanceForInterp {
+            if leng > settings.distanceForInterp {
                 self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
                 self.simdWorldTransform = endtransform
             } else {
@@ -396,7 +330,7 @@ class VPS: NSObject {
     ///   - endtransform: Target transformation
     func interpolate(lastWorldTransform:simd_float4x4,
                      endtransform:simd_float4x4){
-        let all:Float = Settings.animationTime
+        let all:Float = settings.animationTime
         let t:Float = 1 / 60
         let tick = t / all
         
@@ -416,49 +350,65 @@ class VPS: NSObject {
         tickCount = arr2.count
         moveWorld = true
     }
+}
+
+extension VPS: TimerManagerDelegate {
+    func timerFired() {
+        if getAnswer {
+            queue.async {
+                self.sendRequest()
+            }
+        }
+    }
+}
+
+extension VPS: VPSService{
+    func setupNewSettings(settings: Settings) {
+        if settings.gpsUsage {
+            locationManager.attemptLocationAccess()
+        }
+        if settings.sendPhotoDelay != self.settings.sendPhotoDelay {
+            timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
+        }
+        if settings.onlyForceMode {
+            force = true
+        }
+        self.settings = settings
+    }
     
-    private func attemptLocationAccess() {
-        guard CLLocationManager.locationServicesEnabled() else {
+    public func Start() {
+        mock = false
+        timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
+    }
+    
+    public func Stop() {
+        timer.invalidateTimer()
+        firstLocalize = true
+        force = true
+        self.getAnswer = true
+    }
+    
+    public func GetLatestPose() {
+        if let last = lastpose {
+            delegate?.positionVPS(pos: last)
+        }
+    }
+    
+    public func SetupMock(mock: ResponseVPSPhoto) {
+        timer.invalidateTimer()
+        self.mock = true
+        self.getAnswer = true
+        guard let frame = arsession.currentFrame else {
             return
         }
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        locationManager.delegate = self
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedAlways, .authorizedWhenInUse:
-            if #available(iOS 14.0, *) {
-                if locationManager.accuracyAuthorization == .reducedAccuracy {
-                    locationManager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: "TemporaryAuth") { (err) in
-                        if err == nil {
-                            self.locationManager.startUpdatingLocation()
-                            self.locationManager.startUpdatingHeading()
-                        }
-                    }
-                    return
-                }
-            }
-            locationManager.startUpdatingLocation()
-            locationManager.startUpdatingHeading()
-            
-        default:
-            locationManager.requestWhenInUseAuthorization()
-        }
+        photoTransform = frame.camera.transform
+        setupWorld(from: mock, transform: frame.camera.transform)
+        delegate?.positionVPS(pos: mock)
     }
     
-    private func canGetCorrectGPS() -> Bool {
-        if #available(iOS 14.0, *) {
-            let authStatus = locationManager.authorizationStatus
-            let accAuth = locationManager.accuracyAuthorization
-            return authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse && accAuth == .fullAccuracy
-        } else {
-            let authStatus = CLLocationManager.authorizationStatus()
-            return authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse
-        }
-    }
-    
-    func sendPhotoMock(im:UIImage) {
+    public func SendUIImage(im: UIImage) {
+        timer.invalidateTimer()
+        force = true
         guard var up = self.getPosition(frame: nil, orient: 1) else {
             getAnswer = true
             return
@@ -509,42 +459,24 @@ class VPS: NSObject {
 
                 case let .error(error):
                     self.getAnswer = true
+                    let er = makeErr(with: Errors.e3)
+                    self.delegate?.error(err: er)
                     print("Everything was wrong, \(error)!")
                 }
             })
         }
     }
-}
-
-extension VPS: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations
-    locations: [CLLocation]) {
-    }
     
-    func locationManager(_ manager: CLLocationManager,
-                    didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            if #available(iOS 14.0, *) {
-                if locationManager.accuracyAuthorization == .reducedAccuracy {
-                    locationManager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: "TemporaryAuth") { (err) in
-                        if err == nil {
-                            self.locationManager.startUpdatingLocation()
-                            self.locationManager.startUpdatingHeading()
-                        }
-                    }
-                    return
-                }
-            }
-            locationManager.startUpdatingLocation()
-            locationManager.startUpdatingHeading()
-        default:
-            locationManager.stopUpdatingLocation()
-            locationManager.stopUpdatingHeading()
+    public func frameUpdated() {
+        guard moveWorld else { return }
+        if currenttick < tickCount,
+           let wt = simdWorldTransform {
+            arsession.setWorldOrigin(relativeTransform: wt.inverse*array[currenttick])
+            self.simdWorldTransform = array[currenttick]
+            currenttick += 1
+        } else {
+            moveWorld = false
+            currenttick = 0
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager,
-                   didFailWithError error: Error) {
     }
 }

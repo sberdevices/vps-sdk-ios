@@ -15,78 +15,60 @@ public protocol VPSServiceDelegate:class {
     func error(err:NSError)
     ///Debug use for indicate, that photo sending
     func sending()
-    ///Shows download progress within 0...1
-    func downloadProgr(value: Double)
 }
 
 public struct Settings {
     ///Time of interpolation
-    public static var animationTime:Float = 0.5
+    public var animationTime:Float = 0.5 {
+        didSet {
+            animationTime = clamped(oldValue, minValue: 0.5, maxValue: 1.5)
+        }
+    }
     ///Delay between sending photos
-    public static var sendPhotoDelay:TimeInterval = 6.0
+    public var sendPhotoDelay:TimeInterval = 6.0 {
+        didSet {
+            sendPhotoDelay = clamped(oldValue, minValue: 3, maxValue: 10)
+        }
+    }
     ///Distance to which position interpolation works
-    public static var distanceForInterp:Float = 4
+    public var distanceForInterp:Float = 4 {
+        didSet {
+            distanceForInterp = clamped(oldValue, minValue: 0, maxValue: 100)
+        }
+    }
     ///Send of not gps
-    public static var gpsUsage: Bool = true
+    public var gpsUsage: Bool = true
     ///gpsAccuracyBarrier
-    public static var gpsAccuracyBarrier = 20.0
-}
-
-public class VPSService {
-    var vps:VPS?
-    
-    public var onlyForce = false
-    /// set delegate to get the position
-    public weak var delegate:VPSServiceDelegate? = nil
-    
-    /// - Parameters:
-    ///   - arsession: Object of ARSession()
-    ///   - url: Url server of your object
-    ///   - locationID: Specific object's id
-    ///   - onlyForce: Turns off the recalibration mode
-    ///   - recognizeType: Get features on a server or device
-    public init(arsession: ARSession,
-                url: String,
-                locationID:String,
-                onlyForce:Bool = false,
-                recognizeType:RecognizeType) {
-        setupScene(arsession: arsession,
-                   url: url,
-                   locationID: locationID,
-                   onlyForce: onlyForce,
-                   recognizeType:recognizeType)
-        self.onlyForce = onlyForce
-    }
-    /// start tracking position
-    public func Start() {
-        vps?.start()
-    }
-    /// stop tracking position
-    public func Stop() {
-        vps?.stop()
-    }
-    /// get the last position if available
-    public func GetLatestPose() {
-        vps?.getLatestPose()
-    }
-    /// Set custom position
-    public func SetupMock(mock:ResponseVPSPhoto) {
-        vps?.setupMock(mock: mock)
-    }
-    /// Set for vps can update position
-    public func frameUpdated() {
-        vps?.frameUpdated()
-    }
-    
-    public func SendUIImage(im:UIImage) {
-        vps?.sendUIImage(im: im)
+    public var gpsAccuracyBarrier = 20.0 {
+        didSet {
+            gpsAccuracyBarrier = clamped(oldValue, minValue: 0, maxValue: 100)
+        }
     }
     ///Turns of or onf the recalibration mode
-    public func forceLocalize(enabled: Bool) {
-        vps?.forceLocalize(enabled: enabled)
-        self.onlyForce = enabled
-    }
+    public var onlyForceMode = true
     
+    public init() {}
+}
+
+public protocol VPSService {
+    var settings: Settings { get }
+    /// start tracking position
+    func Start()
+    /// stop tracking position
+    func Stop()
+    /// get the last position if available
+    func GetLatestPose()
+    /// Set custom position
+    func SetupMock(mock:ResponseVPSPhoto)
+    /// Set for vps can update position
+    func frameUpdated()
+    
+    func SendUIImage(im:UIImage)
+    
+    func setupNewSettings(settings: Settings)
+}
+
+public enum VPSBuilder {
     /// Return default configuration if available
     public static func getDefaultConfiguration() -> ARWorldTrackingConfiguration? {
         if !ARWorldTrackingConfiguration.isSupported { return nil }
@@ -106,12 +88,55 @@ public class VPSService {
             return nil
         }
     }
-    
-    deinit {
-        vps?.deInit()
-        print("deinit VPSService")
+    ///
+    /// - Parameters:
+    ///   - arsession: Object of ARSession()
+    ///   - url: Url server of your object
+    ///   - locationID: Specific object's id
+    ///   - onlyForce: Turns off the recalibration mode
+    ///   - recognizeType: Get features on a server
+    ///   - settings: Settings
+    ///   - delegate: delegate
+    ///   - success: Return vps module
+    ///   - downProgr: Shows download progress within 0...1
+    ///   - failure:
+    public static func VPSInit(arsession: ARSession,
+                               url: String,
+                               locationID:String,
+                               recognizeType: RecognizeType,
+                               settings:Settings,
+                               delegate:VPSServiceDelegate?,
+                               success: ((VPSService) -> Void)?,
+                               downProgr: ((Double) -> Void)?,
+                               failure: ((NSError) -> Void)?) {
+        let vps =  VPS(arsession: arsession,
+                       url: url,
+                       locationID: locationID,
+                       recognizeType: .server,
+                       settings: settings)
+        vps.delegate = delegate
+        switch recognizeType {
+        case .server:
+            success?(vps)
+        case .mobile:
+            vps.neuroInit { (bol) in
+                if bol {
+                    success?(vps)
+                } else {
+                    fatalError()
+                }
+            } downProgr: { (dd) in
+                downProgr?(dd)
+            } failure: { (err) in
+                print("err",err)
+                failure?(err)
+            }
+
+        }
+        
     }
 }
+
 /// struct for responce
 public struct ResponseVPSPhoto {
     ///false or not status localize

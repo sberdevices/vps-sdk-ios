@@ -60,3 +60,12 @@ struct Media {
     }
     
 }
+
+typealias codeWithDescr = (code:Int, descr:String)
+struct Errors {
+    static let e1 = codeWithDescr(1,"Failed to initialize tf model")
+    static let e2 = codeWithDescr(2, "Cant save tf model")
+    static let e3 = codeWithDescr(3, "Cant get predict")
+    static let e4 = codeWithDescr(3, "cant get renderer uiimage")
+    static let e5 = codeWithDescr(4, "cant init HairRenderer")
+}

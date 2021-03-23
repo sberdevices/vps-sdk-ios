@@ -8,35 +8,35 @@
 
 import ARKit
 
-extension VPSService {
-    func setupScene(arsession: ARSession,
-                    url: String,
-                    locationID:String,
-                    onlyForce:Bool,
-                    recognizeType:RecognizeType){
-        vps = VPS(arsession: arsession,
-                  url: url,
-                  locationID: locationID,
-                  onlyForce: onlyForce,
-                  recognizeType:recognizeType)
-        vps?.delegate = self
-    }
-}
-
-extension VPSService: VPSDelegate {
-    func downloadProgr(value: Double) {
-        delegate?.downloadProgr(value: value)
-    }
-    
-    func sending() {
-        delegate?.sending()
-    }
-    
-    func error(err: NSError) {
-        delegate?.error(err: err)
-    }
-    
-    func positionVPS(pos: ResponseVPSPhoto) {
-        delegate?.positionVPS(pos: pos)
-    }
-}
+//extension VPSService {
+//    func setupScene(arsession: ARSession,
+//                    url: String,
+//                    locationID:String,
+//                    onlyForce:Bool,
+//                    recognizeType:RecognizeType){
+//        vps = VPS(arsession: arsession,
+//                  url: url,
+//                  locationID: locationID,
+//                  onlyForce: onlyForce,
+//                  recognizeType:recognizeType)
+//        vps?.delegate = self
+//    }
+//}
+//
+//extension VPSService: VPSDelegate {
+//    func downloadProgr(value: Double) {
+//        delegate?.downloadProgr(value: value)
+//    }
+//    
+//    func sending() {
+//        delegate?.sending()
+//    }
+//    
+//    func error(err: NSError) {
+//        delegate?.error(err: err)
+//    }
+//    
+//    func positionVPS(pos: ResponseVPSPhoto) {
+//        delegate?.positionVPS(pos: pos)
+//    }
+//}

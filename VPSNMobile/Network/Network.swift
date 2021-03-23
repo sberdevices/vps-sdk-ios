@@ -39,7 +39,7 @@ class Network: NSObject {
             })
             task?.resume()
             self?.observation = task?.progress.observe(\.fractionCompleted) { progress, _ in
-                downProgr(progress.fractionCompleted)
+                self?.s(progress.fractionCompleted, downProgr)
             }
         }
     }

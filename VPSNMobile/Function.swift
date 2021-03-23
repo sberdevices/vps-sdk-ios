@@ -75,3 +75,13 @@ func getWorldTransform(childPos:SIMD3<Float> = .zero,
     parent.eulerAngles = SCNVector3(parentEuler)
     return child.simdWorldTransform
 }
+
+public func clamped<T>(_ value: T, minValue: T, maxValue: T) -> T where T : Comparable {
+    return min(max(value, minValue), maxValue)
+}
+
+func makeErr(with cwd:codeWithDescr) -> NSError {
+    return NSError(domain: "VPS",
+                   code: cwd.code,
+                   userInfo: [NSLocalizedDescriptionKey: cwd.descr])
+}

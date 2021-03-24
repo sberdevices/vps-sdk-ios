@@ -21,10 +21,22 @@
 		8C21285A2546A3D10073D755 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2128592546A3D10073D755 /* Extension.swift */; };
 		8C2D3D14256792680002C140 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D3D13256792680002C140 /* Function.swift */; };
 		8C789688260A337A00C12D7F /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C789687260A337A00C12D7F /* TimerManager.swift */; };
+		8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */; };
+		8CC71650260B101700CF1089 /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; platformFilter = ios; };
 		8CCC9AF7260A1B240007FFC4 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */; };
 		8CE7DAC925F03CDF006E0F78 /* DebugPopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */; };
 		E8109DB9550C3A4B77054EA7 /* Pods_VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4838AC6CD062955373EA890F /* Pods_VPSNMobile.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8CC71651260B101700CF1089 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C21282125469B7A0073D755 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C21282925469B7A0073D755;
+			remoteInfo = VPSNMobile;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		033B79647DE3EACE1DB9120B /* Pods-VPSNMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.release.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,6 +57,9 @@
 		8C2128592546A3D10073D755 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		8C2D3D13256792680002C140 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		8C789687260A337A00C12D7F /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VPSNMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPSNMobileTests.swift; sourceTree = "<group>"; };
+		8CC7164F260B101700CF1089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPopVC.swift; sourceTree = "<group>"; };
 		F09091519547ACE2CEFB7A7D /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -59,6 +74,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8CC71648260B101700CF1089 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CC71650260B101700CF1089 /* VPSNMobile.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -66,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				8C21282C25469B7A0073D755 /* VPSNMobile */,
+				8CC7164C260B101700CF1089 /* VPSNMobileTests */,
 				8C21282B25469B7A0073D755 /* Products */,
 				98AADC8995441A98D8E12F9F /* Pods */,
 				E0A7AC2567226AB3A1A20C95 /* Frameworks */,
@@ -76,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				8C21282A25469B7A0073D755 /* VPSNMobile.framework */,
+				8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +143,15 @@
 				8C21284225469D250073D755 /* VPSResponse.swift */,
 			);
 			path = parsing;
+			sourceTree = "<group>";
+		};
+		8CC7164C260B101700CF1089 /* VPSNMobileTests */ = {
+			isa = PBXGroup;
+			children = (
+				8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */,
+				8CC7164F260B101700CF1089 /* Info.plist */,
+			);
+			path = VPSNMobileTests;
 			sourceTree = "<group>";
 		};
 		98AADC8995441A98D8E12F9F /* Pods */ = {
@@ -170,17 +204,39 @@
 			productReference = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		8CC7164A260B101700CF1089 /* VPSNMobileTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CC71653260B101700CF1089 /* Build configuration list for PBXNativeTarget "VPSNMobileTests" */;
+			buildPhases = (
+				8CC71647260B101700CF1089 /* Sources */,
+				8CC71648260B101700CF1089 /* Frameworks */,
+				8CC71649260B101700CF1089 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8CC71652260B101700CF1089 /* PBXTargetDependency */,
+			);
+			name = VPSNMobileTests;
+			productName = VPSNMobileTests;
+			productReference = 8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		8C21282125469B7A0073D755 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					8C21282925469B7A0073D755 = {
 						CreatedOnToolsVersion = 12.1;
 						LastSwiftMigration = 1210;
+					};
+					8CC7164A260B101700CF1089 = {
+						CreatedOnToolsVersion = 12.4;
 					};
 				};
 			};
@@ -198,12 +254,20 @@
 			projectRoot = "";
 			targets = (
 				8C21282925469B7A0073D755 /* VPSNMobile */,
+				8CC7164A260B101700CF1089 /* VPSNMobileTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8C21282825469B7A0073D755 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8CC71649260B101700CF1089 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -260,7 +324,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8CC71647260B101700CF1089 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8CC71652260B101700CF1089 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 8C21282925469B7A0073D755 /* VPSNMobile */;
+			targetProxy = 8CC71651260B101700CF1089 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8C21283025469B7A0073D755 /* Debug */ = {
@@ -444,6 +525,42 @@
 			};
 			name = Release;
 		};
+		8CC71654260B101700CF1089 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = VPSNMobileTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = LAB.VPSNMobileTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8CC71655260B101700CF1089 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = VPSNMobileTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = LAB.VPSNMobileTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -461,6 +578,15 @@
 			buildConfigurations = (
 				8C21283325469B7A0073D755 /* Debug */,
 				8C21283425469B7A0073D755 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CC71653260B101700CF1089 /* Build configuration list for PBXNativeTarget "VPSNMobileTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CC71654260B101700CF1089 /* Debug */,
+				8CC71655260B101700CF1089 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

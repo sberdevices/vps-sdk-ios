@@ -21,19 +21,19 @@ public struct Settings {
     ///Time of interpolation
     public var animationTime:Float = 0.5 {
         didSet {
-            animationTime = clamped(oldValue, minValue: 0.5, maxValue: 1.5)
+            animationTime = clamped(animationTime, minValue: 0.5, maxValue: 1.5)
         }
     }
     ///Delay between sending photos
     public var sendPhotoDelay:TimeInterval = 6.0 {
         didSet {
-            sendPhotoDelay = clamped(oldValue, minValue: 3, maxValue: 10)
+            sendPhotoDelay = clamped(sendPhotoDelay, minValue: 3, maxValue: 10)
         }
     }
     ///Distance to which position interpolation works
     public var distanceForInterp:Float = 4 {
         didSet {
-            distanceForInterp = clamped(oldValue, minValue: 0, maxValue: 100)
+            distanceForInterp = clamped(distanceForInterp, minValue: 0, maxValue: 100)
         }
     }
     ///Send of not gps
@@ -41,7 +41,7 @@ public struct Settings {
     ///gpsAccuracyBarrier
     public var gpsAccuracyBarrier = 20.0 {
         didSet {
-            gpsAccuracyBarrier = clamped(oldValue, minValue: 0, maxValue: 100)
+            gpsAccuracyBarrier = clamped(gpsAccuracyBarrier, minValue: 0, maxValue: 100)
         }
     }
     ///Turns of or onf the recalibration mode

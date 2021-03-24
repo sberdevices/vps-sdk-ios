@@ -7,6 +7,7 @@
 
 import XCTest
 import VPSNMobile
+import ARKit
 
 class VPSNMobileTests: XCTestCase {
 
@@ -24,5 +25,22 @@ class VPSNMobileTests: XCTestCase {
         XCTAssertEqual(settings.sendPhotoDelay, 10)
         XCTAssertNotEqual(settings.sendPhotoDelay, 11)
     }
+    
+    func testInitServerVPS() {
+        let exp = expectation(description: "vps-" + #function)
+        var vpsService:VPSService?
+        VPSBuilder.VPSInit(arsession: ARSession(), url: "", locationID: "", recognizeType: .server, settings: Settings(), delegate: nil) { (service) in
+            vpsService = service
+            XCTAssertNotNil(vpsService)
+            exp.fulfill()
+        } downProgr: { (double) in
+            
+        } failure: { (err) in
+            
+        }
 
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    
 }

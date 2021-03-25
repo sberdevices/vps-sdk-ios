@@ -115,11 +115,11 @@ public class VPSBuilder {
     ///   - failure:
     public static func initializeVPS(arsession: ARSession,
                                      settings:Settings,
-                                     gpsUsage: Bool,
-                                     onlyForceMode: Bool,
+                                     gpsUsage: Bool = false,
+                                     onlyForceMode: Bool = false,
                                      delegate:VPSServiceDelegate?,
                                      success: ((VPSService) -> Void)?,
-                                     initDownloadProgress: ((Double) -> Void)? = nil,
+                                     loadingProgress: ((Double) -> Void)? = nil,
                                      failure: ((NSError) -> Void)? = nil) {
         let vps = VPS(arsession: arsession,
                       gpsUsage: gpsUsage,
@@ -133,7 +133,7 @@ public class VPSBuilder {
             vps.neuroInit {
                 success?(vps)
             } downProgr: { (dd) in
-                initDownloadProgress?(dd)
+                loadingProgress?(dd)
             } failure: { (err) in
                 print("err",err)
                 failure?(err)

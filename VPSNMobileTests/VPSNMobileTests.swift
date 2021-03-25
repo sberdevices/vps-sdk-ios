@@ -66,7 +66,7 @@ class VPSNMobileTests: XCTestCase {
             vpsService = service
             XCTAssertNotNil(vpsService, "vpsService not nil")
             exp1.fulfill()
-        } initDownloadProgress: { (double) in
+        } loadingProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
             
@@ -93,7 +93,7 @@ class VPSNMobileTests: XCTestCase {
             vpsService = service
             XCTAssertNotNil(vpsService, "vpsService not nil")
             exp1.fulfill()
-        } initDownloadProgress: { (double) in
+        } loadingProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
             
@@ -126,7 +126,7 @@ class VPSNMobileTests: XCTestCase {
                                  onlyForceMode: true,
                                  delegate: nil) { (service) in
             
-        } initDownloadProgress: { (double) in
+        } loadingProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
             exp1.fulfill()

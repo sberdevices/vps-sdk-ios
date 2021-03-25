@@ -72,7 +72,7 @@ class VPS  {
         }
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
-    func neuroInit(succes: ((Bool) -> Void)?,
+    func neuroInit(succes: (() -> Void)?,
                    downProgr: ((Double) -> Void)?,
                    failure: ((NSError) -> Void)?) {
         if let url = modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
@@ -80,7 +80,7 @@ class VPS  {
                 switch result {
                 case let .success(segmentator):
                     self.neuro = segmentator
-                    succes?(true)
+                    succes?()
                 case .error(_):
                     let er = makeErr(with: Errors.e1)
                     failure?(er)
@@ -93,7 +93,7 @@ class VPS  {
                         switch result {
                         case let .success(segmentator):
                             self.neuro = segmentator
-                            succes?(true)
+                            succes?()
                         case .error(_):
                             let er = makeErr(with: Errors.e1)
                             failure?(er)

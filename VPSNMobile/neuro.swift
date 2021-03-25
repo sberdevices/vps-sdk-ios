@@ -38,7 +38,6 @@ class Neuro {
                 print("DEBUG:interpreter, ", interpreter)
                 
                 try interpreter.allocateTensors()
-                try interpreter.invoke()
                 let inputShape = try interpreter.input(at: 0).shape
                 let outputShape = try interpreter.output(at: 0).shape
                 

@@ -112,19 +112,15 @@ public enum VPSBuilder {
         let vps =  VPS(arsession: arsession,
                        url: url,
                        locationID: locationID,
-                       recognizeType: .server,
+                       recognizeType: recognizeType,
                        settings: settings)
         vps.delegate = delegate
         switch recognizeType {
         case .server:
             success?(vps)
         case .mobile:
-            vps.neuroInit { (bol) in
-                if bol {
-                    success?(vps)
-                } else {
-                    fatalError()
-                }
+            vps.neuroInit {
+                success?(vps)
             } downProgr: { (dd) in
                 downProgr?(dd)
             } failure: { (err) in

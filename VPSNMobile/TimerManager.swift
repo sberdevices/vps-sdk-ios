@@ -20,9 +20,8 @@ final class TimerManager {
     }
 
     func startTimer(timeInterval:TimeInterval, delegate:TimerManagerDelegate) {
-        if timer == nil {
-            invalidateTimer()
-        }
+        //dont start new timer, when one created
+        if timer != nil { return }
         self.delegate = delegate
         let timer = Timer(timeInterval: timeInterval,
                           target: self,
@@ -39,5 +38,10 @@ final class TimerManager {
         self.timer?.invalidate()
         self.timer = nil
         self.delegate = nil
+    }
+    
+    func recreate(timeInterval:TimeInterval, delegate:TimerManagerDelegate) {
+        invalidateTimer()
+        startTimer(timeInterval: timeInterval, delegate: delegate)
     }
 }

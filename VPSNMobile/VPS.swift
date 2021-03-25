@@ -368,7 +368,7 @@ extension VPS: VPSService{
             locationManager.attemptLocationAccess()
         }
         if settings.sendPhotoDelay != self.settings.sendPhotoDelay {
-            timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
+            timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self)
         }
         if settings.onlyForceMode {
             force = true

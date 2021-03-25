@@ -12,21 +12,21 @@ import ARKit
 class VPSNMobileTests: XCTestCase {
     
     func testSetSettings() {
-        var settings:Settings = Settings()
-        settings.animationTime = 0.1
-        XCTAssertEqual(settings.animationTime, 0.5)
-        settings.animationTime = 2
-        XCTAssertEqual(settings.animationTime, 1.5)
-        XCTAssertNotEqual(settings.animationTime, 2)
+        var settings:Settings = Settings(url: "",
+                                         locationID: "",
+                                         recognizeType: .server)
+        settings.animationTime = 0.2
+        XCTAssertEqual(settings.animationTime, 0.2)
+        settings.animationTime = -1
+        XCTAssertEqual(settings.animationTime, 0.1)
         
-        settings.sendPhotoDelay = 2
+        settings.sendPhotoDelay = 3
         XCTAssertEqual(settings.sendPhotoDelay, 3)
-        settings.sendPhotoDelay = 11
-        XCTAssertEqual(settings.sendPhotoDelay, 10)
-        XCTAssertNotEqual(settings.sendPhotoDelay, 11)
+        settings.sendPhotoDelay = -1
+        XCTAssertEqual(settings.sendPhotoDelay, 2.0)
         
         settings.distanceForInterp = -1
-        XCTAssertEqual(settings.distanceForInterp, 0)
+        XCTAssertEqual(settings.distanceForInterp, 0.1)
         
         settings.gpsAccuracyBarrier = 30
         XCTAssertEqual(settings.gpsAccuracyBarrier, 30)
@@ -35,14 +35,13 @@ class VPSNMobileTests: XCTestCase {
     func testInitServerVPS() {
         let exp = expectation(description: "vps-" + #function)
         var vpsService:VPSService?
-        VPSBuilder.VPSInit(arsession: ARSession(), url: "", locationID: "", recognizeType: .server, settings: Settings(), delegate: nil) { (service) in
+        let settings:Settings = Settings(url: "",
+                                         locationID: "",
+                                         recognizeType: .server)
+        VPSBuilder.initializeVPS(arsession: ARSession(), settings: settings, gpsUsage: true, onlyForceMode: true, delegate: nil) { (service) in
             vpsService = service
             XCTAssertNotNil(vpsService)
             exp.fulfill()
-        } downProgr: { (double) in
-            
-        } failure: { (err) in
-            
         }
         
         waitForExpectations(timeout: 1, handler: nil)
@@ -56,11 +55,18 @@ class VPSNMobileTests: XCTestCase {
         }
         let exp1 = expectation(description: "exp1-" + #function)
         var vpsService:VPSService?
-        VPSBuilder.VPSInit(arsession: ARSession(), url: "", locationID: "", recognizeType: .mobile, settings: Settings(), delegate: nil) { (service) in
+        let settings:Settings = Settings(url: "",
+                                         locationID: "",
+                                         recognizeType: .mobile)
+        VPSBuilder.initializeVPS(arsession: ARSession(),
+                                 settings: settings,
+                                 gpsUsage: true,
+                                 onlyForceMode: true,
+                                 delegate: nil) { (service) in
             vpsService = service
             XCTAssertNotNil(vpsService, "vpsService not nil")
             exp1.fulfill()
-        } downProgr: { (double) in
+        } initDownloadProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
             
@@ -76,14 +82,21 @@ class VPSNMobileTests: XCTestCase {
         if modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) != nil {
             time = 2
         }
-        VPSBuilder.VPSInit(arsession: ARSession(), url: "", locationID: "", recognizeType: .mobile, settings: Settings(), delegate: nil) { (service) in
+        let settings:Settings = Settings(url: "",
+                                         locationID: "",
+                                         recognizeType: .mobile)
+        VPSBuilder.initializeVPS(arsession: ARSession(),
+                                 settings: settings,
+                                 gpsUsage: true,
+                                 onlyForceMode: true,
+                                 delegate: nil) { (service) in
             vpsService = service
-            XCTAssertNotNil(vpsService)
+            XCTAssertNotNil(vpsService, "vpsService not nil")
             exp1.fulfill()
-        } downProgr: { (double) in
+        } initDownloadProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
-            print("err",err)
+            
         }
         waitForExpectations(timeout: time, handler: nil)
     }
@@ -104,9 +117,16 @@ class VPSNMobileTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: file.path))
         
         let exp1 = expectation(description: "exp1-" + #function)
-        
-        VPSBuilder.VPSInit(arsession: ARSession(), url: "", locationID: "", recognizeType: .mobile, settings: Settings(), delegate: nil) { (service) in
-        } downProgr: { (double) in
+        let settings:Settings = Settings(url: "",
+                                         locationID: "",
+                                         recognizeType: .mobile)
+        VPSBuilder.initializeVPS(arsession: ARSession(),
+                                 settings: settings,
+                                 gpsUsage: true,
+                                 onlyForceMode: true,
+                                 delegate: nil) { (service) in
+            
+        } initDownloadProgress: { (double) in
             print("progress",double)
         } failure: { (err) in
             exp1.fulfill()

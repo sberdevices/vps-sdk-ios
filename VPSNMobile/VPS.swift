@@ -16,7 +16,19 @@ protocol VPSDelegate: class {
 
 class VPS  {
     public var settings: Settings
-    
+    var gpsUsage: Bool {
+        didSet {
+            if oldValue {
+                locationManager.attemptLocationAccess()
+            }
+        }
+    }
+    ///Turns of or onf the recalibration mode
+    var onlyForceMode: Bool {
+        didSet {
+            force = true
+        }
+    }
     ///Used for gps tracking
     var locationManager:LocationManagering!
     ///what location are we scanning
@@ -42,8 +54,6 @@ class VPS  {
     var firstLocalize = true
     var mock = false
     
-    var recognizeType:RecognizeType
-    
     var neuro: Neuro?
     
     ///Send the next request only after receiving a response
@@ -57,17 +67,17 @@ class VPS  {
     weak var delegate:VPSServiceDelegate? = nil
     
     init(arsession: ARSession,
-         url: String,
-         locationID:String,
-         recognizeType:RecognizeType,
+         gpsUsage: Bool,
+         onlyForceMode: Bool,
          settings:Settings) {
         self.arsession = arsession
-        self.network = Network(url: url, locationID: locationID)
-        self.recognizeType = recognizeType
+        self.network = Network(url: settings.url, locationID: settings.locationID)
+        self.gpsUsage = gpsUsage
+        self.onlyForceMode = onlyForceMode
         self.settings = settings
-        self.locationType = locationID
+        self.locationType = settings.locationID
         self.locationManager = LocationManager()
-        if settings.gpsUsage {
+        if gpsUsage {
             locationManager.attemptLocationAccess()
         }
     }
@@ -118,7 +128,7 @@ class VPS  {
     }
         
     func sendRequest() {
-        switch recognizeType {
+        switch settings.recognizeType {
         case .server:
             sendPhoto()
         case .mobile:
@@ -145,7 +155,7 @@ class VPS  {
             if self.mock { return }
             if ph.status {
                 self.failerCount = 0
-                if !self.settings.onlyForceMode {
+                if !self.onlyForceMode {
                     self.force = false
                 }
                 self.firstLocalize = false
@@ -220,7 +230,7 @@ class VPS  {
                                 instrinsicsCY: intrinsics.cy/2,
                                 image: nil,
                                 forceLocalization: force)
-        if settings.gpsUsage, locationManager.canGetCorrectGPS() {
+        if gpsUsage, locationManager.canGetCorrectGPS() {
             guard let loc = locationManager.getLocation() else { return nil }
             if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {
                 return nil
@@ -258,7 +268,7 @@ class VPS  {
                     if self.mock { return }
                     if ph.status {
                         self.failerCount = 0
-                        if !self.settings.onlyForceMode {
+                        if !self.onlyForceMode {
                             self.force = false
                         }
                         self.firstLocalize = false
@@ -363,19 +373,6 @@ extension VPS: TimerManagerDelegate {
 }
 
 extension VPS: VPSService{
-    func setupNewSettings(settings: Settings) {
-        if settings.gpsUsage {
-            locationManager.attemptLocationAccess()
-        }
-        if settings.sendPhotoDelay != self.settings.sendPhotoDelay {
-            timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self)
-        }
-        if settings.onlyForceMode {
-            force = true
-        }
-        self.settings = settings
-    }
-    
     public func Start() {
         mock = false
         timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
@@ -418,7 +415,7 @@ extension VPS: VPSService{
             photoTransform = fr.camera.transform
         }
         
-        switch recognizeType {
+        switch settings.recognizeType {
         case .server:
             let image = im.convertToGrayScale(withSize: CGSize(width: 540, height: 960))!
             up.image = image

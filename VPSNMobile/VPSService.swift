@@ -18,40 +18,56 @@ public protocol VPSServiceDelegate:class {
 }
 
 public struct Settings {
+    /// Url server of your object
+    let url: String
+    /// Specific object's id
+    let locationID:String
+    ///Get features on a server
+    let recognizeType: RecognizeType
+    
     ///Time of interpolation
     public var animationTime:Float = 0.5 {
         didSet {
-            animationTime = clamped(animationTime, minValue: 0.5, maxValue: 1.5)
+            animationTime = clamped(animationTime, minValue: 0.1, maxValue: Float.infinity)
         }
     }
     ///Delay between sending photos
     public var sendPhotoDelay:TimeInterval = 6.0 {
         didSet {
-            sendPhotoDelay = clamped(sendPhotoDelay, minValue: 3, maxValue: 10)
+            sendPhotoDelay = clamped(sendPhotoDelay, minValue: 2, maxValue: TimeInterval.infinity)
         }
     }
     ///Distance to which position interpolation works
     public var distanceForInterp:Float = 4 {
         didSet {
-            distanceForInterp = clamped(distanceForInterp, minValue: 0, maxValue: 100)
+            distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: Float.infinity)
         }
     }
-    ///Send of not gps
-    public var gpsUsage: Bool = true
     ///gpsAccuracyBarrier
     public var gpsAccuracyBarrier = 20.0 {
         didSet {
-            gpsAccuracyBarrier = clamped(gpsAccuracyBarrier, minValue: 0, maxValue: 100)
+            gpsAccuracyBarrier = clamped(gpsAccuracyBarrier, minValue: 0, maxValue: Double.infinity)
         }
     }
-    ///Turns of or onf the recalibration mode
-    public var onlyForceMode = true
     
-    public init() {}
+    ///
+    /// - Parameters:
+    ///   - url: Url server of your object
+    ///   - locationID: Specific object's id
+    ///   - recognizeType: Get features on a server
+    public init(url: String, locationID: String, recognizeType: RecognizeType) {
+        self.url = url
+        self.locationID = locationID
+        self.recognizeType = recognizeType
+    }
 }
 
 public protocol VPSService {
     var settings: Settings { get }
+    ///Send of not gps
+    var gpsUsage: Bool { get set }
+    ///Turns of or onf the recalibration mode
+    var onlyForceMode: Bool { get set }
     /// start tracking position
     func Start()
     /// stop tracking position
@@ -64,11 +80,9 @@ public protocol VPSService {
     func frameUpdated()
     
     func SendUIImage(im:UIImage)
-    
-    func setupNewSettings(settings: Settings)
 }
 
-public enum VPSBuilder {
+public class VPSBuilder {
     /// Return default configuration if available
     public static func getDefaultConfiguration() -> ARWorldTrackingConfiguration? {
         if !ARWorldTrackingConfiguration.isSupported { return nil }
@@ -88,48 +102,43 @@ public enum VPSBuilder {
             return nil
         }
     }
+    
     ///
     /// - Parameters:
     ///   - arsession: Object of ARSession()
-    ///   - url: Url server of your object
-    ///   - locationID: Specific object's id
-    ///   - onlyForce: Turns off the recalibration mode
-    ///   - recognizeType: Get features on a server
     ///   - settings: Settings
-    ///   - delegate: delegate
+    ///   - gpsUsage: Send of not gps
+    ///   - onlyForceMode: Turns of or onf the recalibration mode
+    ///   - delegate: VPSServiceDelegate
     ///   - success: Return vps module
-    ///   - downProgr: Shows download progress within 0...1
+    ///   - initDownloadProgress: Shows download progress within 0...1
     ///   - failure:
-    public static func VPSInit(arsession: ARSession,
-                               url: String,
-                               locationID:String,
-                               recognizeType: RecognizeType,
-                               settings:Settings,
-                               delegate:VPSServiceDelegate?,
-                               success: ((VPSService) -> Void)?,
-                               downProgr: ((Double) -> Void)?,
-                               failure: ((NSError) -> Void)?) {
-        let vps =  VPS(arsession: arsession,
-                       url: url,
-                       locationID: locationID,
-                       recognizeType: recognizeType,
-                       settings: settings)
+    public static func initializeVPS(arsession: ARSession,
+                                     settings:Settings,
+                                     gpsUsage: Bool,
+                                     onlyForceMode: Bool,
+                                     delegate:VPSServiceDelegate?,
+                                     success: ((VPSService) -> Void)?,
+                                     initDownloadProgress: ((Double) -> Void)? = nil,
+                                     failure: ((NSError) -> Void)? = nil) {
+        let vps = VPS(arsession: arsession,
+                      gpsUsage: gpsUsage,
+                      onlyForceMode: onlyForceMode,
+                      settings: settings)
         vps.delegate = delegate
-        switch recognizeType {
+        switch settings.recognizeType {
         case .server:
             success?(vps)
         case .mobile:
             vps.neuroInit {
                 success?(vps)
             } downProgr: { (dd) in
-                downProgr?(dd)
+                initDownloadProgress?(dd)
             } failure: { (err) in
                 print("err",err)
                 failure?(err)
             }
-
         }
-        
     }
 }
 

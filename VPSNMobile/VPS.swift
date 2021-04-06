@@ -23,12 +23,10 @@ class VPS  {
             }
         }
     }
-    ///Turns of or onf the recalibration mode
-    var onlyForceMode: Bool {
-        didSet {
-            force = true
-        }
-    }
+    ///Turns on or off the recalibration mode
+    var onlyForceMode: Bool
+    ///Enable serial localize when localize falled
+    var serialLocalizeEnabled: Bool
     ///Used for gps tracking
     var locationManager:LocationManagering!
     ///what location are we scanning
@@ -49,10 +47,20 @@ class VPS  {
     var array: [simd_float4x4]!
     var currenttick = 0
     
-    var force = true
-    var failerCount = 0
-    var firstLocalize = true
-    var mock = false
+    //max failer count
+    let failerConst = 3
+    //init with same value above, that first localize was force
+    var failerCount = 3
+    var needForced: Bool {
+        get {
+            return failerCount >= failerConst
+        }
+        set {
+            failerCount = newValue ? failerConst : 0
+        }
+    }
+    ///serial request packages
+    var serialReqests = [UploadVPSPhoto]()
     
     var neuro: Neuro?
     
@@ -69,11 +77,13 @@ class VPS  {
     init(arsession: ARSession,
          gpsUsage: Bool,
          onlyForceMode: Bool,
+         serialLocalizeEnabled:Bool,
          settings:Settings) {
         self.arsession = arsession
         self.network = Network(url: settings.url, locationID: settings.locationID)
         self.gpsUsage = gpsUsage
         self.onlyForceMode = onlyForceMode
+        self.serialLocalizeEnabled = serialLocalizeEnabled
         self.settings = settings
         self.locationType = settings.locationID
         self.locationManager = LocationManager()
@@ -120,58 +130,85 @@ class VPS  {
             }
         }
     }
-        
-    func forceLocalize(enabled: Bool) {
-        if !enabled {
-            force = true
-        }
-    }
-        
-    func sendRequest() {
-        switch settings.recognizeType {
-        case .server:
-            sendPhoto()
-        case .mobile:
-            sendNeuro()
-        }
-    }
     
-    func sendPhoto(){
+    func createRequest(serial:Bool) {
         guard let frame = arsession.currentFrame else {
             return
         }
-        guard var up = self.getPosition(frame: frame, orient: 0) else {
-            getAnswer = true
-            return
+        guard var up = self.getPosition(frame: frame,
+                                        orient: getOrientation(),
+                                        serial: serialLocalizeEnabled) else { return }
+        switch settings.recognizeType {
+        case .server:
+            let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
+                .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+            up.image = image
+            if serial {
+                createSerialRequest(part: up)
+            } else {
+                sendRequest(meta: up)
+            }
+        case .mobile:
+            getNeuroData(frame: frame) { (neurodata) in
+                up.features = neurodata
+                if serial {
+                    self.createSerialRequest(part: up)
+                } else {
+                    self.sendRequest(meta: up)
+                }
+            } failure: { (err) in
+                self.delegate?.error(err: err)
+            }
         }
-        let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
-            .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
-        up.image = image
+    }
+    
+    func createSerialRequest(part: UploadVPSPhoto){
+        serialReqests.append(part)
+        DispatchQueue.main.async {
+            self.delegate?.serialcount(ccc: self.serialReqests.count)
+        }
+        if serialReqests.count == settings.serialCount {
+            self.getAnswer = false
+            network.serialLocalize(reqs: serialReqests) { (ph) in
+                if ph.status, let id = ph.id, let intid = Int(id), self.serialReqests.indices.contains(intid), let tr = self.serialReqests[intid].photoTransform {
+                    self.needForced = false
+                    self.setupWorld(from: ph, transform: tr)
+                    self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
+                }
+                self.getAnswer = true
+                self.delegate?.positionVPS(pos: ph)
+                self.serialReqests.removeAll()
+            } failure: { (err) in
+                self.delegate?.error(err: err)
+                self.getAnswer = true
+                self.serialReqests.removeAll()
+            }
+        }
+    }
+    
+    func sendRequest(meta:UploadVPSPhoto){
         DispatchQueue.main.async {
             self.delegate?.sending()
         }
-        network.uploadPanPhoto(photo: up, success: { (ph) in
-            self.getAnswer = true
-            if self.mock { return }
+        getAnswer = false
+        network.singleLocalize(photo: meta) { (ph) in
             if ph.status {
-                self.failerCount = 0
-                if !self.onlyForceMode {
-                    self.force = false
-                }
-                self.firstLocalize = false
-                self.delegate?.positionVPS(pos: ph)
+                self.needForced = false
                 self.setupWorld(from: ph, transform: self.photoTransform)
             } else {
-                self.delegate?.positionVPS(pos: ph)
                 self.failerCount += 1
             }
-        }) { (error) in
-            self.delegate?.error(err: error)
+            self.getAnswer = true
+            self.delegate?.positionVPS(pos: ph)
+        } failure: { (err) in
+            self.delegate?.error(err: err)
             self.getAnswer = true
         }
+
     }
+    
     ///Forms a request for the current frame
-    func getPosition(frame: ARFrame?, orient: Int) -> UploadVPSPhoto? {
+    func getPosition(frame: ARFrame?, orient: Int, serial: Bool) -> UploadVPSPhoto? {
         var intrinsics:(fx:Float, fy:Float, cx:Float, cy:Float) =
             (fx: 1592.2678,
              fy: 1592.2678,
@@ -195,13 +232,7 @@ class VPS  {
             break
         }
         
-        getAnswer = false
-        if !firstLocalize {
-            if failerCount >= 3 {
-                force = true
-            }
-        }
-        
+        let force = needForced || onlyForceMode
         var newpos = SCNVector3(0,0,0)
         var newangl = SCNVector3(0,0,0)
         if !force && frame != nil {
@@ -229,8 +260,9 @@ class VPS  {
                                 instrinsicsCX: intrinsics.cx/2,
                                 instrinsicsCY: intrinsics.cy/2,
                                 image: nil,
-                                forceLocalization: force)
-        if gpsUsage, locationManager.canGetCorrectGPS() {
+                                forceLocalization: force,
+                                photoTransform: frame?.camera.transform)
+        if gpsUsage, locationManager.canGetCorrectGPS(), !(serial && needForced) {
             guard let loc = locationManager.getLocation() else { return nil }
             if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {
                 return nil
@@ -245,49 +277,27 @@ class VPS  {
     }
     
     
-    func sendNeuro() {
-        guard let frame = arsession.currentFrame else {
-            return
-        }
-        guard let up = self.getPosition(frame: frame, orient: 1) else {
-            getAnswer = true
-            return
-        }
-        self.neuro?.run(buf: frame.capturedImage, completion: { result in
+    /// Return neuroData or failure, used async queue
+    func getNeuroData(frame: ARFrame? = nil,
+                      image: UIImage? = nil,
+                   success: ((NeuroData) -> Void)?,
+                   failure: ((NSError) -> Void)?) {
+        
+        self.neuro?.run(buf: frame?.capturedImage,
+                        useImage: image,
+                        completion: { result in
             switch result {
             case let .success(segmentationResult):
-                DispatchQueue.main.async {
-                    self.delegate?.sending()
-                }
-                self.network.uploadNeuroPhoto(photo: up,
-                                              coreml: segmentationResult.global_descriptor,
-                                              keyPoints: segmentationResult.keypoints,
-                                              scores: segmentationResult.scores,
-                                              desc: segmentationResult.local_descriptors) { (ph) in
-                    
-                    if self.mock { return }
-                    if ph.status {
-                        self.failerCount = 0
-                        if !self.onlyForceMode {
-                            self.force = false
-                        }
-                        self.firstLocalize = false
-                        self.delegate?.positionVPS(pos: ph)
-                        self.setupWorld(from: ph, transform: self.photoTransform)
-                        self.getAnswer = true
-                    } else {
-                        self.delegate?.positionVPS(pos: ph)
-                        self.failerCount += 1
-                        self.getAnswer = true
-                    }
-                } failure: { (error) in
-                    self.getAnswer = true
-                    self.delegate?.error(err: error)
-                }
-
+                let data = NeuroData(coreml: segmentationResult.global_descriptor,
+                                     keyPoints: segmentationResult.keypoints,
+                                     scores: segmentationResult.scores,
+                                     desc: segmentationResult.local_descriptors)
+                success?(data)
             case let .error(error):
                 let er = makeErr(with: Errors.e3)
-                self.delegate?.error(err: er)
+                DispatchQueue.main.async {
+                    failure?(er)
+                }
                 print("Everything was wrong, \(error)!")
             }
         })
@@ -302,6 +312,7 @@ class VPS  {
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
     func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4) {
+        if arsession.configuration == nil { return }
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
                                                     ph.posYaw*Float.pi/180.0,
                                                     ph.posRoll*Float.pi/180.0))
@@ -360,13 +371,30 @@ class VPS  {
         tickCount = arr2.count
         moveWorld = true
     }
+    
+    func getOrientation() -> Int {
+        switch settings.recognizeType {
+        case .server:
+            return 0
+        case .mobile:
+            return 1
+        }
+    }
 }
 
 extension VPS: TimerManagerDelegate {
     func timerFired() {
         if getAnswer {
+            var serial = false
+            if needForced && serialLocalizeEnabled {
+                if serialReqests.isEmpty {
+                    //create new fast timer for localization
+                    timer.recreate(timeInterval: 1.5, delegate: self, fired: false)
+                }
+                serial = true
+            }
             queue.async {
-                self.sendRequest()
+                self.createRequest(serial: serial)
             }
         }
     }
@@ -374,14 +402,12 @@ extension VPS: TimerManagerDelegate {
 
 extension VPS: VPSService{
     public func Start() {
-        mock = false
         timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
     }
     
     public func Stop() {
         timer.invalidateTimer()
-        firstLocalize = true
-        force = true
+        needForced = true
         self.getAnswer = true
     }
     
@@ -393,7 +419,6 @@ extension VPS: VPSService{
     
     public func SetupMock(mock: ResponseVPSPhoto) {
         timer.invalidateTimer()
-        self.mock = true
         self.getAnswer = true
         guard let frame = arsession.currentFrame else {
             return
@@ -405,62 +430,26 @@ extension VPS: VPSService{
     
     public func SendUIImage(im: UIImage) {
         timer.invalidateTimer()
-        force = true
-        guard var up = self.getPosition(frame: nil, orient: 1) else {
-            getAnswer = true
-            return
-        }
+        
         let frame = arsession.currentFrame
         if let fr = frame {
             photoTransform = fr.camera.transform
         }
-        
+        guard var up = self.getPosition(frame: frame,
+                                        orient: 1,
+                                        serial: false) else { return }
         switch settings.recognizeType {
         case .server:
             let image = im.convertToGrayScale(withSize: CGSize(width: 540, height: 960))!
             up.image = image
-            DispatchQueue.main.async {
-                self.delegate?.sending()
-            }
-            network.uploadPanPhoto(photo: up, success: { (ph) in
-                self.delegate?.positionVPS(pos: ph)
-                if frame != nil {
-                    self.setupWorld(from: ph, transform: self.photoTransform)
-                }
-            }) { (error) in
-                self.getAnswer = true
-                self.delegate?.error(err: error)
-            }
+            sendRequest(meta: up)
         case .mobile:
-            self.neuro?.run(useImage: im, completion: { (result) in
-                switch result {
-                case let .success(segmentationResult):
-                    DispatchQueue.main.async {
-                        self.delegate?.sending()
-                    }
-                    self.network.uploadNeuroPhoto(photo: up,
-                                                  coreml: segmentationResult.global_descriptor,
-                                                  keyPoints: segmentationResult.keypoints,
-                                                  scores: segmentationResult.scores,
-                                                  desc: segmentationResult.local_descriptors) { (ph) in
-                        self.getAnswer = true
-                        self.delegate?.positionVPS(pos: ph)
-                        if frame != nil {
-                            self.setupWorld(from: ph, transform: self.photoTransform)
-                        }
-
-                    } failure: { (NSError) in
-                        self.getAnswer = true
-                        self.delegate?.error(err: NSError)
-                    }
-
-                case let .error(error):
-                    self.getAnswer = true
-                    let er = makeErr(with: Errors.e3)
-                    self.delegate?.error(err: er)
-                    print("Everything was wrong, \(error)!")
-                }
-            })
+            getNeuroData(frame: frame) { (neurodata) in
+                up.features = neurodata
+                self.sendRequest(meta: up)
+            } failure: { (err) in
+                self.delegate?.error(err: err)
+            }
         }
     }
     

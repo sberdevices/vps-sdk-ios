@@ -8,14 +8,10 @@
 
 import Foundation
 protocol NetVPSService {
-    func uploadPanPhoto(photo: UploadVPSPhoto,
+    func singleLocalize(photo: UploadVPSPhoto,
                         success: ((ResponseVPSPhoto) -> Void)?,
                         failure: ((NSError) -> Void)?)
-    func uploadNeuroPhoto(photo: UploadVPSPhoto,
-                        coreml:[Float32],
-                        keyPoints:[Float32],
-                        scores:[Float32],
-                        desc:[Float32],
+    func serialLocalize(reqs: [UploadVPSPhoto],
                         success: ((ResponseVPSPhoto) -> Void)?,
                         failure: ((NSError) -> Void)?)
     func downloadNeuroModel(url: ((URL) -> Void)?,
@@ -25,6 +21,37 @@ protocol NetVPSService {
 }
 
 extension Network:NetVPSService {
+    func singleLocalize(photo: UploadVPSPhoto,
+                        success: ((ResponseVPSPhoto) -> Void)?,
+                        failure: ((NSError) -> Void)?) {
+        let bodyCreator = RequestBodyCreator(apiVersion: self.APIversion)
+        bodyCreator.addToBody(photo: photo, metaKey: "json", imageKey: "image", featuresKey: "embedding")
+        let req = bodyCreator.getBody()
+        uploadMultipart(url: baseURL, body: req.body, boundary: req.boundary) { (resp) in
+            if let model = parseVPSResponse(from: resp) {
+                success?(model)
+            }
+        } failure: { (err) in
+            failure?(err)
+        }
+    }
+    func serialLocalize(reqs: [UploadVPSPhoto],
+                        success: ((ResponseVPSPhoto) -> Void)?,
+                        failure: ((NSError) -> Void)?){
+        let bodyCreator = RequestBodyCreator(apiVersion: self.APIversion)
+        for (num, item) in reqs.enumerated() {
+            bodyCreator.addToBody(photo: item, metaKey: "mes\(num)", imageKey: "mes\(num)", featuresKey: "embd\(num)")
+        }
+        let req = bodyCreator.getBody()
+        uploadMultipart(url: firstLocateUrl, body: req.body, boundary: req.boundary) { (resp) in
+            if let model = parseVPSResponse(from: resp) {
+                success?(model)
+            }
+        } failure: { (err) in
+            failure?(err)
+        }
+    }
+    
     func downloadNeuroModel(url: ((URL) -> Void)?,
                             downProgr: ((Double) -> Void)?,
                             failure: ((NSError) -> Void)?) {
@@ -33,33 +60,6 @@ extension Network:NetVPSService {
         } downProgr: { (pr) in
             downProgr?(pr)
         } failure: { (err) in
-            failure?(err)
-        }
-    }
-    
-    func uploadPanPhoto(photo: UploadVPSPhoto,
-                        success: ((ResponseVPSPhoto) -> Void)?,
-                        failure: ((NSError) -> Void)?) {
-        uploadPhoto(photo: photo, success: { (resp) in
-            success?(resp)
-        }) { (err) in
-            failure?(err)
-        }
-    }
-    func uploadNeuroPhoto(photo: UploadVPSPhoto,
-                          coreml:[Float32],
-                          keyPoints:[Float32],
-                          scores:[Float32],
-                          desc:[Float32],
-                          success: ((ResponseVPSPhoto) -> Void)?,
-                          failure: ((NSError) -> Void)?) {
-        uploadNeuro(photo: photo,
-            coreml:coreml,
-            keyPoints:keyPoints,
-            scores:scores,
-            desc:desc, success: { (resp) in
-                success?(resp)
-            }) { (err) in
             failure?(err)
         }
     }

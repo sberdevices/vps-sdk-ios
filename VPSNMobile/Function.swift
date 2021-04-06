@@ -31,8 +31,8 @@ func saveModel(from:URL, name:String, folder: String) -> URL? {
     if (FileManager.default.fileExists(atPath: file.path)){
          try! FileManager.default.removeItem(atPath: file.path)
     }
-    print("from",from.path)
-    print("path2",file.path)
+//    print("from",from.path)
+//    print("path2",file.path)
     do {
         try FileManager.default.moveItem(at: from, to: file)
         return file

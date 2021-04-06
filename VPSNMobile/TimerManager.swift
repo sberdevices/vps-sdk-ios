@@ -19,7 +19,9 @@ final class TimerManager {
         delegate?.timerFired()
     }
 
-    func startTimer(timeInterval:TimeInterval, delegate:TimerManagerDelegate) {
+    func startTimer(timeInterval:TimeInterval,
+                    delegate:TimerManagerDelegate,
+                    fired:Bool = true) {
         //dont start new timer, when one created
         if timer != nil { return }
         self.delegate = delegate
@@ -31,7 +33,7 @@ final class TimerManager {
         RunLoop.current.add(timer, forMode: .common)
         timer.tolerance = 0.1
         self.timer = timer
-        self.timer?.fire()
+        if fired {self.timer?.fire()}
     }
     
     func invalidateTimer() {
@@ -40,8 +42,12 @@ final class TimerManager {
         self.delegate = nil
     }
     
-    func recreate(timeInterval:TimeInterval, delegate:TimerManagerDelegate) {
+    func recreate(timeInterval:TimeInterval,
+                  delegate:TimerManagerDelegate,
+                  fired:Bool = true) {
         invalidateTimer()
-        startTimer(timeInterval: timeInterval, delegate: delegate)
+        startTimer(timeInterval: timeInterval,
+                   delegate: delegate,
+                   fired: fired)
     }
 }

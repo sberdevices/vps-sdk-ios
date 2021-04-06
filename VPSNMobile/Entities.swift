@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import simd
 
 struct UploadVPSPhoto {
     var job_id: String
@@ -27,9 +28,11 @@ struct UploadVPSPhoto {
     var instrinsicsCX: Float
     var instrinsicsCY: Float
     var image: UIImage?
+    var features:NeuroData?
     var gps:GPS?
     var compas:Compas?
     var forceLocalization:Bool
+    var photoTransform:simd_float4x4?
 }
 
 struct GPS {
@@ -44,6 +47,51 @@ struct Compas {
     var heading:Double
     var acc:Double
     var timestamp:Double
+}
+
+struct NeuroData {
+    let coreml:[Float32]
+    let keyPoints:[Float32]
+    let scores:[Float32]
+    let desc:[Float32]
+    let filename: String
+    let mimeType: String
+    
+    
+    init(coreml: [Float32], keyPoints: [Float32], scores: [Float32], desc: [Float32]) {
+        self.coreml = coreml
+        self.keyPoints = keyPoints
+        self.scores = scores
+        self.desc = desc
+        self.mimeType = "image/jpeg"
+        self.filename = "data.embd"
+    }
+    
+    func getData() -> Data {
+        var filedata = Data()
+        var version:UInt8 = UInt8(0)
+        let versionData = Data(bytes: &version,
+                             count: MemoryLayout.size(ofValue: version))
+        filedata.append(versionData)
+        var ident:UInt8 = UInt8(0)
+        let identData = Data(bytes: &ident,
+                             count: MemoryLayout.size(ofValue: ident))
+        filedata.append(identData)
+        for value in [keyPoints,scores,desc,coreml] {
+            let data: Data = value.withUnsafeBufferPointer { pointer in
+                return Data(buffer: pointer)
+            }
+            let base64String = data.base64EncodedString()
+            let bstrdata = base64String.data(using: .utf8) ?? Data()
+            var count = UInt32(bstrdata.count).bigEndian
+            let countData = Data(bytes: &count,
+                                 count: MemoryLayout.size(ofValue: count))
+            filedata.append(countData)
+            filedata.append(bstrdata)
+        }
+        return filedata
+
+    }
 }
 
 struct Media {

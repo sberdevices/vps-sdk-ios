@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		8C21284F25469D260073D755 /* VPSServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284525469D250073D755 /* VPSServiceExtension.swift */; };
 		8C21285225469F370073D755 /* neuro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21285125469F370073D755 /* neuro.swift */; };
 		8C21285A2546A3D10073D755 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2128592546A3D10073D755 /* Extension.swift */; };
+		8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B18152614938D00751FAC /* MultipartDataCreator.swift */; };
 		8C2D3D14256792680002C140 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D3D13256792680002C140 /* Function.swift */; };
 		8C789688260A337A00C12D7F /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C789687260A337A00C12D7F /* TimerManager.swift */; };
 		8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */; };
@@ -55,6 +56,7 @@
 		8C21284525469D250073D755 /* VPSServiceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSServiceExtension.swift; sourceTree = "<group>"; };
 		8C21285125469F370073D755 /* neuro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = neuro.swift; sourceTree = "<group>"; };
 		8C2128592546A3D10073D755 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		8C2B18152614938D00751FAC /* MultipartDataCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartDataCreator.swift; sourceTree = "<group>"; };
 		8C2D3D13256792680002C140 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		8C789687260A337A00C12D7F /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VPSNMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +131,7 @@
 		8C21283D25469D250073D755 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				8C2B18152614938D00751FAC /* MultipartDataCreator.swift */,
 				8C21283E25469D250073D755 /* Network+getPosition.swift */,
 				8C21283F25469D250073D755 /* Network.swift */,
 				8C21284025469D250073D755 /* parsing */,
@@ -307,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C21284A25469D260073D755 /* Network.swift in Sources */,
+				8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */,
 				8C21284F25469D260073D755 /* VPSServiceExtension.swift in Sources */,
 				8C21284B25469D260073D755 /* common.swift in Sources */,
 				8C789688260A337A00C12D7F /* TimerManager.swift in Sources */,

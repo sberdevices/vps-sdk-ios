@@ -9,6 +9,7 @@
 import ARKit
 
 public protocol VPSServiceDelegate:class {
+    func serialcount(ccc:Int)
     ///Returns an instance of the response
     func positionVPS(pos: ResponseVPSPhoto)
     ///Returns a server error
@@ -49,7 +50,12 @@ public struct Settings {
             gpsAccuracyBarrier = clamped(gpsAccuracyBarrier, minValue: 0, maxValue: Double.infinity)
         }
     }
-    
+    ///number of serial requests
+    public var serialCount = 3 {
+        didSet {
+            serialCount = clamped(serialCount, minValue: 1, maxValue: Int.max)
+        }
+    }
     ///
     /// - Parameters:
     ///   - url: Url server of your object
@@ -68,6 +74,8 @@ public protocol VPSService {
     var gpsUsage: Bool { get set }
     ///Turns of or onf the recalibration mode
     var onlyForceMode: Bool { get set }
+    ///Enable serial localize when localize falled
+    var serialLocalizeEnabled: Bool { get set }
     /// start tracking position
     func Start()
     /// stop tracking position
@@ -111,12 +119,14 @@ public class VPSBuilder {
     ///   - onlyForceMode: Turns of or onf the recalibration mode
     ///   - delegate: VPSServiceDelegate
     ///   - success: Return vps module
-    ///   - initDownloadProgress: Shows download progress within 0...1
     ///   - failure:
+    ///   - serialLocalizeEnabled: Enable serial localize when localize falled
+    ///   - loadingProgress: Shows download progress within 0...1
     public static func initializeVPS(arsession: ARSession,
                                      settings:Settings,
                                      gpsUsage: Bool = false,
                                      onlyForceMode: Bool = false,
+                                     serialLocalizeEnabled: Bool = false,
                                      delegate:VPSServiceDelegate?,
                                      success: ((VPSService) -> Void)?,
                                      loadingProgress: ((Double) -> Void)? = nil,
@@ -124,6 +134,7 @@ public class VPSBuilder {
         let vps = VPS(arsession: arsession,
                       gpsUsage: gpsUsage,
                       onlyForceMode: onlyForceMode,
+                      serialLocalizeEnabled: serialLocalizeEnabled,
                       settings: settings)
         vps.delegate = delegate
         switch settings.recognizeType {
@@ -153,6 +164,7 @@ public struct ResponseVPSPhoto {
     public var posPitch: Float
     public var posYaw: Float
     public var gps:gpsResponse?
+    var id: String?
     
     public struct gpsResponse {
         public var lat:Double

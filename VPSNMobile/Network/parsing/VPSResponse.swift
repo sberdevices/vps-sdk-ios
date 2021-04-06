@@ -13,7 +13,12 @@ func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
     guard let attributes = d["attributes"] as? NSDictionary else { return nil }
     guard let location = attributes["location"] as? NSDictionary else { return nil }
     guard let relative = location["relative"] as? NSDictionary else { return nil }
-    
+    var id:String?
+    if let int = d["id"] as? Int {
+        id = String(int)
+    } else if let str = d["id"] as? String {
+        id = str
+    }
     let pitch = parseDouble(relative, key: "pitch")
     let roll = parseDouble(relative, key: "roll")
     let yaw = parseDouble(relative, key: "yaw")
@@ -28,6 +33,7 @@ func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
                                 posRoll: Float(roll),
                                 posPitch: Float(pitch),
                                 posYaw: Float(yaw))
+    resp.id = id
     if let gps = location["gps"] as? NSDictionary {
         let lat = parseDouble(gps, key: "latitude")
         let long = parseDouble(gps, key: "longitude")

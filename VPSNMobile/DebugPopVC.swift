@@ -18,13 +18,16 @@ public class DebugPopVC: UIViewController {
     public let showmodelsw = UISwitch()
     let gpslbl = UILabel()
     public let gpssw = UISwitch()
+    let seriallbl = UILabel()
+    public let serialsw = UISwitch()
     
     let closebtn = UIButton(type: .system)
     
     public required init(docalibrateON:Bool,
                          autoFocusOn:Bool,
                          showModels:Bool,
-                         gpsOn:Bool) {
+                         gpsOn:Bool,
+                         serialOn:Bool) {
         docalibrlbl.text = docalibrateON ? "ForceLocal ON" : "ForceLocal OFF"
         docalibrsw.isOn = docalibrateON
         focuslbl.text = autoFocusOn  ? "Focus ON" : "Focus OFF"
@@ -33,6 +36,8 @@ public class DebugPopVC: UIViewController {
         showmodelsw.isOn = showModels
         gpslbl.text = gpsOn  ? "GPS ON" : "GPS OFF"
         gpssw.isOn = gpsOn
+        seriallbl.text = serialOn ? "Serial ON" : "Serial OFF"
+        serialsw.isOn = serialOn
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overCurrentContext
         self.modalTransitionStyle = .crossDissolve
@@ -50,13 +55,15 @@ public class DebugPopVC: UIViewController {
         focussw.addTarget(self, action: #selector(focusact), for: .valueChanged)
         showmodelsw.addTarget(self, action: #selector(modelact), for: .valueChanged)
         gpssw.addTarget(self, action: #selector(gpsact), for: .valueChanged)
+        serialsw.addTarget(self, action: #selector(serialact), for: .valueChanged)
         
         let docalibrStack = stacked(vs: [docalibrsw,docalibrlbl])
         let focusStack = stacked(vs: [focussw,focuslbl])
         let modelsStack = stacked(vs: [showmodelsw,showmodellbl])
         let gpsStack = stacked(vs: [gpssw,gpslbl])
+        let serialStack = stacked(vs: [serialsw,seriallbl])
         
-        mainStack = UIStackView(arrangedSubviews: [docalibrStack,focusStack,modelsStack,gpsStack])
+        mainStack = UIStackView(arrangedSubviews: [docalibrStack,focusStack,modelsStack,gpsStack,serialStack])
         mainStack.axis = .vertical
         mainStack.distribution = .fillEqually
         if #available(iOS 13.0, *) {
@@ -75,7 +82,7 @@ public class DebugPopVC: UIViewController {
         self.view.addConstraints([
             mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStack.heightAnchor.constraint(equalToConstant: 200),
+            mainStack.heightAnchor.constraint(equalToConstant: 250),
             mainStack.widthAnchor.constraint(equalToConstant: 200)
         ])
         closebtn.setTitle("close", for: .normal)
@@ -103,7 +110,7 @@ public class DebugPopVC: UIViewController {
     public var docalibHandler:((Bool) -> ())?
     @objc func docalibract(_ sender: UISwitch) {
         docalibHandler?(sender.isOn)
-        docalibrlbl.text = sender.isOn ? "Docalibrate ON" : "Docalibrate OFF"
+        docalibrlbl.text = sender.isOn ? "ForceLocal ON" : "ForceLocal OFF"
     }
 
     public var focusHandler:((Bool) -> ())?
@@ -122,6 +129,12 @@ public class DebugPopVC: UIViewController {
     @objc func gpsact(_ sender: UISwitch) {
         gpsHandler?(sender.isOn)
         gpslbl.text = sender.isOn ? "GPS ON" : "GPS OFF"
+    }
+    
+    public var serialHandler:((Bool) -> ())?
+    @objc func serialact(_ sender: UISwitch) {
+        serialHandler?(sender.isOn)
+        seriallbl.text = sender.isOn ? "Serial ON" : "Serial OFF"
     }
     
     func stacked(vs: [UIView]) -> UIStackView {

@@ -12,14 +12,15 @@ class Network: NSObject {
     var session = URLSession.shared
     var APIversion = 1
     var baseURL = ""
-    
+    var firstLocateUrl = ""
     
     init(url: String,
          locationID:String) {
         super.init()
         baseURL = "\(url)\(locationID.lowercased())/vps/api/v1/job"
-//        baseURL = "\(url)"
+        firstLocateUrl = "\(url)\(locationID.lowercased())/vps/api/v1/first_loc/job"
     }
+    
     var observation:NSKeyValueObservation!
     func downloadNeuro(url: @escaping ((URL) -> Void),
                        downProgr: @escaping ((Double) -> Void),
@@ -44,42 +45,33 @@ class Network: NSObject {
         }
     }
     
-    func uploadPhoto(photo:UploadVPSPhoto,
-             success: @escaping ((ResponseVPSPhoto) -> Void),
-             failure: @escaping ((NSError) -> Void)) {
-        let params = getParams(from: photo)
-        
-        var request = URLRequest(url: URL(string: baseURL)!)
+    func uploadMultipart(url:String,
+                         body:Data,
+                         boundary: String,
+                         success: @escaping ((NSDictionary) -> Void),
+                         failure: @escaping ((NSError) -> Void)) {
+        var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         
-        let boundary = generateBoundary()
-        
         put { [weak self] in
-            guard let img = photo.image else { return }
-            let media = Media(withImage: img, forKey: "image")
-            
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            
-            let dataBody = self?.createDataBody(withParameters: params, media: [media], boundary: boundary, neuroParams: [])
-            request.httpBody = dataBody
+            request.httpBody = body
             self?.session.dataTask(with: request) { (data, response, error) in
 //                if let response = response {
-                    //                print("resp",response)
+//                                    print("resp",response)
 //                }
                 
                 if let data = data {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
-                        //                    print("json",json)
+//                                            print("json",json)
                         self?.commonParsingResponse(
                             (data: json, response: response),
                             success: { (ans) in
-                                //                            print("ans",ans)
+//                                                            print("ans",ans)
                                 if ans.count > 0 {
-                                    if let model = parseVPSResponse(from: ans[0]) {
-                                        self?.s(model, success)
-                                        self?.executeNext()
-                                    }
+                                    self?.s(ans[0], success)
+                                    self?.executeNext()
                                 } else {
                                     
                                 }
@@ -96,187 +88,6 @@ class Network: NSObject {
                 }
             }.resume()
         }
-        
-        
-    }
-    
-    func uploadNeuro(photo:UploadVPSPhoto,
-             coreml:[Float32],
-             keyPoints:[Float32],
-             scores:[Float32],
-             desc:[Float32],
-             success: @escaping ((ResponseVPSPhoto) -> Void),
-             failure: @escaping ((NSError) -> Void)) {
-        let params = getParams(from: photo)
-//        let arrays = ["globalDescriptor":coreml,
-//                      "keyPoints":keyPoints,
-//                      "scores":scores,
-//                      "descriptors":desc] as [String : [Float32]]
-        let arrays = [
-            keyPoints,
-            scores,
-            desc,
-            coreml]
-        var request = URLRequest(url: URL(string: baseURL)!)
-        request.httpMethod = "POST"
-        
-        let boundary = generateBoundary()
-        
-        put { [weak self] in
-            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            
-            let dataBody = self?.createDataBody(withParameters: params, media: [], boundary: boundary, neuroParams: arrays)
-            request.httpBody = dataBody
-            self?.session.dataTask(with: request) { (data, response, error) in
-//                if let response = response {
-                    //                print("resp",response)
-//                }
-                
-                if let data = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
-                        //                    print("json",json)
-                        self?.commonParsingResponse(
-                            (data: json, response: response),
-                            success: { (ans) in
-                                //                            print("ans",ans)
-                                if ans.count > 0 {
-                                    if let model = parseVPSResponse(from: ans[0]) {
-                                        self?.s(model, success)
-                                        self?.executeNext()
-                                    }
-                                } else {
-                                    
-                                }
-                        }) { (err) in
-                            print("err",err)
-                            self?.f(err, failure)
-                            self?.executeNext()
-                        }
-                    } catch {
-                        print(error)
-                        self?.f(error as NSError, failure)
-                        self?.executeNext()
-                    }
-                }
-            }.resume()
-        }
-        
-        
-    }
-    
-    private func createDataBody(withParameters params: [String:Any], media: [Media], boundary: String, neuroParams: [[Float32]]) -> Data {
-        
-        let lineBreak = "\r\n"
-        var body = Data()
-        
-        for (key, value) in params {
-            if let d = value as? NSDictionary {
-                if let data = try? JSONSerialization.data(withJSONObject: d,
-                                                          options: [.fragmentsAllowed]) {
-                    body.append("--\(boundary + lineBreak)")
-                    body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
-                    body.append(data)
-                    body.append(lineBreak)
-                }
-            }
-        }
-        
-        if !neuroParams.isEmpty {
-            body.append("--\(boundary + lineBreak)")
-            let filename = "data.embd"
-            let key = "embedding"
-            body.append("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(filename)\"\(lineBreak)")
-            let contype = "image/jpeg"
-            body.append("Content-Type: \(contype + lineBreak + lineBreak)")
-            var filedata = Data()
-            var version:UInt8 = UInt8(0)
-            let versionData = Data(bytes: &version,
-                                 count: MemoryLayout.size(ofValue: version))
-            filedata.append(versionData)
-            var ident:UInt8 = UInt8(0)
-            let identData = Data(bytes: &ident,
-                                 count: MemoryLayout.size(ofValue: ident))
-            filedata.append(identData)
-            for value in neuroParams {
-                let data: Data = value.withUnsafeBufferPointer { pointer in
-                    return Data(buffer: pointer)
-                }
-                let base64String = data.base64EncodedString()
-                let bstrdata = base64String.data(using: .utf8) ?? Data()
-                var count = UInt32(bstrdata.count).bigEndian
-                let countData = Data(bytes: &count,
-                                     count: MemoryLayout.size(ofValue: count))
-                filedata.append(countData)
-                filedata.append(bstrdata)
-            }
-            body.append(filedata)
-            body.append(lineBreak)
-        }
-        
-        for photo in media {
-            body.append("--\(boundary + lineBreak)")
-            body.append("Content-Disposition: form-data; name=\"\(photo.key)\"; filename=\"\(photo.filename)\"\(lineBreak)")
-            body.append("Content-Type: \(photo.mimeType + lineBreak + lineBreak)")
-            body.append(photo.data)
-            body.append(lineBreak)
-        }
-        
-        
-        body.append("--\(boundary)--\(lineBreak)")
-        
-        return body
-    }
-    
-    private func getParams(from photo:UploadVPSPhoto)->[String:Any] {
-        let localPos = ["x":photo.locPosX,
-                        "y":photo.locPosY,
-                        "z":photo.locPosZ,
-                        "roll":photo.locPosRoll,
-                        "pitch":photo.locPosPitch,
-                        "yaw":photo.locPosYaw
-        ]
-        var location = ["type":photo.locationType,
-                        "location_id":photo.locationID,
-                        "clientCoordinateSystem":photo.locationClientCoordSystem,
-                        "localPos":localPos] as [String : Any]
-        if let comp = photo.compas {
-            let compass = ["heading": comp.heading,
-                           "accuracy": comp.acc,
-                           "timestamp": comp.timestamp]
-            location["compass"] = compass
-        }
-        if let gps = photo.gps {
-            let gps = ["latitude": gps.lat,
-                       "longitude": gps.long,
-                       "altitude": gps.alt,
-                       "accuracy": gps.acc,
-                       "timestamp": gps.timestamp]
-            location["gps"] = gps
-        }
-        let imtransform = ["orientation":photo.imageTransfOrientation,
-                           "mirrorX":photo.imageTransfMirrorX,
-                           "mirrorY":photo.imageTransfMirrorY] as [String : Any]
-        let intrinsics = ["fx":photo.instrinsicsFX,
-                          "fy":photo.instrinsicsFY,
-                          "cx":photo.instrinsicsCX,
-                          "cy":photo.instrinsicsCY]
-        let attributes = ["location":location,
-                          "version":self.APIversion,
-                          "imageTransform":imtransform,
-                          "intrinsics":intrinsics,
-                          "forced_localization":photo.forceLocalization] as [String : Any]
-        let data = ["id":photo.job_id,
-                    "type":"job",
-                    "attributes":attributes] as [String : Any]
-        let json = ["data":data]
-        let parameters = ["json":json] as [String : Any]
-//        print("json",parameters as NSDictionary)
-        return parameters
-    }
-    
-    private func generateBoundary() -> String {
-        return "Boundary-\(NSUUID().uuidString)"
     }
     
     private func commonParsingResponse(_ response: (data:NSDictionary?, response:URLResponse?),

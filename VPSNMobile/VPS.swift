@@ -311,8 +311,10 @@ class VPS  {
     /// - Parameters:
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
-    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4) {
-        if arsession.configuration == nil { return }
+    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?) {
+        guard let transform = transform, arsession.configuration == nil else {
+            return
+        }
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
                                                     ph.posYaw*Float.pi/180.0,
                                                     ph.posRoll*Float.pi/180.0))
@@ -444,7 +446,7 @@ extension VPS: VPSService{
             up.image = image
             sendRequest(meta: up)
         case .mobile:
-            getNeuroData(frame: frame) { (neurodata) in
+            getNeuroData(image: im) { (neurodata) in
                 up.features = neurodata
                 self.sendRequest(meta: up)
             } failure: { (err) in

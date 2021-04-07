@@ -165,7 +165,7 @@ class VPS  {
     func createSerialRequest(part: UploadVPSPhoto){
         serialReqests.append(part)
         DispatchQueue.main.async {
-            self.delegate?.serialcount(ccc: self.serialReqests.count)
+            self.delegate?.serialcount(doned: self.serialReqests.count)
         }
         if serialReqests.count == settings.serialCount {
             self.getAnswer = false

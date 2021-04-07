@@ -9,7 +9,7 @@
 import ARKit
 
 public protocol VPSServiceDelegate:class {
-    func serialcount(ccc:Int)
+    func serialcount(doned:Int)
     ///Returns an instance of the response
     func positionVPS(pos: ResponseVPSPhoto)
     ///Returns a server error

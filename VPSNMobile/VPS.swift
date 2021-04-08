@@ -312,7 +312,7 @@ class VPS  {
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
     func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?) {
-        guard let transform = transform, arsession.configuration == nil else {
+        guard let transform = transform, arsession.configuration != nil else {
             return
         }
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,

@@ -26,7 +26,14 @@ class VPS  {
     ///Turns on or off the recalibration mode
     var onlyForceMode: Bool
     ///Enable serial localize when localize falled
-    var serialLocalizeEnabled: Bool
+    var serialLocalizeEnabled: Bool {
+        didSet {
+            if !serialLocalizeEnabled {
+                serialReqests.removeAll()
+                timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self)
+            }
+        }
+    }
     ///Used for gps tracking
     var locationManager:LocationManagering!
     ///what location are we scanning
@@ -233,11 +240,12 @@ class VPS  {
         }
         
         let force = needForced || onlyForceMode
+        let usedForSerialReq = needForced && serial
         var newpos = SCNVector3(0,0,0)
         var newangl = SCNVector3(0,0,0)
-        if !force && frame != nil {
+        if !force || usedForSerialReq, let fr = frame {
             let node = SCNNode()
-            node.simdTransform = frame!.camera.transform
+            node.simdTransform = fr.camera.transform
             newpos = node.position
             newangl = node.eulerAngles
         }
@@ -249,9 +257,9 @@ class VPS  {
                                 locPosX: newpos.x,
                                 locPosY: newpos.y,
                                 locPosZ: newpos.z,
-                                locPosRoll: newangl.z,
-                                locPosPitch: newangl.x,
-                                locPosYaw: newangl.y,
+                                locPosRoll: newangl.z*180.0/Float.pi,
+                                locPosPitch: newangl.x*180.0/Float.pi,
+                                locPosYaw: newangl.y*180.0/Float.pi,
                                 imageTransfOrientation: orient,
                                 imageTransfMirrorX: false,
                                 imageTransfMirrorY: false,

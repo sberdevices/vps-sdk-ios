@@ -51,7 +51,7 @@ public struct Settings {
         }
     }
     ///number of serial requests
-    public var serialCount = 3 {
+    public var serialCount = 5 {
         didSet {
             serialCount = clamped(serialCount, minValue: 1, maxValue: Int.max)
         }

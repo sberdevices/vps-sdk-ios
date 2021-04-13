@@ -15,7 +15,7 @@ final class TimerManager {
     weak var delegate: TimerManagerDelegate? = nil
     private var timer:Timer?
     
-    @objc func updateTimer() {
+    @objc private func updateTimer() {
         delegate?.timerFired()
     }
 
@@ -45,6 +45,7 @@ final class TimerManager {
     func recreate(timeInterval:TimeInterval,
                   delegate:TimerManagerDelegate,
                   fired:Bool = true) {
+        if timer == nil { return }
         invalidateTimer()
         startTimer(timeInterval: timeInterval,
                    delegate: delegate,

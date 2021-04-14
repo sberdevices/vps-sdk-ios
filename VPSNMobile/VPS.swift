@@ -412,6 +412,7 @@ extension VPS: TimerManagerDelegate {
 
 extension VPS: VPSService{
     public func Start() {
+        serialReqests.removeAll()
         timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
     }
     

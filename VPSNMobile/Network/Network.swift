@@ -241,9 +241,10 @@ class Network: NSObject {
         case 200:
             error = nil
         case 401:
-            error = NSError(domain: Const.domain,
-                            code: Const.err.kNetAuth,
-                            userInfo: [NSLocalizedDescriptionKey: "Authorization failure".localized])
+            error = nil
+//            error = NSError(domain: Const.domain,
+//                            code: Const.err.kNetAuth,
+//                            userInfo: [NSLocalizedDescriptionKey: "Authorization failure".localized])
         default:
             error = NSError(domain: Const.domain,
                             code: Const.err.kNet,

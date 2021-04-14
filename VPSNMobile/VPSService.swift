@@ -27,7 +27,7 @@ public struct Settings {
     let recognizeType: RecognizeType
     
     ///Time of interpolation
-    public var animationTime:Float = 0.5 {
+    public var animationTime:Float = 1 {
         didSet {
             animationTime = clamped(animationTime, minValue: 0.1, maxValue: Float.infinity)
         }

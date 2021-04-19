@@ -380,6 +380,7 @@ class VPS  {
         array = arr2
         tickCount = arr2.count
         moveWorld = true
+        currenttick = 0
     }
     
     func getOrientation() -> Int {

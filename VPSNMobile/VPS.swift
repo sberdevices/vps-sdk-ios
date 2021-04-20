@@ -7,12 +7,6 @@
 //
 
 import ARKit
-protocol VPSDelegate: class {
-    func positionVPS(pos: ResponseVPSPhoto)
-    func error(err:NSError)
-    func sending()
-    func downloadProgr(value:Double)
-}
 
 class VPS  {
     public var settings: Settings
@@ -30,6 +24,7 @@ class VPS  {
         didSet {
             if !serialLocalizeEnabled {
                 serialReqests.removeAll()
+                neuroSerialrequested = 0
                 timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self)
             }
         }
@@ -54,6 +49,7 @@ class VPS  {
     var array: [simd_float4x4]!
     var currenttick = 0
     
+    var neuroSerialrequested = 0
     //max failer count
     let failerConst = 3
     //init with same value above, that first localize was force
@@ -156,6 +152,12 @@ class VPS  {
                 sendRequest(meta: up)
             }
         case .mobile:
+            if serial {
+                if neuroSerialrequested >= settings.serialCount {
+                    return
+                }
+                neuroSerialrequested += 1
+            }
             getNeuroData(frame: frame) { (neurodata) in
                 up.features = neurodata
                 if serial {
@@ -179,16 +181,18 @@ class VPS  {
             network.serialLocalize(reqs: serialReqests) { (ph) in
                 if ph.status, let id = ph.id, let intid = Int(id), self.serialReqests.indices.contains(intid), let tr = self.serialReqests[intid].photoTransform {
                     self.needForced = false
-                    self.setupWorld(from: ph, transform: tr)
+                    self.setupWorld(from: ph, transform: tr, noInterpolate: true)
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
                 }
                 self.getAnswer = true
                 self.delegate?.positionVPS(pos: ph)
                 self.serialReqests.removeAll()
+                self.neuroSerialrequested = 0
             } failure: { (err) in
                 self.delegate?.error(err: err)
                 self.getAnswer = true
                 self.serialReqests.removeAll()
+                self.neuroSerialrequested = 0
             }
         }
     }
@@ -319,7 +323,7 @@ class VPS  {
     /// - Parameters:
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
-    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?) {
+    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?, noInterpolate:Bool = false) {
         guard let transform = transform, arsession.configuration != nil else {
             return
         }
@@ -339,7 +343,7 @@ class VPS  {
                                                  parentEuler: fangl)
             
             let leng = length(myPos - targetPos)
-            if leng > settings.distanceForInterp {
+            if leng > settings.distanceForInterp || noInterpolate {
                 self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
                 self.simdWorldTransform = endtransform
             } else {
@@ -414,6 +418,7 @@ extension VPS: TimerManagerDelegate {
 extension VPS: VPSService{
     public func Start() {
         serialReqests.removeAll()
+        neuroSerialrequested = 0
         timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
     }
     

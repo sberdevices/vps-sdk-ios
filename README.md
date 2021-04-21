@@ -25,10 +25,26 @@ end
 ```
 And run `pod install` from project directory
 
+### info.plist
+
+Add a flag for access to the user's location and access to the device's camera in info. plist. TemporaryAuth is required for use on devices running iOS 14+
+
+```xml
+<key>NSCameraUsageDescription</key>
+    <string></string>
+<key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
+<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+        <key>TemporaryAuth</key>
+        <string></string>
+    </dict>
+```
 ## Usage
 
 * You must define a session delegate or a scene delegate and call the method
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported (`imageResolution:` FullHD)
+* You can use the delegate method `sessionWasInterrupted` to stop the upu module when the application to enter the foreground
 
 ```swift
 import VPSNMobile
@@ -74,6 +90,11 @@ class Example:UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         vps?.frameUpdated()
     }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        vps?.Stop()
+    }
+    
 }
 ```
 
@@ -94,4 +115,5 @@ VPSBuilder.initializeVPS(arsession: arview.session,
     print("err",er)
 }
 ```
+
 

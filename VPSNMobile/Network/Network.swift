@@ -13,19 +13,22 @@ class Network: NSObject {
     var APIversion = 1
     var baseURL = ""
     var firstLocateUrl = ""
+    var neuroLink = ""
     
     init(url: String,
-         locationID:String) {
+         locationID:String,
+         neuroLink:String) {
         super.init()
         baseURL = "\(url)\(locationID.lowercased())/vps/api/v1/job"
         firstLocateUrl = "\(url)\(locationID.lowercased())/vps/api/v1/first_loc/job"
+        self.neuroLink = neuroLink
     }
     
     var observation:NSKeyValueObservation!
     func downloadNeuro(url: @escaping ((URL) -> Void),
                        downProgr: @escaping ((Double) -> Void),
                        failure: @escaping ((NSError) -> Void)) {
-        let path = URL(string: "http://metaservices.arvr.sberlabs.com/upload/weights/hfnet_i8_960.tflite")!
+        let path = URL(string: neuroLink)!
         put { [weak self] in
             let task = self?.session.downloadTask(with: path, completionHandler: { (URL, Responce, Error) in
                 if let err = Error {

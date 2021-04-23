@@ -83,7 +83,7 @@ class VPS  {
          serialLocalizeEnabled:Bool,
          settings:Settings) {
         self.arsession = arsession
-        self.network = Network(url: settings.url, locationID: settings.locationID)
+        self.network = Network(url: settings.url, locationID: settings.locationID, neuroLink: settings.neuroLink)
         self.gpsUsage = gpsUsage
         self.onlyForceMode = onlyForceMode
         self.serialLocalizeEnabled = serialLocalizeEnabled

@@ -25,7 +25,8 @@ public struct Settings {
     let locationID:String
     ///Get features on a server
     let recognizeType: RecognizeType
-    
+    /// url for downloading neuro
+    let neuroLink:String
     ///Time of interpolation
     public var animationTime:Float = 1 {
         didSet {
@@ -61,10 +62,14 @@ public struct Settings {
     ///   - url: Url server of your object
     ///   - locationID: Specific object's id
     ///   - recognizeType: Get features on a server
-    public init(url: String, locationID: String, recognizeType: RecognizeType) {
+    public init(url: String,
+                locationID: String,
+                recognizeType: RecognizeType,
+                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite") {
         self.url = url
         self.locationID = locationID
         self.recognizeType = recognizeType
+        self.neuroLink = neuroLink
     }
 }
 

@@ -65,7 +65,7 @@ public struct Settings {
     public init(url: String,
                 locationID: String,
                 recognizeType: RecognizeType,
-                neuroLink:String = "http://metaservices.arvr.sberlabs.com/upload/weights/hfnet_i8_960.tflite") {
+                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite") {
         self.url = url
         self.locationID = locationID
         self.recognizeType = recognizeType

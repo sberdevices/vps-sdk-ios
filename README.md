@@ -42,7 +42,7 @@ Add a flag for access to the user's location and access to the device's camera i
 ```
 ## Usage
 
-* You must define a session delegate or a scene delegate and call the method
+* You must define a session delegate or a scene delegate and call the method `frameUpdated()`
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported (`imageResolution:` FullHD)
 * You can use the delegate method `sessionWasInterrupted` to stop the upu module when the application to enter the foreground
 

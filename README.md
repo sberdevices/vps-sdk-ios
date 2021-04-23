@@ -42,7 +42,7 @@ Add flags to access user's location and camera into `info.plist`. TemporaryAuth 
 ```
 ## Usage
 
-* You must define a `ARSCNViewDelegate` delegate and call the method `frameUpdated()` each frame update
+* You must define a `ARSCNViewDelegate` delegate and call the method `vps?.frameUpdated()` each frame update
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported.
 * You can use the delegate method `sessionWasInterrupted` to stop the VPS when the application moves foreground and start it again in `sessionInterruptionEnded`
 

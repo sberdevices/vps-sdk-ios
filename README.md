@@ -1,7 +1,7 @@
 # VPS SDK (iOS)
 [![CocoaPods Compatible](https://img.shields.io/badge/pod-0.0.4-brightgreen)](https://img.shields.io/badge/pod-0.0.4-brightgreen)  
 
-Our SDK allows to determine users position via Visual Positioning System (VPS) API.
+This SDK allows to determine users position via Visual Positioning System (VPS) API.
 
 ## Requirements
 
@@ -27,7 +27,7 @@ And run `pod install` from project directory
 
 ### User permisions
 
-Add a flag for access to the user's location and access to the device's camera in info. plist. TemporaryAuth is required for use on devices running iOS 14+
+Add flags to access user's location and camera into `info.plist`. TemporaryAuth is required for devices running iOS 14+.
 
 ```xml
 <key>NSCameraUsageDescription</key>
@@ -42,9 +42,9 @@ Add a flag for access to the user's location and access to the device's camera i
 ```
 ## Usage
 
-* You must define a session delegate or a scene delegate and call the method `frameUpdated()`
-* Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported (`imageResolution:` FullHD)
-* You can use the delegate method `sessionWasInterrupted` to stop the vps module when the application to enter the foreground and start it again in `sessionInterruptionEnded`
+* You must define a `ARSCNViewDelegate` delegate and call the method `frameUpdated()` each frame update
+* Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported.
+* You can use the delegate method `sessionWasInterrupted` to stop the VPS when the application moves foreground and start it again in `sessionInterruptionEnded`
 
 ```swift
 import VPSNMobile
@@ -76,7 +76,7 @@ class Example:UIViewController, ARSCNViewDelegate {
                                  gpsUsage: false,
                                  onlyForceMode: true,
                                  serialLocalizeEnabled: false,
-                                 delegate: self) { (vps) in
+                                 delegate: nil) { (vps) in
             self.vps = vps
         }
         vps?.Start()

@@ -137,8 +137,9 @@ struct ContentView: View {
     @StateObject var vm = ViewModel()
     @State var vpsStarted = false
     var body: some View {
+    VStack {
         ARView(vm: vm)
-            .background(Color.red)
+            .background(Color.gray)
             .cornerRadius(20)
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
         Button(vpsStarted ? "stop" : "start") {
@@ -151,6 +152,7 @@ struct ContentView: View {
         .background(vpsStarted ? Color.red : Color.green)
         .cornerRadius(20)
         .padding()
+    }
     }
 }
 

@@ -130,42 +130,39 @@ func session(_ session: ARSession, didUpdate frame: ARFrame) {
 ```
 
 ### SwiftUI
-For better use in swiftui, you can use the MVVM architecture. Create a reference to the ViewModel class in the VIEW structure. In the ViewModel, place the vpsservice and subscribe to the VPSServiceDelegate protocol. Now you can manage the VPS Service via the ViewModel. But we must not forget about the frame update method. Since we are using ARSCNView, and it is not displayed automatically in the VIEW, we need to create a new VIEW structure under the UIViewRepresentable protocol. Inside, create a SCNCoordinator class that inherits NSObject and ARSCNViewDelegate. Now you can call the `frameUpdated()` method inside SCNCoordinator in the `func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval)`  by accessing ViewModel - > vpsservice
+For better use in SwiftUI, you can use the MVVM architecture. Create a reference to the ViewModel class in the main VIEW structure. In the ViewModel, place the vps service and subscribe to the VPSServiceDelegate protocol. You can now manage the VPSservice using the ViewModel. But we must not forget about the method of updating frames. Since we are using ARSCNView and it is not displayed automatically in the VIEW, we need to create a new VIEW structure according to the UIViewRepresentable protocol. Inside, create a link to the ViewModel. Assign your ViewModel as the ARSCNView delegate. Subscribe the ViewModel to the ARSCNViewDelegate protocol. Now you can call the `frameUpdated()` method inside the ViewModel in `func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval)`.
+
 ```swift
 struct ContentView: View {
+    @StateObject var vm = ViewModel()
     @State var vpsStarted = false
-    let arv = SampleVPS()
     var body: some View {
-        VStack {
-            arv
-                .background(Color.red)
-                .cornerRadius(20)
-                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-            Button(vpsStarted ? "stop" : "start") {
-                vpsStarted ? arv.vm.vps?.Stop() : arv.vm.vps?.Start()
-                
-                withAnimation(.linear) {
-                    vpsStarted.toggle()
-                }
-            }
-            .frame(width: 300, height: 50, alignment: .center)
-            .background(vpsStarted ? Color.red : Color.green)
+        ARView(vm: vm)
+            .background(Color.red)
             .cornerRadius(20)
-            .padding()
+            .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+        Button(vpsStarted ? "stop" : "start") {
+            vpsStarted ? vm.vps?.Stop() : vm.vps?.Start()
+            withAnimation(.linear) {
+                vpsStarted.toggle()
+            }
         }
+        .frame(width: 300, height: 50, alignment: .center)
+        .background(vpsStarted ? Color.red : Color.green)
+        .cornerRadius(20)
+        .padding()
     }
 }
 
-class ViewModel: VPSServiceDelegate {
-    var vps:VPSService?
-
-    init(sesion:ARSession) {
-        
-            let set = Settings(
-                url: "",
-                locationID: "",
-                recognizeType: .server)
-        VPSBuilder.initializeVPS(arsession: sesion,
+class ViewModel:NSObject, ObservableObject, ARSCNViewDelegate, VPSServiceDelegate {
+    
+    var vps: VPSService?
+    func initVPS(session:ARSession) {
+        let set = Settings(
+            url: "...",
+            locationID: "...",
+            recognizeType: .server)
+        VPSBuilder.initializeVPS(arsession: session,
                                  settings: set,
                                  gpsUsage: false,
                                  onlyForceMode: true,
@@ -176,7 +173,6 @@ class ViewModel: VPSServiceDelegate {
         } failure: { (er) in
             print("err",er)
         }
-
     }
     
     func serialcount(doned: Int) {
@@ -184,7 +180,7 @@ class ViewModel: VPSServiceDelegate {
     }
     
     func positionVPS(pos: ResponseVPSPhoto) {
-        print("pos",pos)
+        print("POS",pos)
     }
     
     func error(err: NSError) {
@@ -195,112 +191,28 @@ class ViewModel: VPSServiceDelegate {
         
     }
 }
-struct SampleVPS: UIViewRepresentable {
-    var vm: ViewModel
-    let sceneView = ARSCNView()
-    
-    init() {
-        let config = VPSBuilder.getDefaultConfiguration()!
-        config.isAutoFocusEnabled = true
-        sceneView.session.run(config)
-        vm = ViewModel(sesion: sceneView.session)
-    }
-    
-    
-    func makeUIView(context: Context) -> ARSCNView {
-        sceneView.backgroundColor = .green
-        sceneView.scene = SCNScene(named: "polytechcopy.scn")!
-        sceneView.delegate = context.coordinator
-        
-        return sceneView
-    }
-    
-    func updateUIView(_ uiView: ARSCNView, context: Context) {
-    }
-    
-    func makeCoordinator() -> SCNCoordinator {
-        SCNCoordinator(self)
-    }
-    
-    class SCNCoordinator: NSObject, ARSCNViewDelegate {
-        
-        var control: SampleVPS
-        
-        init(_ control: SampleVPS) {
-            self.control = control
-            print("Control is ready!")
-        }
-        
-        func renderer(_ renderer: SCNSceneRenderer,
-                      updateAtTime time: TimeInterval) {
-            control.vm.vps?.frameUpdated()
-        }
-    }
-}
 
-struct ARKitView: UIViewRepresentable {
-    let sceneView = ARSCNView()
-    var vps:VPSService!
+struct ARView: UIViewRepresentable {
     
-    class SCNCoordinator: NSObject, ARSCNViewDelegate, VPSServiceDelegate, ARSessionDelegate {
-        func serialcount(doned: Int) {
-            
-        }
-        
-        func positionVPS(pos: ResponseVPSPhoto) {
-            print(pos)
-        }
-        
-        func error(err: NSError) {
-            print(err)
-        }
-        
-        func sending() {
-            
-        }
-        
-        var control: ARKitView
-        
-        init(_ control: ARKitView) {
-            self.control = control
-            super.init()
-            let set = Settings(
-                url: "https://api.polytech.vps.arvr.sberlabs.com/",
-                locationID: "Polytech",
-                recognizeType: .server)
-            VPSBuilder.initializeVPS(arsession: control.sceneView.session,
-                                     settings: set,
-                                     gpsUsage: false,
-                                     onlyForceMode: true,
-                                     serialLocalizeEnabled: false,
-                                     delegate: self) { (serc) in
-                self.control.vps = serc
-                self.control.vps.Start()
-            } loadingProgress: { (pr) in
-            } failure: { (er) in
-                print("err",er)
-            }
-        }
-        
-        func renderer(_ renderer: SCNSceneRenderer,
-                      updateAtTime time: TimeInterval) {
-        }
-        
-    }
+    @ObservedObject var vm: ViewModel
+    
     func makeUIView(context: Context) -> ARSCNView {
-        sceneView.backgroundColor = .green
+        let sceneView = ARSCNView()
         sceneView.scene = SCNScene(named: "polytechcopy.scn")!
-        sceneView.delegate = context.coordinator
-        
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.delegate = vm
+        vm.initVPS(session: sceneView.session)
         let config = VPSBuilder.getDefaultConfiguration()!
         config.isAutoFocusEnabled = true
         sceneView.session.run(config)
         return sceneView
     }
+    
     func updateUIView(_ uiView: ARSCNView, context: Context) {
     }
-    func makeCoordinator() -> SCNCoordinator {
-        SCNCoordinator(self)
+    
+    static func dismantleUIView(_ uiView: ARSCNView, coordinator: ()) {
+        uiView.delegate = nil
     }
 }
 ```

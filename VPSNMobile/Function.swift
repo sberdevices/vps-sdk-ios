@@ -58,6 +58,15 @@ func getAngleFrom(transform: simd_float4x4) -> Float {
     return atan2f(orientation.x, orientation.z)
 }
 
+func getAngleBetweenTransforms(l: simd_float4x4, r: simd_float4x4) -> Float {
+    let firstPoint = SIMD3<Float>(l[2][0],l[2][1],l[2][2])
+    let secPoint = SIMD3<Float>(r[2][0],r[2][1],r[2][2])
+    
+    var angle = abs(atan2f(secPoint.x, secPoint.z) - atan2f(firstPoint.x, firstPoint.z))
+    if angle > Float.pi { angle = 2*Float.pi - angle }
+    return angle
+}
+
 func getTransformPosition(from transform: simd_float4x4) -> SIMD3<Float> {
     return SIMD3<Float>(transform[3][0],
                         transform[3][1],

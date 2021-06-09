@@ -83,7 +83,7 @@ class VPS  {
          serialLocalizeEnabled:Bool,
          settings:Settings) {
         self.arsession = arsession
-        self.network = Network(url: settings.url, locationID: settings.locationID, neuroLink: settings.neuroLink)
+        self.network = Network(settings: settings)
         self.gpsUsage = gpsUsage
         self.onlyForceMode = onlyForceMode
         self.serialLocalizeEnabled = serialLocalizeEnabled
@@ -198,9 +198,6 @@ class VPS  {
     }
     
     func sendRequest(meta:UploadVPSPhoto){
-        DispatchQueue.main.async {
-            self.delegate?.sending()
-        }
         getAnswer = false
         network.singleLocalize(photo: meta) { (ph) in
             if ph.status {
@@ -343,12 +340,14 @@ class VPS  {
                                                  parentEuler: fangl)
             
             let leng = length(myPos - targetPos)
-            if leng > settings.distanceForInterp || noInterpolate {
-                self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
-                self.simdWorldTransform = endtransform
-            } else {
+            let anglAccept = getAngleBetweenTransforms(l: lastTransform, r: endtransform)*180.0/Float.pi <= settings.angleForInterp
+            let distAcccept = leng <= settings.distanceForInterp
+            if anglAccept && distAcccept && !noInterpolate {
                 interpolate(lastWorldTransform: lastTransform,
                             endtransform: endtransform)
+            } else {
+                self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)
+                self.simdWorldTransform = endtransform
             }
         } else {
             let cameraangl = getAngleFrom(transform: transform)

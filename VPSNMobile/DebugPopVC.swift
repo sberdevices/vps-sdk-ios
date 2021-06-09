@@ -102,9 +102,9 @@ public class DebugPopVC: UIViewController {
             closebtn.widthAnchor.constraint(equalToConstant: 60)
         ])
     }
-
+    public var closeHandler:(() -> ())?
     @objc func closevc(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        closeHandler?()
     }
     
     public var docalibHandler:((Bool) -> ())?

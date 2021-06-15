@@ -177,11 +177,14 @@ class VPS  {
             self.delegate?.serialcount(doned: self.serialReqests.count)
         }
         if serialReqests.count == settings.serialCount {
+            DispatchQueue.main.async {
+                self.delegate?.sending()
+            }
             self.getAnswer = false
             network.serialLocalize(reqs: serialReqests) { (ph) in
                 if ph.status, let id = ph.id, let intid = Int(id), self.serialReqests.indices.contains(intid), let tr = self.serialReqests[intid].photoTransform {
                     self.needForced = false
-                    self.setupWorld(from: ph, transform: tr, noInterpolate: true)
+                    self.setupWorld(from: ph, transform: tr, interpolate: false)
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
                 }
                 self.getAnswer = true
@@ -197,7 +200,10 @@ class VPS  {
         }
     }
     
-    func sendRequest(meta:UploadVPSPhoto){
+    func sendRequest(meta:UploadVPSPhoto) {
+        DispatchQueue.main.async {
+            self.delegate?.sending()
+        }
         getAnswer = false
         network.singleLocalize(photo: meta) { (ph) in
             if ph.status {
@@ -258,9 +264,9 @@ class VPS  {
                                 locPosX: newpos.x,
                                 locPosY: newpos.y,
                                 locPosZ: newpos.z,
-                                locPosRoll: newangl.z*180.0/Float.pi,
-                                locPosPitch: newangl.x*180.0/Float.pi,
-                                locPosYaw: newangl.y*180.0/Float.pi,
+                                locPosRoll: newangl.z.inDegrees(),
+                                locPosPitch: newangl.x.inDegrees(),
+                                locPosYaw: newangl.y.inDegrees(),
                                 imageTransfOrientation: orient,
                                 imageTransfMirrorX: false,
                                 imageTransfMirrorY: false,
@@ -320,13 +326,13 @@ class VPS  {
     /// - Parameters:
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
-    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?, noInterpolate:Bool = false) {
+    func setupWorld(from ph:ResponseVPSPhoto, transform: simd_float4x4?, interpolate:Bool = true) {
         guard let transform = transform, arsession.currentFrame != nil else {
             return
         }
-        let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch*Float.pi/180.0,
-                                                    ph.posYaw*Float.pi/180.0,
-                                                    ph.posRoll*Float.pi/180.0))
+        let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch.inRadians(),
+                                                    ph.posYaw.inRadians(),
+                                                    ph.posRoll.inRadians()))
         let targetPos = SIMD3<Float>(ph.posX,ph.posY,ph.posZ)
         let myPos = getTransformPosition(from: transform)
         
@@ -340,10 +346,10 @@ class VPS  {
                                                  parentEuler: fangl)
             
             let leng = length(myPos - targetPos)
-            let anglAccept = getAngleBetweenTransforms(l: lastTransform, r: endtransform)*180.0/Float.pi <= settings.angleForInterp
+            let anglAccept = getAngleBetweenTransforms(l: lastTransform, r: endtransform).inDegrees() <= settings.angleForInterp
             let distAcccept = leng <= settings.distanceForInterp
-            if anglAccept && distAcccept && !noInterpolate {
-                interpolate(lastWorldTransform: lastTransform,
+            if anglAccept && distAcccept && interpolate {
+                self.interpolate(lastWorldTransform: lastTransform,
                             endtransform: endtransform)
             } else {
                 self.arsession.setWorldOrigin(relativeTransform: lastTransform.inverse*endtransform)

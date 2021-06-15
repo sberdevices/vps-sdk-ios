@@ -14,6 +14,12 @@ public protocol VPSServiceDelegate:class {
     func positionVPS(pos: ResponseVPSPhoto)
     ///Returns a server error
     func error(err:NSError)
+    ///Sending request, debug func
+    func sending()
+}
+///optional implementation
+public extension VPSServiceDelegate {
+    func sending() {}
 }
 
 public struct Settings {

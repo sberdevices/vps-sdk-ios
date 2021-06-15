@@ -141,3 +141,12 @@ extension UIImage {
     }
 
 }
+
+extension Float {
+    func inDegrees() -> Float {
+        return self*180.0/Float.pi
+    }
+    func inRadians() -> Float {
+        return self/180.0*Float.pi
+    }
+}

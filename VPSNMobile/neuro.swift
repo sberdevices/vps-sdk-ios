@@ -97,7 +97,6 @@ class Neuro {
                 return
             }
             var outputTensor: Tensor
-            var inputTensor: Tensor
             
             var gl = [Float32]()
             var key = [Float32]()
@@ -108,40 +107,26 @@ class Neuro {
                 try self.interpreter.copy(data, toInputAt: 0)
                 
                 try self.interpreter.invoke()
-                inputTensor = try self.interpreter.input(at: 0)
+                _ = try self.interpreter.input(at: 0)
                 
                 outputTensor = try self.interpreter.output(at: 0)
-//                let ar = outputTensor.data.withUnsafeBytes {  }
-                let array = outputTensor.data.withUnsafeBytes {
-                    (pointer: UnsafePointer<Float32>) -> [Float32] in
-                    let buffer = UnsafeBufferPointer(start: pointer,
-                                                     count: outputTensor.data.count / 4)
-                    return Array<Float32>(buffer)
-                }
+                var array = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
+                _ = array.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
                 gl = array
+                
                 outputTensor = try self.interpreter.output(at: 1)
-                let array2 = outputTensor.data.withUnsafeBytes {
-                    (pointer: UnsafePointer<Float32>) -> [Float32] in
-                    let buffer = UnsafeBufferPointer(start: pointer,
-                                                     count: outputTensor.data.count / 4)
-                    return Array<Float32>(buffer)
-                }
+                var array2 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
+                _ = array2.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
                 key = array2
+                
                 outputTensor = try self.interpreter.output(at: 2)
-                let array3 = outputTensor.data.withUnsafeBytes {
-                    (pointer: UnsafePointer<Float32>) -> [Float32] in
-                    let buffer = UnsafeBufferPointer(start: pointer,
-                                                     count: outputTensor.data.count / 4)
-                    return Array<Float32>(buffer)
-                }
+                var array3 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
+                _ = array3.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
                 ld = array3
+                
                 outputTensor = try self.interpreter.output(at: 3)
-                let array4 = outputTensor.data.withUnsafeBytes {
-                    (pointer: UnsafePointer<Float32>) -> [Float32] in
-                    let buffer = UnsafeBufferPointer(start: pointer,
-                                                     count: outputTensor.data.count / 4)
-                    return Array<Float32>(buffer)
-                }
+                var array4 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
+                _ = array4.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
                 sc = array4
             } catch let error {
                 print("Failed to invoke the interpreter with error: \(error.localizedDescription)")

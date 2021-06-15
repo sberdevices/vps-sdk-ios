@@ -14,14 +14,14 @@ class Network: NSObject {
     var baseURL = ""
     var firstLocateUrl = ""
     var neuroLink = ""
+    var settings: Settings
     
-    init(url: String,
-         locationID:String,
-         neuroLink:String) {
+    init(settings: Settings) {
+        self.settings = settings
         super.init()
-        baseURL = "\(url)\(locationID.lowercased())/vps/api/v1/job"
-        firstLocateUrl = "\(url)\(locationID.lowercased())/vps/api/v1/first_loc/job"
-        self.neuroLink = neuroLink
+        baseURL = "\(settings.url)\(settings.locationID.lowercased())/vps/api/v1/job"
+        firstLocateUrl = "\(settings.url)\(settings.locationID.lowercased())/vps/api/v1/first_loc/job"
+        self.neuroLink = settings.neuroLink
     }
     
     var observation:NSKeyValueObservation!
@@ -55,11 +55,15 @@ class Network: NSObject {
                          failure: @escaping ((NSError) -> Void)) {
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
-        
+        request.timeoutInterval = settings.timeOutDuration
         put { [weak self] in
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
             request.httpBody = body
             self?.session.dataTask(with: request) { (data, response, error) in
+                if let err = error {
+                    self?.f(err as NSError, failure)
+                    self?.executeNext()
+                }
 //                if let response = response {
 //                                    print("resp",response)
 //                }

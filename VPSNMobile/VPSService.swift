@@ -14,8 +14,12 @@ public protocol VPSServiceDelegate:class {
     func positionVPS(pos: ResponseVPSPhoto)
     ///Returns a server error
     func error(err:NSError)
-    ///Debug use for indicate, that photo sending
+    ///Sending request, debug func
     func sending()
+}
+///optional implementation
+public extension VPSServiceDelegate {
+    func sending() {}
 }
 
 public struct Settings {
@@ -55,6 +59,18 @@ public struct Settings {
     public var serialCount = 5 {
         didSet {
             serialCount = clamped(serialCount, minValue: 1, maxValue: Int.max)
+        }
+    }
+    ///The timeout interval of the request.
+    public var timeOutDuration:TimeInterval = 5 {
+        didSet {
+            timeOutDuration = clamped(timeOutDuration, minValue: 1.0, maxValue: TimeInterval.infinity)
+        }
+    }
+    ///Maximum angle when interpolation works
+    public var angleForInterp:Float = 45 {
+        didSet {
+            distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: 360)
         }
     }
     ///

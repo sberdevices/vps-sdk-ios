@@ -10,6 +10,7 @@ import ARKit
 
 class VPS  {
     public var settings: Settings
+    public var converterGPS: ConverterGPS
     var gpsUsage: Bool {
         didSet {
             if oldValue {
@@ -93,6 +94,7 @@ class VPS  {
         if gpsUsage {
             locationManager.attemptLocationAccess()
         }
+        self.converterGPS = ConverterGPS()
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
     func neuroInit(succes: (() -> Void)?,
@@ -189,6 +191,11 @@ class VPS  {
                 }
                 self.getAnswer = true
                 self.delegate?.positionVPS(pos: ph)
+                self.lastpose = ph
+                if self.settings.needConverterUpdated, let gps = ph.gps {
+                    self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
+                                                                                     coordinate: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ))))
+                }
                 self.serialReqests.removeAll()
                 self.neuroSerialrequested = 0
             } failure: { (err) in
@@ -213,6 +220,11 @@ class VPS  {
                 self.failerCount += 1
             }
             self.getAnswer = true
+            self.lastpose = ph
+            if self.settings.needConverterUpdated, let gps = ph.gps {
+                self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
+                                                                                 coordinate: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ))))
+            }
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
@@ -448,6 +460,11 @@ extension VPS: VPSService{
         photoTransform = frame.camera.transform
         setupWorld(from: mock, transform: frame.camera.transform)
         delegate?.positionVPS(pos: mock)
+        self.lastpose = mock
+        if self.settings.needConverterUpdated, let gps = mock.gps {
+            self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
+                                                                             coordinate: SIMD3(x: Double(mock.posX), y: Double(mock.posY), z: Double(mock.posZ))))
+        }
     }
     
     public func SendUIImage(im: UIImage) {

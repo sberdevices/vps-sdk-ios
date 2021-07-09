@@ -21,6 +21,7 @@
 		8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B18152614938D00751FAC /* MultipartDataCreator.swift */; };
 		8C2D3D14256792680002C140 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D3D13256792680002C140 /* Function.swift */; };
 		8C789688260A337A00C12D7F /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C789687260A337A00C12D7F /* TimerManager.swift */; };
+		8CAA31B62696C289001BBEE3 /* ConverterGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */; };
 		8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */; };
 		8CC71650260B101700CF1089 /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; platformFilter = ios; };
 		8CCC9AF7260A1B240007FFC4 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */; };
@@ -57,6 +58,7 @@
 		8C2B18152614938D00751FAC /* MultipartDataCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartDataCreator.swift; sourceTree = "<group>"; };
 		8C2D3D13256792680002C140 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		8C789687260A337A00C12D7F /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterGPS.swift; sourceTree = "<group>"; };
 		8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VPSNMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPSNMobileTests.swift; sourceTree = "<group>"; };
 		8CC7164F260B101700CF1089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */,
 				8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */,
 				8C789687260A337A00C12D7F /* TimerManager.swift */,
+				8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */,
 			);
 			path = VPSNMobile;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				8C21284C25469D260073D755 /* VPSResponse.swift in Sources */,
 				8C21284E25469D260073D755 /* Const.swift in Sources */,
 				8C21285225469F370073D755 /* neuro.swift in Sources */,
+				8CAA31B62696C289001BBEE3 /* ConverterGPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

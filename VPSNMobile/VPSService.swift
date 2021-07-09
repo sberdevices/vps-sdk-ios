@@ -73,6 +73,8 @@ public struct Settings {
             distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: 360)
         }
     }
+    ///Needed for update position in GPSConvertor
+    public var needConverterUpdated = true
     ///
     /// - Parameters:
     ///   - url: Url server of your object
@@ -91,6 +93,7 @@ public struct Settings {
 
 public protocol VPSService {
     var settings: Settings { get }
+    var converterGPS: ConverterGPS { get }
     ///Send of not gps
     var gpsUsage: Bool { get set }
     ///Turns of or onf the recalibration mode

@@ -73,8 +73,8 @@ public struct Settings {
             distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: 360)
         }
     }
-    ///Needed for update position in GPSConvertor
-    public var needConverterUpdated = true
+    
+    public let customGeoReference:GeoReferencing?
     ///
     /// - Parameters:
     ///   - url: Url server of your object
@@ -83,11 +83,13 @@ public struct Settings {
     public init(url: String,
                 locationID: String,
                 recognizeType: RecognizeType,
-                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite") {
+                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite",
+                customGeoReference:GeoReferencing? = nil) {
         self.url = url
         self.locationID = locationID
         self.recognizeType = recognizeType
         self.neuroLink = neuroLink
+        self.customGeoReference = customGeoReference
     }
 }
 
@@ -188,7 +190,15 @@ public struct ResponseVPSPhoto {
     public var posPitch: Float
     public var posYaw: Float
     public var gps:gpsResponse?
+    public var compass:compassResponse?
     var id: String?
+    
+    public struct compassResponse {
+        public var heading:Double
+        public init(heading: Double) {
+            self.heading = heading
+        }
+    }
     
     public struct gpsResponse {
         public var lat:Double

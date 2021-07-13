@@ -8,38 +8,71 @@
 import Foundation
 import CoreLocation
 
-public struct GeoReferencing {
-    public let geopoint:    (lat:Double,long:Double)
-    public let coordinate:  SIMD3<Double>
-    public init(geopoint:(lat:Double,long:Double), coordinate:SIMD3<Double>) {
+public struct PoseVPS:Codable {
+    public let position:SIMD3<Double>
+    public let rotation:SIMD3<Double>
+    
+    public init(pos: SIMD3<Double>, rot: SIMD3<Double>) {
+        self.position = pos
+        self.rotation = rot
+    }
+}
+
+public struct MapPoseVPS:Codable {
+    public let latitude:Double
+    public let longitude:Double
+    public let course:Double
+    public init(lat: Double, long: Double, course: Double) {
+        self.latitude = lat
+        self.longitude = long
+        self.course = course
+    }
+    
+    public func getCllocation() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
+
+public struct GeoReferencing:Codable {
+    public let geopoint: MapPoseVPS
+    public let coordinate: PoseVPS
+    ///negative angle from 0 to 360, clockwise
+    public let rotateAngl:Double
+    public init(geopoint: MapPoseVPS, coordinate: PoseVPS) {
         self.geopoint = geopoint
         self.coordinate = coordinate
+        var vpsangl = getAngleFrom(simd: coordinate.rotation).inDegrees()
+        if vpsangl < 0 { vpsangl = -vpsangl }
+        else { vpsangl = 360 - vpsangl }
+        rotateAngl = -(geopoint.course - vpsangl)
+    }
+    
+    public static func initFromUrl(url:URL) -> GeoReferencing? {
+        guard let data = try? Data(contentsOf: url),
+              let model:GeoReferencing = try? JSONDecoder().decode(GeoReferencing.self, from: data)  else { return nil }
+        return model
     }
 }
 
 public class ConverterGPS {
-    public private(set) var angl:Double?
     public private(set) var geoReferencing: GeoReferencing?
     
-    public enum Errors {
-        case setupAngl
-        case setupGeoref
+    public private(set) var status: Status = .waiting
+    
+    public enum Status {
+        case waiting
+        case unavalable
+        case ready
     }
     
-    public func checkStatus() -> [Errors] {
-        var arr = [Errors]()
-        if angl == nil { arr.append(.setupAngl) }
-        if geoReferencing == nil {arr.append(.setupGeoref)}
-        return arr
-    }
-    
-    ///set custom angle
-    public func setAngl(angl:Double) {
-        self.angl = angl
-    }
     ///set custom geoReferencing
     public func setGeoreference(geoReferencing:GeoReferencing) {
         self.geoReferencing = geoReferencing
+        status = .ready
+    }
+    
+    func setStatusUnavalable() {
+        status = .unavalable
     }
     
     ///
@@ -47,12 +80,14 @@ public class ConverterGPS {
     ///   - point: current point
     /// - Returns: where i am in planet
     public func convertToGPS(point:SIMD3<Double>) -> (lat:Double,long:Double)? {
-        guard let geoRef = geoReferencing, let angl = angl else {
+        guard let geoRef = geoReferencing else {
             return nil
         }
-        let rotatedPoint = rotatedCoordinate(angl: angl, point: point)
-        let rotatedRef = rotatedCoordinate(angl: angl, point: geoRef.coordinate)
-        return getCurrentLocationFrom(p1: rotatedRef, p2: rotatedPoint, geoPoint: geoRef.geopoint)
+        let rotatedPoint = rotatedCoordinate(angl: geoRef.rotateAngl, point: point)
+        let rotatedRef = rotatedCoordinate(angl: geoRef.rotateAngl, point: geoRef.coordinate.position)
+        return getCurrentLocationFrom(p1: rotatedRef,
+                                      p2: rotatedPoint,
+                                      geoPoint: (lat:geoRef.geopoint.latitude,long:geoRef.geopoint.longitude))
     }
     
     /// Get arkit position from geo
@@ -60,11 +95,13 @@ public class ConverterGPS {
     ///   - geoPoint: target geo coordinate
     /// - Returns: new local coodeinate
     public func convertToXYZ(geoPoint:(lat:Double,long:Double)) -> SIMD3<Double>? {
-        
-        guard let geoRef = geoReferencing, let angl = angl else {
+        guard let geoRef = geoReferencing else {
             return nil
         }
-        return getArkitFrom(lastgeo: geoRef.geopoint, p1: geoRef.coordinate, angl: -angl, geoPoint: geoPoint)
+        return getArkitFrom(lastgeo: (lat:geoRef.geopoint.latitude,long:geoRef.geopoint.longitude),
+                            p1: geoRef.coordinate.position,
+                            angl: -geoRef.rotateAngl,
+                            geoPoint: geoPoint)
     }
     
     ///

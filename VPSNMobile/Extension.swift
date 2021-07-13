@@ -150,3 +150,11 @@ extension Float {
         return self/180.0*Float.pi
     }
 }
+extension Double {
+    func inDegrees() -> Double {
+        return self*180.0/Double.pi
+    }
+    func inRadians() -> Double {
+        return self/180.0*Double.pi
+    }
+}

@@ -41,5 +41,9 @@ func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
     } else {
         print("no gps")
     }
+    if let compass = location["compass"] as? NSDictionary {
+        let heading = parseDouble(compass, key: "heading")
+        resp.compass = ResponseVPSPhoto.compassResponse(heading: heading)
+    }
     return resp
 }

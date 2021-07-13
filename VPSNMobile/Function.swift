@@ -48,6 +48,14 @@ func getAngleFrom(eulere: SCNVector3) -> Float {
     return getAngleFrom(transform: node.transform)
 }
 
+func getAngleFrom(simd: SIMD3<Double>) -> Double {
+    return Double(getAngleFrom(eulere: SCNVector3(Float(simd.x),Float(simd.y),Float(simd.z))))
+}
+
+func getAngleFrom(simd: SIMD3<Float>) -> Float {
+    return getAngleFrom(eulere: SCNVector3(simd))
+}
+
 func getAngleFrom(transform: SCNMatrix4) -> Float {
     let orientation = SCNVector3(transform.m31, transform.m32, transform.m33)
     return atan2f(orientation.x, orientation.z)

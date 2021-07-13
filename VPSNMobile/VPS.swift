@@ -95,6 +95,9 @@ class VPS  {
             locationManager.attemptLocationAccess()
         }
         self.converterGPS = ConverterGPS()
+        if let customGeoref = settings.customGeoReference {
+            converterGPS.setGeoreference(geoReferencing: customGeoref)
+        }
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
     func neuroInit(succes: (() -> Void)?,
@@ -188,14 +191,26 @@ class VPS  {
                     self.needForced = false
                     self.setupWorld(from: ph, transform: tr, interpolate: false)
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
+                    if self.converterGPS.status == .waiting {
+                        if let gps = ph.gps,
+                           let compass = ph.compass{
+                            let mapPos = MapPoseVPS(lat: gps.lat,
+                                                    long: gps.long,
+                                                    course: compass.heading)
+                            let poseVPS = PoseVPS(pos: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ)),
+                                                  rot: SIMD3<Double>(Double(ph.posPitch.inRadians()),
+                                                                     Double(ph.posYaw.inRadians()),
+                                                                     Double(ph.posRoll.inRadians())))
+                            self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+                        } else {
+                            self.converterGPS.setStatusUnavalable()
+                        }
+                    }
                 }
                 self.getAnswer = true
                 self.delegate?.positionVPS(pos: ph)
                 self.lastpose = ph
-                if self.settings.needConverterUpdated, let gps = ph.gps {
-                    self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
-                                                                                     coordinate: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ))))
-                }
+                
                 self.serialReqests.removeAll()
                 self.neuroSerialrequested = 0
             } failure: { (err) in
@@ -216,15 +231,27 @@ class VPS  {
             if ph.status {
                 self.needForced = false
                 self.setupWorld(from: ph, transform: self.photoTransform)
+                if self.converterGPS.status == .waiting {
+                    if let gps = ph.gps,
+                       let compass = ph.compass{
+                        let mapPos = MapPoseVPS(lat: gps.lat,
+                                                long: gps.long,
+                                                course: compass.heading)
+                        let poseVPS = PoseVPS(pos: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ)),
+                                              rot: SIMD3<Double>(Double(ph.posPitch.inRadians()),
+                                                                 Double(ph.posYaw.inRadians()),
+                                                                 Double(ph.posRoll.inRadians())))
+                        self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+                    } else {
+                        self.converterGPS.setStatusUnavalable()
+                    }
+                }
             } else {
                 self.failerCount += 1
             }
             self.getAnswer = true
             self.lastpose = ph
-            if self.settings.needConverterUpdated, let gps = ph.gps {
-                self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
-                                                                                 coordinate: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ))))
-            }
+            
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
@@ -461,9 +488,20 @@ extension VPS: VPSService{
         setupWorld(from: mock, transform: frame.camera.transform)
         delegate?.positionVPS(pos: mock)
         self.lastpose = mock
-        if self.settings.needConverterUpdated, let gps = mock.gps {
-            self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: (lat: gps.lat, long: gps.long),
-                                                                             coordinate: SIMD3(x: Double(mock.posX), y: Double(mock.posY), z: Double(mock.posZ))))
+        if self.converterGPS.status == .waiting {
+            if let gps = mock.gps,
+               let compass = mock.compass{
+                let mapPos = MapPoseVPS(lat: gps.lat,
+                                        long: gps.long,
+                                        course: compass.heading)
+                let poseVPS = PoseVPS(pos: SIMD3(x: Double(mock.posX), y: Double(mock.posY), z: Double(mock.posZ)),
+                                      rot: SIMD3<Double>(Double(mock.posPitch.inRadians()),
+                                                         Double(mock.posYaw.inRadians()),
+                                                         Double(mock.posRoll.inRadians())))
+                self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+            } else {
+                self.converterGPS.setStatusUnavalable()
+            }
         }
     }
     

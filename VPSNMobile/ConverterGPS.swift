@@ -41,16 +41,39 @@ public struct GeoReferencing:Codable {
     public init(geopoint: MapPoseVPS, coordinate: PoseVPS) {
         self.geopoint = geopoint
         self.coordinate = coordinate
-        var vpsangl = getAngleFrom(simd: coordinate.rotation).inDegrees()
-        if vpsangl < 0 { vpsangl = -vpsangl }
-        else { vpsangl = 360 - vpsangl }
-        rotateAngl = -(geopoint.course - vpsangl)
+        rotateAngl = GeoReferencing.calculateAngl(geopoint: geopoint, coordinate: coordinate)
     }
     
     public static func initFromUrl(url:URL) -> GeoReferencing? {
         guard let data = try? Data(contentsOf: url),
               let model:GeoReferencing = try? JSONDecoder().decode(GeoReferencing.self, from: data)  else { return nil }
         return model
+    }
+    
+    static func calculateAngl(geopoint: MapPoseVPS, coordinate: PoseVPS) -> Double {
+        var vpsangl = getAngleFrom(simd: coordinate.rotation).inDegrees()
+        if vpsangl < 0 { vpsangl = -vpsangl }
+        else { vpsangl = 360 - vpsangl }
+        return -(geopoint.course - vpsangl)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        geopoint = try container.decode(MapPoseVPS.self, forKey: .geopoint)
+        coordinate = try container.decode(PoseVPS.self, forKey: .coordinate)
+        rotateAngl = GeoReferencing.calculateAngl(geopoint: geopoint, coordinate: coordinate)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(geopoint, forKey: .geopoint)
+        try container.encode(coordinate, forKey: .coordinate)
+    }
+}
+extension GeoReferencing {
+    enum CodingKeys: CodingKey {
+        case geopoint
+        case coordinate
     }
 }
 

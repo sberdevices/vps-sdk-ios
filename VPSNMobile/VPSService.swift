@@ -217,7 +217,7 @@ public struct ResponseVPSPhoto {
     ///   - posRoll: roll
     ///   - posPitch: pitch
     ///   - posYaw: yaw
-    public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float) {
+    public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float, gps:gpsResponse? = nil, compass:compassResponse? = nil) {
         self.status = status
         self.posX = posX
         self.posY = posY
@@ -225,6 +225,8 @@ public struct ResponseVPSPhoto {
         self.posRoll = posRoll
         self.posPitch = posPitch
         self.posYaw = posYaw
+        self.gps = gps
+        self.compass = compass
     }
 }
 ///Get features on a server or device

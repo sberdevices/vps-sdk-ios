@@ -53,26 +53,36 @@ class TestGeoref: XCTestCase {
     func testAngl() {
         //for first point angl equal -24, depends on heading
         let converterGPS = getConverter(ph: resp1)
-        XCTAssertEqual(converterGPS.geoReferencing!.rotateAngl, -24, accuracy: 5)
+        XCTAssertEqual(converterGPS.rotateAngl!, -24, accuracy: 5)
         //same point but look back
         let converterGPS2 = getConverter(ph: resp2)
-        XCTAssertEqual(converterGPS2.geoReferencing!.rotateAngl, -24, accuracy: 5)
+        XCTAssertEqual(converterGPS2.rotateAngl!, -24, accuracy: 5)
+    }
+
+    func testThrowsStatusWaiting() {
+        let converterGPS = ConverterGPS()
+        XCTAssertThrowsError(try converterGPS.convertToXYZ(mapPose: MapPoseVPS(lat: 0, long: 0, course: 0)), " err ") { err in
+            XCTAssertEqual(err as! ConverterGPS.Status, ConverterGPS.Status.waiting)
+        }
     }
     
-    func testConverterToXYZ() {
+    func testConverterToXYZ() throws {
         let converterGPS = getConverter(ph: resp1)
-        let new = converterGPS.convertToXYZ(geoPoint: (lat: 55.735690, long: 37.531213))!
-        XCTAssertEqual(new.x, -9, accuracy: 5, "fail - \(new.x)")
-        XCTAssertEqual(new.y, 22.2, accuracy: 5, "fail - \(new.y)")
-        XCTAssertEqual(new.z, 8, accuracy: 5, "fail - \(new.z)")
+        let new = try converterGPS.convertToXYZ(mapPose: MapPoseVPS(lat: 55.735690, long: 37.531213, course: 63.8))
+        XCTAssertNoThrow(new)
+        XCTAssertEqual(new.position.x, -9, accuracy: 5, "fail - \(new.position.x)")
+        XCTAssertEqual(new.position.y, 22.2, accuracy: 5, "fail - \(new.position.y)")
+        XCTAssertEqual(new.position.z, 8, accuracy: 5, "fail - \(new.position.z)")
+        XCTAssertEqual(new.rotation.y, -40, accuracy: 2)
     }
     
-    func testConverterToGeo() {
+    func testConverterToGeo() throws {
         let converterGPS = getConverter(ph: resp1)
-        let new = converterGPS.convertToGPS(point: SIMD3<Double>(-9,22.2,8))!
-        
-        XCTAssertEqual(new.lat, 55.735690, accuracy: 0.01, "fail - \(new.lat)")
-        XCTAssertEqual(new.long, 37.531213, accuracy: 0.01, "fail - \(new.long)")
+        let new = try converterGPS.convertToGPS(pose: PoseVPS(pos: SIMD3<Float>(-9,22.2,8), rot: SIMD3<Float>(resp1.posPitch.inRadians(), resp1.posYaw.inRadians(), resp1.posRoll.inRadians())))
+        XCTAssertNoThrow(new)
+        XCTAssertEqual(new.latitude, 55.735690, accuracy: 0.01, "fail - \(new.latitude)")
+        XCTAssertEqual(new.longitude, 37.531213, accuracy: 0.01, "fail - \(new.longitude)")
+        XCTAssertEqual(new.course, resp1.compass!.heading, accuracy: 1)
     }
     
     
@@ -80,19 +90,12 @@ class TestGeoref: XCTestCase {
     func getConverter(ph:ResponseVPSPhoto) -> ConverterGPS {
         let converterGPS = ConverterGPS()
         if converterGPS.status == .waiting {
-            if let gps = ph.gps,
-               let compass = ph.compass{
-                let mapPos = MapPoseVPS(lat: gps.lat,
-                                        long: gps.long,
-                                        course: compass.heading)
-                let poseVPS = PoseVPS(pos: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ)),
-                                      rot: SIMD3<Double>(Double(ph.posPitch.inRadians()),
-                                                         Double(ph.posYaw.inRadians()),
-                                                         Double(ph.posRoll.inRadians())))
-                converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+            if let geref = VPS.getGeoref(ph: ph) {
+                converterGPS.setGeoreference(geoReferencing: geref)
             } else {
                 converterGPS.setStatusUnavalable()
             }
+
         }
         return converterGPS
     }

@@ -8,7 +8,7 @@
 
 import ARKit
 
-public protocol VPSServiceDelegate:class {
+public protocol VPSServiceDelegate:AnyObject {
     func serialcount(doned:Int)
     ///Returns an instance of the response
     func positionVPS(pos: ResponseVPSPhoto)
@@ -73,13 +73,15 @@ public struct Settings {
             distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: 360)
         }
     }
-    
+    ///set GeoReferencing manualy
     public let customGeoReference:GeoReferencing?
     ///
     /// - Parameters:
     ///   - url: Url server of your object
     ///   - locationID: Specific object's id
     ///   - recognizeType: Get features on a server
+    ///   - neuroLink: url for downloading neuro
+    ///   - customGeoReference: set customGeoReference
     public init(url: String,
                 locationID: String,
                 recognizeType: RecognizeType,

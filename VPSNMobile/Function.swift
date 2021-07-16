@@ -42,18 +42,24 @@ func saveModel(from:URL, name:String, folder: String) -> URL? {
     }
 }
 
+func getTransformFrom(eulere: SIMD3<Float>) -> simd_float4x4 {
+    let node = SCNNode()
+    node.eulerAngles = SCNVector3(eulere)
+    return node.simdTransform
+}
+
 func getAngleFrom(eulere: SCNVector3) -> Float {
     let node = SCNNode()
     node.eulerAngles = eulere
     return getAngleFrom(transform: node.transform)
 }
 
-func getAngleFrom(simd: SIMD3<Double>) -> Double {
-    return Double(getAngleFrom(eulere: SCNVector3(Float(simd.x),Float(simd.y),Float(simd.z))))
+func getAngleFrom(eulere: SIMD3<Double>) -> Double {
+    return Double(getAngleFrom(eulere: SCNVector3(Float(eulere.x),Float(eulere.y),Float(eulere.z))))
 }
 
-func getAngleFrom(simd: SIMD3<Float>) -> Float {
-    return getAngleFrom(eulere: SCNVector3(simd))
+func getAngleFrom(eulere: SIMD3<Float>) -> Float {
+    return getAngleFrom(eulere: SCNVector3(eulere))
 }
 
 func getAngleFrom(transform: SCNMatrix4) -> Float {

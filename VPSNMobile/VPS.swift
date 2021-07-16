@@ -192,16 +192,8 @@ class VPS  {
                     self.setupWorld(from: ph, transform: tr, interpolate: false)
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
                     if self.converterGPS.status == .waiting {
-                        if let gps = ph.gps,
-                           let compass = ph.compass{
-                            let mapPos = MapPoseVPS(lat: gps.lat,
-                                                    long: gps.long,
-                                                    course: compass.heading)
-                            let poseVPS = PoseVPS(pos: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ)),
-                                                  rot: SIMD3<Double>(Double(ph.posPitch.inRadians()),
-                                                                     Double(ph.posYaw.inRadians()),
-                                                                     Double(ph.posRoll.inRadians())))
-                            self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+                        if let geref = VPS.getGeoref(ph: ph) {
+                            self.converterGPS.setGeoreference(geoReferencing: geref)
                         } else {
                             self.converterGPS.setStatusUnavalable()
                         }
@@ -232,16 +224,8 @@ class VPS  {
                 self.needForced = false
                 self.setupWorld(from: ph, transform: self.photoTransform)
                 if self.converterGPS.status == .waiting {
-                    if let gps = ph.gps,
-                       let compass = ph.compass{
-                        let mapPos = MapPoseVPS(lat: gps.lat,
-                                                long: gps.long,
-                                                course: compass.heading)
-                        let poseVPS = PoseVPS(pos: SIMD3(x: Double(ph.posX), y: Double(ph.posY), z: Double(ph.posZ)),
-                                              rot: SIMD3<Double>(Double(ph.posPitch.inRadians()),
-                                                                 Double(ph.posYaw.inRadians()),
-                                                                 Double(ph.posRoll.inRadians())))
-                        self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+                    if let geref = VPS.getGeoref(ph: ph) {
+                        self.converterGPS.setGeoreference(geoReferencing: geref)
                     } else {
                         self.converterGPS.setStatusUnavalable()
                     }
@@ -329,7 +313,22 @@ class VPS  {
         }
         return up
     }
-    
+    public static func getGeoref(ph:ResponseVPSPhoto) -> GeoReferencing? {
+        if let gps = ph.gps,
+           let compass = ph.compass{
+            let mapPos = MapPoseVPS(lat: gps.lat,
+                                    long: gps.long,
+                                    course: compass.heading)
+            let poseVPS = PoseVPS(pos: SIMD3<Float>(x: ph.posX,
+                                             y: ph.posY,
+                                             z: ph.posZ),
+                                  rot: SIMD3<Float>(ph.posPitch.inRadians(),
+                                                    ph.posYaw.inRadians(),
+                                                    ph.posRoll.inRadians()))
+            return GeoReferencing(geopoint: mapPos, coordinate: poseVPS)
+        }
+        return nil
+    }
     
     /// Return neuroData or failure, used async queue
     func getNeuroData(frame: ARFrame? = nil,
@@ -489,16 +488,8 @@ extension VPS: VPSService{
         delegate?.positionVPS(pos: mock)
         self.lastpose = mock
         if self.converterGPS.status == .waiting {
-            if let gps = mock.gps,
-               let compass = mock.compass{
-                let mapPos = MapPoseVPS(lat: gps.lat,
-                                        long: gps.long,
-                                        course: compass.heading)
-                let poseVPS = PoseVPS(pos: SIMD3(x: Double(mock.posX), y: Double(mock.posY), z: Double(mock.posZ)),
-                                      rot: SIMD3<Double>(Double(mock.posPitch.inRadians()),
-                                                         Double(mock.posYaw.inRadians()),
-                                                         Double(mock.posRoll.inRadians())))
-                self.converterGPS.setGeoreference(geoReferencing: GeoReferencing(geopoint: mapPos, coordinate: poseVPS))
+            if let geref = VPS.getGeoref(ph: mock) {
+                self.converterGPS.setGeoreference(geoReferencing: geref)
             } else {
                 self.converterGPS.setStatusUnavalable()
             }

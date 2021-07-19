@@ -303,7 +303,7 @@ class VPS  {
                         completion: { result in
             switch result {
             case let .success(segmentationResult):
-                let data = NeuroData(coreml: segmentationResult.global_descriptor,
+                let data = NeuroData(global_descriptor: segmentationResult.global_descriptor,
                                      keyPoints: segmentationResult.keypoints,
                                      scores: segmentationResult.scores,
                                      desc: segmentationResult.local_descriptors)

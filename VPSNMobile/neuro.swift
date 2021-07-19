@@ -98,10 +98,10 @@ class Neuro {
             }
             var outputTensor: Tensor
             
-            var gl = [Float32]()
-            var key = [Float32]()
-            var ld = [Float32]()
-            var sc = [Float32]()
+            var gl = [MYFloat16]()
+            var key = [MYFloat16]()
+            var ld = [MYFloat16]()
+            var sc = [MYFloat16]()
             do {
                 let data = image.scaledData(with: CGSize(width: self.inputImageHeight, height: self.inputImageWidth))!
                 try self.interpreter.copy(data, toInputAt: 0)
@@ -110,24 +110,24 @@ class Neuro {
                 _ = try self.interpreter.input(at: 0)
                 
                 outputTensor = try self.interpreter.output(at: 0)
-                var array = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
-                _ = array.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
-                gl = array
+                var arrayGL = outputTensor.data.toArray(type: Float32.self)
+                let float16gl = float32to16(&arrayGL, count: arrayGL.count)
+                gl = float16gl
                 
                 outputTensor = try self.interpreter.output(at: 1)
-                var array2 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
-                _ = array2.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
-                key = array2
+                var arrayKey = outputTensor.data.toArray(type: Float32.self)
+                let float16key = float32to16(&arrayKey, count: arrayKey.count)
+                key = float16key
                 
                 outputTensor = try self.interpreter.output(at: 2)
-                var array3 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
-                _ = array3.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
-                ld = array3
+                var arrayLD = outputTensor.data.toArray(type: Float32.self)
+                let float16ld = float32to16(&arrayLD, count: arrayLD.count)
+                ld = float16ld
                 
                 outputTensor = try self.interpreter.output(at: 3)
-                var array4 = Array<Float32>(repeating: 0, count: outputTensor.data.count/MemoryLayout<Float32>.stride)
-                _ = array4.withUnsafeMutableBytes { outputTensor.data.copyBytes(to: $0) }
-                sc = array4
+                var arraySc = outputTensor.data.toArray(type: Float32.self)
+                let float16sc = float32to16(&arraySc, count: arraySc.count)
+                sc = float16sc
             } catch let error {
                 print("Failed to invoke the interpreter with error: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -150,10 +150,10 @@ class Neuro {
     }
 }
 struct NResult {
-    let global_descriptor: [Float32]
-    let keypoints: [Float32]
-    let local_descriptors: [Float32]
-    let scores: [Float32]
+    let global_descriptor: [MYFloat16]
+    let keypoints: [MYFloat16]
+    let local_descriptors: [MYFloat16]
+    let scores: [MYFloat16]
 }
 
 enum Result<T> {

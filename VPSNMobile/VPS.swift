@@ -188,6 +188,7 @@ class VPS  {
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
                 }
                 self.getAnswer = true
+                self.lastpose = ph
                 self.delegate?.positionVPS(pos: ph)
                 self.serialReqests.removeAll()
                 self.neuroSerialrequested = 0
@@ -213,6 +214,7 @@ class VPS  {
                 self.failerCount += 1
             }
             self.getAnswer = true
+            self.lastpose = ph
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
@@ -447,6 +449,7 @@ extension VPS: VPSService{
         }
         photoTransform = frame.camera.transform
         setupWorld(from: mock, transform: frame.camera.transform)
+        self.lastpose = mock
         delegate?.positionVPS(pos: mock)
     }
     

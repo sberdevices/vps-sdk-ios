@@ -5,6 +5,9 @@
 //  Created by Evgeniy Smolyakov on 20.07.2021.
 //
 
+//  TODO: move to Float16 (introduced in iOS 14)
+//  Have to use custom type for < iOS14 compatibility 
+
 import Accelerate
 
 typealias VPS_Float16 = UInt16

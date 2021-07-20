@@ -98,10 +98,10 @@ class Neuro {
             }
             var outputTensor: Tensor
             
-            var gl = [MYFloat16]()
-            var key = [MYFloat16]()
-            var ld = [MYFloat16]()
-            var sc = [MYFloat16]()
+            var gl = [VPS_Float16]()
+            var key = [VPS_Float16]()
+            var ld = [VPS_Float16]()
+            var sc = [VPS_Float16]()
             do {
                 let data = image.scaledData(with: CGSize(width: self.inputImageHeight, height: self.inputImageWidth))!
                 try self.interpreter.copy(data, toInputAt: 0)
@@ -150,10 +150,10 @@ class Neuro {
     }
 }
 struct NResult {
-    let global_descriptor: [MYFloat16]
-    let keypoints: [MYFloat16]
-    let local_descriptors: [MYFloat16]
-    let scores: [MYFloat16]
+    let global_descriptor: [VPS_Float16]
+    let keypoints: [VPS_Float16]
+    let local_descriptors: [VPS_Float16]
+    let scores: [VPS_Float16]
 }
 
 enum Result<T> {

@@ -9,8 +9,6 @@
 import UIKit
 import simd
 
-typealias MYFloat16 = UInt16
-
 struct UploadVPSPhoto {
     var job_id: String
     var locationType: String
@@ -52,18 +50,18 @@ struct Compas {
 }
 
 struct NeuroData {
-    let global_descriptor:[MYFloat16]
-    let keyPoints:[MYFloat16]
-    let scores:[MYFloat16]
-    let desc:[MYFloat16]
+    let global_descriptor:[VPS_Float16]
+    let keyPoints:[VPS_Float16]
+    let scores:[VPS_Float16]
+    let desc:[VPS_Float16]
     let filename: String
     let mimeType: String
     
     
-    init(global_descriptor: [MYFloat16],
-         keyPoints: [MYFloat16],
-         scores: [MYFloat16],
-         desc: [MYFloat16]) {
+    init(global_descriptor: [VPS_Float16],
+         keyPoints: [VPS_Float16],
+         scores: [VPS_Float16],
+         desc: [VPS_Float16]) {
         self.global_descriptor = global_descriptor
         self.keyPoints = keyPoints
         self.scores = scores

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */; };
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
 		8C21284725469D250073D755 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283B25469D250073D755 /* Entities.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		033B79647DE3EACE1DB9120B /* Pods-VPSNMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.release.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.release.xcconfig"; sourceTree = "<group>"; };
+		1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFloat16.swift; sourceTree = "<group>"; };
 		4838AC6CD062955373EA890F /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282A25469B7A0073D755 /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282D25469B7A0073D755 /* VPSNMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPSNMobile.h; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */,
 				8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */,
 				8C789687260A337A00C12D7F /* TimerManager.swift */,
+				1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */,
 			);
 			path = VPSNMobile;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				8C789688260A337A00C12D7F /* TimerManager.swift in Sources */,
 				8C2D3D14256792680002C140 /* Function.swift in Sources */,
 				8C21284725469D250073D755 /* Entities.swift in Sources */,
+				1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */,
 				8C21285A2546A3D10073D755 /* Extension.swift in Sources */,
 				8C21284925469D250073D755 /* Network+getPosition.swift in Sources */,
 				8C21284D25469D260073D755 /* VPS.swift in Sources */,

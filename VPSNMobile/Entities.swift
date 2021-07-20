@@ -50,16 +50,19 @@ struct Compas {
 }
 
 struct NeuroData {
-    let coreml:[Float32]
-    let keyPoints:[Float32]
-    let scores:[Float32]
-    let desc:[Float32]
+    let global_descriptor:[VPS_Float16]
+    let keyPoints:[VPS_Float16]
+    let scores:[VPS_Float16]
+    let desc:[VPS_Float16]
     let filename: String
     let mimeType: String
     
     
-    init(coreml: [Float32], keyPoints: [Float32], scores: [Float32], desc: [Float32]) {
-        self.coreml = coreml
+    init(global_descriptor: [VPS_Float16],
+         keyPoints: [VPS_Float16],
+         scores: [VPS_Float16],
+         desc: [VPS_Float16]) {
+        self.global_descriptor = global_descriptor
         self.keyPoints = keyPoints
         self.scores = scores
         self.desc = desc
@@ -69,25 +72,21 @@ struct NeuroData {
     
     func getData() -> Data {
         var filedata = Data()
-        var version:UInt8 = UInt8(0)
+        var version:UInt8 = UInt8(1)
         let versionData = Data(bytes: &version,
-                             count: MemoryLayout.size(ofValue: version))
+                               count: MemoryLayout.size(ofValue: version))
         filedata.append(versionData)
         var ident:UInt8 = UInt8(0)
         let identData = Data(bytes: &ident,
                              count: MemoryLayout.size(ofValue: ident))
         filedata.append(identData)
-        for value in [keyPoints,scores,desc,coreml] {
-            let data: Data = value.withUnsafeBufferPointer { pointer in
-                return Data(buffer: pointer)
-            }
-            let base64String = data.base64EncodedString()
-            let bstrdata = base64String.data(using: .utf8) ?? Data()
-            var count = UInt32(bstrdata.count).bigEndian
+        for value in [keyPoints,scores,desc,global_descriptor] {
+            let data = Data(copyingBufferOf: value)
+            var count = UInt32(data.count).bigEndian
             let countData = Data(bytes: &count,
                                  count: MemoryLayout.size(ofValue: count))
             filedata.append(countData)
-            filedata.append(bstrdata)
+            filedata.append(data)
         }
         return filedata
 

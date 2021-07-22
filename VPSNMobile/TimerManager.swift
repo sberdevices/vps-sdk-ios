@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TimerManagerDelegate:class {
+protocol TimerManagerDelegate:AnyObject {
     func timerFired()
 }
 

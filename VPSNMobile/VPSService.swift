@@ -8,7 +8,7 @@
 
 import ARKit
 
-public protocol VPSServiceDelegate:class {
+public protocol VPSServiceDelegate:AnyObject {
     func serialcount(doned:Int)
     ///Returns an instance of the response
     func positionVPS(pos: ResponseVPSPhoto)

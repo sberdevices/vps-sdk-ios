@@ -19,6 +19,7 @@ class TestGeoref: XCTestCase {
                                  posYaw: -39.89614,
                                  gps: Optional(VPSNMobile.ResponseVPSPhoto.gpsResponse(lat: 55.73578619825994, long: 37.53170440360172)),
                                  compass: Optional(VPSNMobile.ResponseVPSPhoto.compassResponse(heading: 63.8)))
+    
     let resp2 = ResponseVPSPhoto(status: true,
                                  posX: 10.065845,
                                  posY: 22.59946,
@@ -29,15 +30,31 @@ class TestGeoref: XCTestCase {
                                  gps: Optional(VPSNMobile.ResponseVPSPhoto.gpsResponse(lat: 55.73578619825994, long: 37.53170440360172)),
                                  compass: Optional(VPSNMobile.ResponseVPSPhoto.compassResponse(heading: 244)))
     
+    // Checks if status of geoconverter changes correctly for different input
     func testStatus() {
+        //converter with correct input
         let converterGPS = getConverter(ph: resp1)
         XCTAssertTrue(converterGPS.status == .ready)
-        var respWithoutcompass = resp1
-        respWithoutcompass.compass = nil
-        let converterWithoutGPS = getConverter(ph: respWithoutcompass)
+        
+        //converter without compass data
+        var respWithoutСompass = resp1
+        respWithoutСompass.compass = nil
+        let converterWithoutСompass = getConverter(ph: respWithoutСompass)
+        XCTAssertTrue(converterWithoutСompass.status == .unavalable)
+        
+        //converter without gps data
+        var respWithoutGPS = resp1
+        respWithoutGPS.gps = nil
+        let converterWithoutGPS = getConverter(ph: respWithoutGPS)
         XCTAssertTrue(converterWithoutGPS.status == .unavalable)
+        //converter change status after correct input
+        let georef = VPS.getGeoref(ph: resp1)!
+        converterWithoutGPS.setGeoreference(geoReferencing: georef)
+        XCTAssertTrue(converterWithoutGPS.status == .ready)
+        
     }
     
+    // decoding and initialization test from a json file
     func testInitFromUrl() throws {
         let testBundle = Bundle(for: type(of: self))
         let url = testBundle.path(forResource: "test", ofType: "json")!
@@ -50,6 +67,7 @@ class TestGeoref: XCTestCase {
         XCTAssertNotNil(georef)
     }
     
+    // checking the calculation of the rotation angle for coordinates
     func testAngl() {
         //for first point angl equal -24, depends on heading
         let converterGPS = getConverter(ph: resp1)
@@ -59,6 +77,7 @@ class TestGeoref: XCTestCase {
         XCTAssertEqual(converterGPS2.rotateAngl!, -24, accuracy: 5)
     }
 
+    // checking the status in the absence of gps information
     func testThrowsStatusWaiting() {
         let converterGPS = ConverterGPS()
         XCTAssertThrowsError(try converterGPS.convertToXYZ(mapPose: MapPoseVPS(lat: 0, long: 0, course: 0)), " err ") { err in
@@ -66,6 +85,7 @@ class TestGeoref: XCTestCase {
         }
     }
     
+    // checking the conversion to PoseVPS
     func testConverterToXYZ() throws {
         let converterGPS = getConverter(ph: resp1)
         let new = try converterGPS.convertToXYZ(mapPose: MapPoseVPS(lat: 55.735690, long: 37.531213, course: 63.8))
@@ -76,6 +96,7 @@ class TestGeoref: XCTestCase {
         XCTAssertEqual(new.rotation.y, -40, accuracy: 2)
     }
     
+    // checking the conversion to MapPoseVPS
     func testConverterToGeo() throws {
         let converterGPS = getConverter(ph: resp1)
         let new = try converterGPS.convertToGPS(pose: PoseVPS(pos: SIMD3<Float>(-9,22.2,8), rot: SIMD3<Float>(resp1.posPitch.inRadians(), resp1.posYaw.inRadians(), resp1.posRoll.inRadians())))

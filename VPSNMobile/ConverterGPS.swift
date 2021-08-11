@@ -59,7 +59,7 @@ public struct GeoReferencing:Codable {
 public class ConverterGPS {
     public private(set) var geoReferencing: GeoReferencing?
     ///negative angle from 0 to 360, clockwise
-    public private(set) var rotateAngl:Float?
+    private(set) var rotateAngl:Float?
     public private(set) var status: Status = .waiting
     
     public enum Status:Error {
@@ -83,17 +83,43 @@ public class ConverterGPS {
     /// - Parameters:
     ///   - point: current point
     /// - Returns: where i am in planet
+    public func convertToGPS(transform:simd_float4x4) throws -> MapPoseVPS {
+        guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {
+            throw status
+        }
+        let poseAngl = getAngleFrom(transform: transform).inDegrees()
+        return calculateMapPoseForConverter(pos: SIMD3<Float>(transform[3][0],transform[3][1],transform[3][2]),
+                                            poseAngl: poseAngl,
+                                            geoRef: geoRef,
+                                            rotateAngl: rotateAngl)
+    }
+    
+    ///
+    /// - Parameters:
+    ///   - point: current point
+    /// - Warning: it is not recommended to use this method in renderer (...updatetime) or session (did updateframe) because the values are subject to a gimble lock, use convertToGPS(transform)
+    /// - Returns: where i am in planet
     public func convertToGPS(pose:PoseVPS) throws -> MapPoseVPS {
         guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {
             throw status
         }
-        let rotatedPoint = rotatedCoordinate(angl: rotateAngl, point: pose.position)
+        let poseAngl = getAngleFrom(eulere: pose.rotation).inDegrees()
+        return calculateMapPoseForConverter(pos: pose.position,
+                                            poseAngl: poseAngl,
+                                            geoRef: geoRef,
+                                            rotateAngl: rotateAngl)    }
+    
+    private func calculateMapPoseForConverter(pos: SIMD3<Float>,
+                                              poseAngl:Float,
+                                              geoRef:GeoReferencing,
+                                              rotateAngl: Float) -> MapPoseVPS {
+        let rotatedPoint = rotatedCoordinate(angl: rotateAngl, point: pos)
         let rotatedRef = rotatedCoordinate(angl: rotateAngl, point: geoRef.coordinateVPS.position)
         let loc =  getCurrentLocationFrom(p1: rotatedRef,
                                       p2: rotatedPoint,
                                       geoPoint: (lat:geoRef.geopoint.latitude,long:geoRef.geopoint.longitude))
-        let poseAngl = getAngleFrom(eulere: pose.rotation).inDegrees()
-        let course = -(poseAngl)+(-rotateAngl)
+        let pose360Angl = tan180To360Degree(poseAngl)
+        let course = pose360Angl - rotateAngl
         return MapPoseVPS(lat: loc.lat, long: loc.long, course: Double(course))
     }
     
@@ -116,9 +142,7 @@ public class ConverterGPS {
     }
     
     func calculateAngl(geopoint: MapPoseVPS, coordinate: PoseVPS) -> Float {
-        var vpsangl = getAngleFrom(eulere: coordinate.rotation).inDegrees()
-        if vpsangl < 0 { vpsangl = -vpsangl }
-        else { vpsangl = 360 - vpsangl }
+        let vpsangl = tan180To360Degree(getAngleFrom(eulere: coordinate.rotation).inDegrees())
         return -(Float(geopoint.course) - vpsangl)
     }
     

@@ -72,6 +72,13 @@ func getAngleFrom(transform: simd_float4x4) -> Float {
     return atan2f(orientation.x, orientation.z)
 }
 
+func tan180To360Degree(_ value: Float) -> Float {
+    var angl = value
+    if angl < 0 { angl = -angl }
+    else { angl = 360 - angl }
+    return angl
+}
+
 ///Takes two transformation matrices and returns the minimum angle between their Z axes in radians between 0 and PI
 func getAngleBetweenTransforms(l: simd_float4x4, r: simd_float4x4) -> Float {
     let firstPoint = SIMD3<Float>(l[2][0],l[2][1],l[2][2])

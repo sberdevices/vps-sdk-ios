@@ -119,7 +119,10 @@ public class ConverterGPS {
                                       p2: rotatedPoint,
                                       geoPoint: (lat:geoRef.geopoint.latitude,long:geoRef.geopoint.longitude))
         let pose360Angl = tan180To360Degree(poseAngl)
-        let course = pose360Angl - rotateAngl
+        var course = pose360Angl - rotateAngl
+        //some maps cant work with value x<0 or 360>x
+        if course > 360 { course = course - 360 }
+        if course < 0 { course = course + 360 }
         return MapPoseVPS(lat: loc.lat, long: loc.long, course: Double(course))
     }
     

@@ -99,7 +99,12 @@ class TestGeoref: XCTestCase {
     // checking the conversion to MapPoseVPS
     func testConverterToGeo() throws {
         let converterGPS = getConverter(ph: resp1)
-        let new = try converterGPS.convertToGPS(pose: PoseVPS(pos: SIMD3<Float>(-9,22.2,8), rot: SIMD3<Float>(resp1.posPitch.inRadians(), resp1.posYaw.inRadians(), resp1.posRoll.inRadians())))
+        let new = try
+            converterGPS.convertToGPS(pose:
+                                        PoseVPS(pos: SIMD3<Float>(-9,22.2,8),
+                                                rot: SIMD3<Float>(resp1.posPitch,
+                                                                  resp1.posYaw,
+                                                                  resp1.posRoll)))
         XCTAssertNoThrow(new)
         XCTAssertEqual(new.latitude, 55.735690, accuracy: 0.01, "fail - \(new.latitude)")
         XCTAssertEqual(new.longitude, 37.531213, accuracy: 0.01, "fail - \(new.longitude)")

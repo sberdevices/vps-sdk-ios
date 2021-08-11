@@ -10,16 +10,51 @@ import CoreLocation
 import simd
 /// Local coordinate in vps
 public struct PoseVPS:Codable {
-    public let position:SIMD3<Float>
-    public let rotation:SIMD3<Float>
-    public var quternion: simd_float4x4 {
+    public let transform: simd_float4x4
+    public var position:SIMD3<Float> {
         get {
-            return getTransformFrom(eulere: rotation)
+            return SIMD3<Float>(transform[3][0],transform[3][1],transform[3][2])
         }
     }
+    ///Euler angl in degree
+    public var rotation:SIMD3<Float>
+    {
+        get {
+            let rot = getEulereFrom(transform: transform)
+            return SIMD3(rot.x.inDegrees(),rot.y.inDegrees(),rot.z.inDegrees())
+        }
+    }
+    
+    /// - Warning: may be subject to gimblock
     public init(pos: SIMD3<Float>, rot: SIMD3<Float>) {
-        self.position = pos
-        self.rotation = rot
+        self.transform = getTransformFrom(eulere: SIMD3(rot.x.inRadians(),
+                                                        rot.y.inRadians(),
+                                                        rot.z.inRadians()),
+                                          position: pos)
+    }
+    
+    public init(transform: simd_float4x4) {
+        self.transform = transform
+    }
+    
+    enum CodingKeys: String, CodingKey {
+            case position
+            case rotation
+    }
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let position = try values.decode(SIMD3<Float>.self, forKey: .position)
+        let rotation = try values.decode(SIMD3<Float>.self, forKey: .rotation)
+        self.transform = getTransformFrom(eulere: SIMD3(rotation.x.inRadians(),
+                                                        rotation.y.inRadians(),
+                                                        rotation.z.inRadians()),
+                                          position: position)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(position, forKey: .position)
+        try container.encode(rotation, forKey: .rotation)
     }
 }
 
@@ -103,11 +138,12 @@ public class ConverterGPS {
         guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {
             throw status
         }
-        let poseAngl = getAngleFrom(eulere: pose.rotation).inDegrees()
+        let poseAngl = getAngleFrom(transform: pose.transform).inDegrees()
         return calculateMapPoseForConverter(pos: pose.position,
                                             poseAngl: poseAngl,
                                             geoRef: geoRef,
-                                            rotateAngl: rotateAngl)    }
+                                            rotateAngl: rotateAngl)
+    }
     
     private func calculateMapPoseForConverter(pos: SIMD3<Float>,
                                               poseAngl:Float,
@@ -145,7 +181,8 @@ public class ConverterGPS {
     }
     
     func calculateAngl(geopoint: MapPoseVPS, coordinate: PoseVPS) -> Float {
-        let vpsangl = tan180To360Degree(getAngleFrom(eulere: coordinate.rotation).inDegrees())
+        let angl = getAngleFrom(transform: coordinate.transform).inDegrees()
+        let vpsangl = tan180To360Degree(angl)
         return -(Float(geopoint.course) - vpsangl)
     }
     

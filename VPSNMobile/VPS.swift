@@ -323,9 +323,9 @@ class VPS  {
             let poseVPS = PoseVPS(pos: SIMD3<Float>(x: ph.posX,
                                              y: ph.posY,
                                              z: ph.posZ),
-                                  rot: SIMD3<Float>(ph.posPitch.inRadians(),
-                                                    ph.posYaw.inRadians(),
-                                                    ph.posRoll.inRadians()))
+                                  rot: SIMD3<Float>(ph.posPitch,
+                                                    ph.posYaw,
+                                                    ph.posRoll))
             return GeoReferencing(geopoint: mapPos, coordinate: poseVPS)
         }
         return nil

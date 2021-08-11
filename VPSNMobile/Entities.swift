@@ -10,6 +10,8 @@ import UIKit
 import simd
 
 struct UploadVPSPhoto {
+    var client_id:String?
+    var timestamp:Double?
     var job_id: String
     var locationType: String
     var locationID: String

@@ -9,6 +9,7 @@
 import ARKit
 
 class VPS  {
+    let client_id:String
     public var settings: Settings
     var gpsUsage: Bool {
         didSet {
@@ -93,6 +94,16 @@ class VPS  {
         if gpsUsage {
             locationManager.attemptLocationAccess()
         }
+        let usrd = UserDefaults.standard
+        if let value = usrd.string(forKey: "ARClient") {
+            self.client_id = value
+        } else {
+            let value = UUID().uuidString
+            usrd.setValue(value, forKey: "ARClient")
+            usrd.synchronize()
+            self.client_id = value
+        }
+        
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
     func neuroInit(succes: (() -> Void)?,
@@ -279,6 +290,8 @@ class VPS  {
                                 image: nil,
                                 forceLocalization: force,
                                 photoTransform: frame?.camera.transform)
+        up.client_id = client_id
+        up.timestamp = Date().timeIntervalSince1970
         if gpsUsage, locationManager.canGetCorrectGPS(), !(serial && needForced) {
             guard let loc = locationManager.getLocation() else { return nil }
             if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {

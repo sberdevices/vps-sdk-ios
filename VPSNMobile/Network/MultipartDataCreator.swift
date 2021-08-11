@@ -97,11 +97,15 @@ final class RequestBodyCreator {
                           "fy":photo.instrinsicsFY,
                           "cx":photo.instrinsicsCX,
                           "cy":photo.instrinsicsCY]
-        let attributes = ["location":location,
+        var attributes = ["location":location,
                           "version":self.APIversion,
                           "imageTransform":imtransform,
                           "intrinsics":intrinsics,
                           "forced_localization":photo.forceLocalization] as [String : Any]
+        if let cl_id = photo.client_id, let ts = photo.timestamp {
+            attributes["user_id"] = cl_id
+            attributes["timestamp"] = ts
+        }
         let data = ["id":photo.job_id,
                     "type":"job",
                     "attributes":attributes] as [String : Any]

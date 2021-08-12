@@ -117,22 +117,7 @@ public class ConverterGPS {
     ///
     /// - Parameters:
     ///   - point: current point
-    /// - Returns: where i am in planet
-    public func convertToGPS(transform:simd_float4x4) throws -> MapPoseVPS {
-        guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {
-            throw status
-        }
-        let poseAngl = getAngleFrom(transform: transform).inDegrees()
-        return calculateMapPoseForConverter(pos: SIMD3<Float>(transform[3][0],transform[3][1],transform[3][2]),
-                                            poseAngl: poseAngl,
-                                            geoRef: geoRef,
-                                            rotateAngl: rotateAngl)
-    }
-    
-    ///
-    /// - Parameters:
-    ///   - point: current point
-    /// - Warning: it is not recommended to use this method in renderer (...updatetime) or session (did updateframe) because the values are subject to a gimble lock, use convertToGPS(transform)
+    /// - Warning: it is not recommended to use init(pos: SIMD3(Float), rot: SIMD3(Float)) for posevps may be subject to gimblock
     /// - Returns: where i am in planet
     public func convertToGPS(pose:PoseVPS) throws -> MapPoseVPS {
         guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {

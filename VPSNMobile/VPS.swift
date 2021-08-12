@@ -98,7 +98,7 @@ class VPS  {
         if let value = usrd.string(forKey: "ARClient") {
             self.client_id = value
         } else {
-            let value = UUID().uuidString
+            let value = UUID().uuidString.lowercased()
             usrd.setValue(value, forKey: "ARClient")
             usrd.synchronize()
             self.client_id = value
@@ -270,7 +270,7 @@ class VPS  {
             newangl = node.eulerAngles
         }
         photoTransform = frame?.camera.transform
-        var up = UploadVPSPhoto(job_id: UUID().uuidString,
+        var up = UploadVPSPhoto(job_id: UUID().uuidString.lowercased(),
                                 locationType: "relative",
                                 locationID: locationType,
                                 locationClientCoordSystem: "arkit",

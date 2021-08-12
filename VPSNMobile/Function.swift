@@ -42,10 +42,37 @@ func saveModel(from:URL, name:String, folder: String) -> URL? {
     }
 }
 
-func getAngleFrom(eulere: SCNVector3) -> Float {
+public func getEulereFrom(transform: simd_float4x4) -> SIMD3<Float> {
+    let node = SCNNode()
+    node.simdTransform = transform
+    return SIMD3<Float>(node.eulerAngles)
+}
+
+public func getTransformFrom(eulere: SIMD3<Float>, position: SIMD3<Float>) -> simd_float4x4 {
+    let node = SCNNode()
+    node.position = SCNVector3(position)
+    node.eulerAngles = SCNVector3(eulere)
+    return node.simdTransform
+}
+
+public func getTransformFrom(eulere: SIMD3<Float>) -> simd_float4x4 {
+    let node = SCNNode()
+    node.eulerAngles = SCNVector3(eulere)
+    return node.simdTransform
+}
+
+public func getAngleFrom(eulere: SCNVector3) -> Float {
     let node = SCNNode()
     node.eulerAngles = eulere
-    return getAngleFrom(transform: node.transform)
+    return getAngleFrom(transform: node.simdTransform)
+}
+
+func getAngleFrom(eulere: SIMD3<Double>) -> Double {
+    return Double(getAngleFrom(eulere: SCNVector3(Float(eulere.x),Float(eulere.y),Float(eulere.z))))
+}
+
+func getAngleFrom(eulere: SIMD3<Float>) -> Float {
+    return getAngleFrom(eulere: SCNVector3(eulere))
 }
 
 func getAngleFrom(transform: SCNMatrix4) -> Float {
@@ -56,6 +83,13 @@ func getAngleFrom(transform: SCNMatrix4) -> Float {
 func getAngleFrom(transform: simd_float4x4) -> Float {
     let orientation = SIMD3<Float>(transform[2][0],transform[2][1],transform[2][2])
     return atan2f(orientation.x, orientation.z)
+}
+
+func tan180To360Degree(_ value: Float) -> Float {
+    var angl = value
+    if angl < 0 { angl = -angl }
+    else { angl = 360 - angl }
+    return angl
 }
 
 ///Takes two transformation matrices and returns the minimum angle between their Z axes in radians between 0 and PI

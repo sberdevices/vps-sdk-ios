@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C7EFE54269EAEE00049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
+		1C7EFE55269EAF190049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
+		1CCDEF60269E433000B1D4AA /* TestGeoref.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */; };
 		1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */; };
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
@@ -22,6 +25,7 @@
 		8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B18152614938D00751FAC /* MultipartDataCreator.swift */; };
 		8C2D3D14256792680002C140 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D3D13256792680002C140 /* Function.swift */; };
 		8C789688260A337A00C12D7F /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C789687260A337A00C12D7F /* TimerManager.swift */; };
+		8CAA31B62696C289001BBEE3 /* ConverterGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */; };
 		8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */; };
 		8CC71650260B101700CF1089 /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; platformFilter = ios; };
 		8CCC9AF7260A1B240007FFC4 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */; };
@@ -40,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C7EFE53269EAEE00049D3C9 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGeoref.swift; sourceTree = "<group>"; };
 		16E58A48652939ED10D55696 /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFloat16.swift; sourceTree = "<group>"; };
 		1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -59,6 +65,7 @@
 		8C2B18152614938D00751FAC /* MultipartDataCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartDataCreator.swift; sourceTree = "<group>"; };
 		8C2D3D13256792680002C140 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		8C789687260A337A00C12D7F /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterGPS.swift; sourceTree = "<group>"; };
 		8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VPSNMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPSNMobileTests.swift; sourceTree = "<group>"; };
 		8CC7164F260B101700CF1089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -123,6 +130,7 @@
 				8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */,
 				8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */,
 				8C789687260A337A00C12D7F /* TimerManager.swift */,
+				8CAA31B52696C289001BBEE3 /* ConverterGPS.swift */,
 				1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */,
 			);
 			path = VPSNMobile;
@@ -151,8 +159,10 @@
 		8CC7164C260B101700CF1089 /* VPSNMobileTests */ = {
 			isa = PBXGroup;
 			children = (
+				1C7EFE53269EAEE00049D3C9 /* test.json */,
 				8CC7164D260B101700CF1089 /* VPSNMobileTests.swift */,
 				8CC7164F260B101700CF1089 /* Info.plist */,
+				1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */,
 			);
 			path = VPSNMobileTests;
 			sourceTree = "<group>";
@@ -160,7 +170,7 @@
 		98AADC8995441A98D8E12F9F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */,
+                1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */,
 				D54DEAFF9FB6F71A3CD2F3C9 /* Pods-VPSNMobile.release.xcconfig */,
 			);
 			path = Pods;
@@ -192,8 +202,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C21283225469B7A0073D755 /* Build configuration list for PBXNativeTarget "VPSNMobile" */;
 			buildPhases = (
-				02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */,
-				8C21282525469B7A0073D755 /* Headers */,
+                02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */,
+                8C21282525469B7A0073D755 /* Headers */,
 				8C21282625469B7A0073D755 /* Sources */,
 				8C21282725469B7A0073D755 /* Frameworks */,
 				8C21282825469B7A0073D755 /* Resources */,
@@ -267,6 +277,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C7EFE55269EAF190049D3C9 /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C7EFE54269EAEE00049D3C9 /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +293,7 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
+            isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -325,6 +337,7 @@
 				8C21284C25469D260073D755 /* VPSResponse.swift in Sources */,
 				8C21284E25469D260073D755 /* Const.swift in Sources */,
 				8C21285225469F370073D755 /* neuro.swift in Sources */,
+				8CAA31B62696C289001BBEE3 /* ConverterGPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CC7164E260B101700CF1089 /* VPSNMobileTests.swift in Sources */,
+				1CCDEF60269E433000B1D4AA /* TestGeoref.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +572,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = LAB.VPSNMobileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

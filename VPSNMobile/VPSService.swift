@@ -73,24 +73,31 @@ public struct Settings {
             distanceForInterp = clamped(distanceForInterp, minValue: 0.1, maxValue: 360)
         }
     }
+    ///set GeoReferencing manualy
+    public let customGeoReference:GeoReferencing?
     ///
     /// - Parameters:
     ///   - url: Url server of your object
     ///   - locationID: Specific object's id
     ///   - recognizeType: Get features on a server
+    ///   - neuroLink: url for downloading neuro
+    ///   - customGeoReference: set customGeoReference
     public init(url: String,
                 locationID: String,
                 recognizeType: RecognizeType,
-                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite") {
+                neuroLink:String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite",
+                customGeoReference:GeoReferencing? = nil) {
         self.url = url
         self.locationID = locationID
         self.recognizeType = recognizeType
         self.neuroLink = neuroLink
+        self.customGeoReference = customGeoReference
     }
 }
 
 public protocol VPSService {
     var settings: Settings { get }
+    var converterGPS: ConverterGPS { get }
     ///Send of not gps
     var gpsUsage: Bool { get set }
     ///Turns of or onf the recalibration mode
@@ -185,7 +192,15 @@ public struct ResponseVPSPhoto {
     public var posPitch: Float
     public var posYaw: Float
     public var gps:gpsResponse?
+    public var compass:compassResponse?
     var id: String?
+    
+    public struct compassResponse {
+        public var heading:Double
+        public init(heading: Double) {
+            self.heading = heading
+        }
+    }
     
     public struct gpsResponse {
         public var lat:Double
@@ -204,7 +219,7 @@ public struct ResponseVPSPhoto {
     ///   - posRoll: roll
     ///   - posPitch: pitch
     ///   - posYaw: yaw
-    public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float) {
+    public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float, gps:gpsResponse? = nil, compass:compassResponse? = nil) {
         self.status = status
         self.posX = posX
         self.posY = posY
@@ -212,6 +227,8 @@ public struct ResponseVPSPhoto {
         self.posRoll = posRoll
         self.posPitch = posPitch
         self.posYaw = posYaw
+        self.gps = gps
+        self.compass = compass
     }
 }
 ///Get features on a server or device

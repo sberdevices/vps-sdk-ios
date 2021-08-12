@@ -10,6 +10,7 @@ import ARKit
 
 class VPS  {
     public var settings: Settings
+    public var converterGPS: ConverterGPS
     var gpsUsage: Bool {
         didSet {
             if oldValue {
@@ -92,6 +93,10 @@ class VPS  {
         self.locationManager = LocationManager()
         if gpsUsage {
             locationManager.attemptLocationAccess()
+        }
+        self.converterGPS = ConverterGPS()
+        if let customGeoref = settings.customGeoReference {
+            converterGPS.setGeoreference(geoReferencing: customGeoref)
         }
     }
     ///Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
@@ -186,10 +191,19 @@ class VPS  {
                     self.needForced = false
                     self.setupWorld(from: ph, transform: tr, interpolate: false)
                     self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
+                    if self.converterGPS.status == .waiting {
+                        if let geref = VPS.getGeoref(ph: ph) {
+                            self.converterGPS.setGeoreference(geoReferencing: geref)
+                        } else {
+                            self.converterGPS.setStatusUnavalable()
+                        }
+                    }
                 }
                 self.getAnswer = true
                 self.lastpose = ph
                 self.delegate?.positionVPS(pos: ph)
+                self.lastpose = ph
+                
                 self.serialReqests.removeAll()
                 self.neuroSerialrequested = 0
             } failure: { (err) in
@@ -210,11 +224,19 @@ class VPS  {
             if ph.status {
                 self.needForced = false
                 self.setupWorld(from: ph, transform: self.photoTransform)
+                if self.converterGPS.status == .waiting {
+                    if let geref = VPS.getGeoref(ph: ph) {
+                        self.converterGPS.setGeoreference(geoReferencing: geref)
+                    } else {
+                        self.converterGPS.setStatusUnavalable()
+                    }
+                }
             } else {
                 self.failerCount += 1
             }
             self.getAnswer = true
             self.lastpose = ph
+            
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
@@ -292,7 +314,22 @@ class VPS  {
         }
         return up
     }
-    
+    public static func getGeoref(ph:ResponseVPSPhoto) -> GeoReferencing? {
+        if let gps = ph.gps,
+           let compass = ph.compass{
+            let mapPos = MapPoseVPS(lat: gps.lat,
+                                    long: gps.long,
+                                    course: compass.heading)
+            let poseVPS = PoseVPS(pos: SIMD3<Float>(x: ph.posX,
+                                             y: ph.posY,
+                                             z: ph.posZ),
+                                  rot: SIMD3<Float>(ph.posPitch,
+                                                    ph.posYaw,
+                                                    ph.posRoll))
+            return GeoReferencing(geopoint: mapPos, coordinate: poseVPS)
+        }
+        return nil
+    }
     
     /// Return neuroData or failure, used async queue
     func getNeuroData(frame: ARFrame? = nil,
@@ -451,6 +488,14 @@ extension VPS: VPSService{
         setupWorld(from: mock, transform: frame.camera.transform)
         self.lastpose = mock
         delegate?.positionVPS(pos: mock)
+        self.lastpose = mock
+        if self.converterGPS.status == .waiting {
+            if let geref = VPS.getGeoref(ph: mock) {
+                self.converterGPS.setGeoreference(geoReferencing: geref)
+            } else {
+                self.converterGPS.setStatusUnavalable()
+            }
+        }
     }
     
     public func SendUIImage(im: UIImage) {

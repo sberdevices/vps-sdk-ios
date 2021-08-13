@@ -101,7 +101,9 @@ final class RequestBodyCreator {
                           "version":self.APIversion,
                           "imageTransform":imtransform,
                           "intrinsics":intrinsics,
-                          "forced_localization":photo.forceLocalization] as [String : Any]
+                          "forced_localization":photo.forceLocalization,
+                          "user_id": photo.client_id,
+                          "timestamp": photo.timestamp] as [String : Any]
         let data = ["id":photo.job_id,
                     "type":"job",
                     "attributes":attributes] as [String : Any]

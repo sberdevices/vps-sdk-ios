@@ -9,6 +9,19 @@
 import ARKit
 
 class VPS  {
+    var client_id:String {
+        get {
+            let usrd = UserDefaults.standard
+            if let value = usrd.string(forKey: "ARClient") {
+                return value
+            } else {
+                let value = UUID().uuidString.lowercased()
+                usrd.setValue(value, forKey: "ARClient")
+                usrd.synchronize()
+                return value
+            }
+        }
+    }
     public var settings: Settings
     public var converterGPS: ConverterGPS
     var gpsUsage: Bool {
@@ -203,7 +216,6 @@ class VPS  {
                 self.lastpose = ph
                 self.delegate?.positionVPS(pos: ph)
                 self.lastpose = ph
-                
                 self.serialReqests.removeAll()
                 self.neuroSerialrequested = 0
             } failure: { (err) in
@@ -236,7 +248,6 @@ class VPS  {
             }
             self.getAnswer = true
             self.lastpose = ph
-            
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
@@ -281,7 +292,9 @@ class VPS  {
             newangl = node.eulerAngles
         }
         photoTransform = frame?.camera.transform
-        var up = UploadVPSPhoto(job_id: UUID().uuidString,
+        var up = UploadVPSPhoto(client_id: self.client_id,
+                                timestamp: Date().timeIntervalSince1970,
+                                job_id: UUID().uuidString.lowercased(),
                                 locationType: "relative",
                                 locationID: locationType,
                                 locationClientCoordSystem: "arkit",
@@ -314,6 +327,7 @@ class VPS  {
         }
         return up
     }
+    
     public static func getGeoref(ph:ResponseVPSPhoto) -> GeoReferencing? {
         if let gps = ph.gps,
            let compass = ph.compass{

@@ -9,7 +9,19 @@
 import ARKit
 
 class VPS  {
-    let client_id:String
+    var client_id:String {
+        get {
+            let usrd = UserDefaults.standard
+            if let value = usrd.string(forKey: "ARClient") {
+                return value
+            } else {
+                let value = UUID().uuidString.lowercased()
+                usrd.setValue(value, forKey: "ARClient")
+                usrd.synchronize()
+                return value
+            }
+        }
+    }
     public var settings: Settings
     public var converterGPS: ConverterGPS
     var gpsUsage: Bool {
@@ -94,15 +106,6 @@ class VPS  {
         self.locationManager = LocationManager()
         if gpsUsage {
             locationManager.attemptLocationAccess()
-        }
-        let usrd = UserDefaults.standard
-        if let value = usrd.string(forKey: "ARClient") {
-            self.client_id = value
-        } else {
-            let value = UUID().uuidString.lowercased()
-            usrd.setValue(value, forKey: "ARClient")
-            usrd.synchronize()
-            self.client_id = value
         }
         self.converterGPS = ConverterGPS()
         if let customGeoref = settings.customGeoReference {
@@ -289,7 +292,9 @@ class VPS  {
             newangl = node.eulerAngles
         }
         photoTransform = frame?.camera.transform
-        var up = UploadVPSPhoto(job_id: UUID().uuidString.lowercased(),
+        var up = UploadVPSPhoto(client_id: self.client_id,
+                                timestamp: Date().timeIntervalSince1970,
+                                job_id: UUID().uuidString.lowercased(),
                                 locationType: "relative",
                                 locationID: locationType,
                                 locationClientCoordSystem: "arkit",
@@ -309,8 +314,6 @@ class VPS  {
                                 image: nil,
                                 forceLocalization: force,
                                 photoTransform: frame?.camera.transform)
-        up.client_id = client_id
-        up.timestamp = Date().timeIntervalSince1970
         if gpsUsage, locationManager.canGetCorrectGPS(), !(serial && needForced) {
             guard let loc = locationManager.getLocation() else { return nil }
             if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {

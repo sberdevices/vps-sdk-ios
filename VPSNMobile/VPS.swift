@@ -39,7 +39,7 @@ class VPS  {
             if !serialLocalizeEnabled {
                 serialReqests.removeAll()
                 neuroSerialrequested = 0
-                timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self)
+                timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self, fired: true)
             }
         }
     }
@@ -49,7 +49,7 @@ class VPS  {
     var locationType:String!
     var arsession: ARSession
     ///Need for sending request
-    var timer:TimerManager = TimerManager()
+    var timer:TimerManager
     ///need for async setting position
     var photoTransform:simd_float4x4!
     ///Saved last success responce
@@ -104,6 +104,8 @@ class VPS  {
         self.settings = settings
         self.locationType = settings.locationID
         self.locationManager = LocationManager()
+        self.timer = TimerManager()
+        self.timer.delayTime = settings.firstRequestDelay
         if gpsUsage {
             locationManager.attemptLocationAccess()
         }

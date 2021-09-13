@@ -67,6 +67,12 @@ public struct Settings {
             timeOutDuration = clamped(timeOutDuration, minValue: 1.0, maxValue: TimeInterval.infinity)
         }
     }
+    ///The timeout of  first request
+    public var firstRequestDelay:TimeInterval = 2 {
+        didSet {
+            firstRequestDelay = clamped(firstRequestDelay, minValue: 0.0, maxValue: TimeInterval.infinity)
+        }
+    }
     ///Maximum angle when interpolation works
     public var angleForInterp:Float = 45 {
         didSet {

@@ -25,7 +25,7 @@ end
 ```
 And run `pod install` from project directory
 
-### User permisions
+### User permissions
 
 Add flags to access user's location and camera into `info.plist`. TemporaryAuth is required for devices running iOS 14+.
 

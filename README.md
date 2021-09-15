@@ -79,7 +79,7 @@ class Example:UIViewController, ARSCNViewDelegate {
                                  delegate: nil) { (vps) in
             self.vps = vps
         }
-        vps?.Start()
+        vps?.start()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,11 +92,11 @@ class Example:UIViewController, ARSCNViewDelegate {
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
-        vps?.Stop()
+        vps?.stop()
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
-        vps?.Start()
+        vps?.start()
     }
 }
 ```

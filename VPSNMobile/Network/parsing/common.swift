@@ -1,10 +1,4 @@
-//
-//  common.swift
-//  VPS
-//
-//  Created by Eugene Smolyakov on 03.09.2020.
-//  Copyright © 2020 ES. All rights reserved.
-//
+
 
 import Foundation
 
@@ -39,11 +33,9 @@ func parseInt(_ res: NSDictionary, key: String) -> Int {
     var out: Int
     if let tmp = res[key] as? Int {
         out = tmp
-    }
-    else if let tmp = res[key] as? String {
+    } else if let tmp = res[key] as? String {
         out = tmp.toInt
-    }
-    else {
+    } else {
         out = 0
     }
     return out
@@ -53,36 +45,34 @@ func parseBool(_ res: NSDictionary, key: String) -> Bool {
     let out: Bool
     if let tmp = res[key] as? Bool {
         out = tmp
-    }
-    else if let tmp = res[key] as? String {
+    } else if let tmp = res[key] as? String {
         if tmp.contains("true") {
             out = true
         } else {
             out = false
         }
-    }
-    else {
+    } else {
         out = false
     }
     return out
 }
 
-func convertDate(df: DateFormatter, date: String) -> NSDate {
-    if let ddate = df.date(from: date) {
+func convertDate(dateFormatter: DateFormatter, date: String) -> NSDate {
+    if let ddate = dateFormatter.date(from: date) {
         return ddate as NSDate
     } else {
         return NSDate()
     }
 }
 
-func parseDate(_ d: NSDictionary, key: String, df: DateFormatter) -> NSDate {
-    let sdate = parseString(d, for: key)
-    return convertDate(df: df, date: sdate) as NSDate
+func parseDate(_ dict: NSDictionary, key: String, dateFormatter: DateFormatter) -> NSDate {
+    let sdate = parseString(dict, for: key)
+    return convertDate(dateFormatter: dateFormatter, date: sdate) as NSDate
 }
 
 func dateFormatterForParse() -> DateFormatter {
-    let df = DateFormatter()
-    df.locale = Locale(identifier: "en_US_POSIX")
-    df.dateFormat = "yyyy-MM-dd HH:mm:ssZZZ"
-    return df
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZ"
+    return dateFormatter
 }

@@ -1,9 +1,4 @@
-//
-//  MultipartDataCreator.swift
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 31.03.2021.
-//
+
 
 import Foundation
 
@@ -12,10 +7,10 @@ final class MultipartDataCreator {
     let boundary = "Boundary-\(NSUUID().uuidString)"
     private let lineBreak = "\r\n"
     
-    func bodyAdd(data:Data,
+    func bodyAdd(data: Data,
                  key: String,
-                 fileName:String? = nil,
-                 mimeType:String? = nil) {
+                 fileName: String? = nil,
+                 mimeType: String? = nil) {
         body.append("--\(boundary + lineBreak)")
         var disposition = "Content-Disposition: form-data; name=\"\(key)\""
         if let fileName = fileName { disposition += "; filename=\"\(fileName)\"\(lineBreak)" }
@@ -39,17 +34,17 @@ final class MultipartDataCreator {
 ///
 final class RequestBodyCreator {
     private let multipartCreator = MultipartDataCreator()
-    var APIversion:Int
+    var APIVersion: Int
     
     init(apiVersion: Int) {
-        self.APIversion = apiVersion
+        self.APIVersion = apiVersion
     }
     
-    func getBody() -> (body:Data, boundary:String) {
+    func getBody() -> (body: Data, boundary: String) {
         return (multipartCreator.getBody(), multipartCreator.boundary)
     }
     
-    func addToBody(photo: UploadVPSPhoto, metaKey:String, imageKey:String = "", featuresKey:String = "") {
+    func addToBody(photo: UploadVPSPhoto, metaKey: String, imageKey: String = "", featuresKey: String = "") {
         let params = getParams(from: photo)
         if let data = try? JSONSerialization.data(withJSONObject: params,
                                                   options: [.fragmentsAllowed]) {
@@ -64,18 +59,18 @@ final class RequestBodyCreator {
         }
     }
     
-    func getParams(from photo:UploadVPSPhoto)->[String:Any] {
-        let localPos = ["x":photo.locPosX,
-                        "y":photo.locPosY,
-                        "z":photo.locPosZ,
-                        "roll":photo.locPosRoll,
-                        "pitch":photo.locPosPitch,
-                        "yaw":photo.locPosYaw
+    func getParams(from photo: UploadVPSPhoto) -> [String:Any] {
+        let localPos = ["x": photo.locPosX,
+                        "y": photo.locPosY,
+                        "z": photo.locPosZ,
+                        "roll": photo.locPosRoll,
+                        "pitch": photo.locPosPitch,
+                        "yaw": photo.locPosYaw
         ]
-        var location = ["type":photo.locationType,
-                        "location_id":photo.locationID,
-                        "clientCoordinateSystem":photo.locationClientCoordSystem,
-                        "localPos":localPos] as [String : Any]
+        var location = ["type": photo.locationType,
+                        "location_id": photo.locationID,
+                        "clientCoordinateSystem": photo.locationClientCoordSystem,
+                        "localPos": localPos] as [String : Any]
         if let comp = photo.compas {
             let compass = ["heading": comp.heading,
                            "accuracy": comp.acc,
@@ -90,24 +85,24 @@ final class RequestBodyCreator {
                        "timestamp": gps.timestamp]
             location["gps"] = gps
         }
-        let imtransform = ["orientation":photo.imageTransfOrientation,
-                           "mirrorX":photo.imageTransfMirrorX,
-                           "mirrorY":photo.imageTransfMirrorY] as [String : Any]
-        let intrinsics = ["fx":photo.instrinsicsFX,
-                          "fy":photo.instrinsicsFY,
-                          "cx":photo.instrinsicsCX,
-                          "cy":photo.instrinsicsCY]
-        let attributes = ["location":location,
-                          "version":self.APIversion,
-                          "imageTransform":imtransform,
-                          "intrinsics":intrinsics,
-                          "forced_localization":photo.forceLocalization,
-                          "user_id": photo.client_id,
+        let imtransform = ["orientation": photo.imageTransfOrientation,
+                           "mirrorX": photo.imageTransfMirrorX,
+                           "mirrorY": photo.imageTransfMirrorY] as [String : Any]
+        let intrinsics = ["fx": photo.instrinsicsFX,
+                          "fy": photo.instrinsicsFY,
+                          "cx": photo.instrinsicsCX,
+                          "cy": photo.instrinsicsCY]
+        let attributes = ["location": location,
+                          "version": self.APIVersion,
+                          "imageTransform": imtransform,
+                          "intrinsics": intrinsics,
+                          "forced_localization": photo.forceLocalization,
+                          "user_id": photo.clientID,
                           "timestamp": photo.timestamp] as [String : Any]
-        let data = ["id":photo.job_id,
-                    "type":"job",
-                    "attributes":attributes] as [String : Any]
-        let datakey = ["data":data] as [String : Any]
+        let data = ["id": photo.jobID,
+                    "type": "job",
+                    "attributes": attributes] as [String : Any]
+        let datakey = ["data": data] as [String : Any]
 //        print("senddadta",datakey as NSDictionary)
         return datakey
     }

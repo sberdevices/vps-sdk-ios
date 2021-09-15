@@ -1,21 +1,15 @@
-//
-//  CustomFloat16.swift
-//  VPSNMobile
-//
-//  Created by Evgeniy Smolyakov on 20.07.2021.
-//
 
-//  TODO: move to Float16 (introduced in iOS 14)
+//  Move to Float16 (introduced in iOS 14)
 //  Have to use custom type for < iOS14 compatibility 
 
 import Accelerate
 
-typealias VPS_Float16 = UInt16
+typealias VPSFloat16 = UInt16
 
 
 func float32to16(_ input: UnsafeMutablePointer<Float>,
-                 count: Int) -> [VPS_Float16] {
-    var output = [VPS_Float16](repeating: 0, count: count)
+                 count: Int) -> [VPSFloat16] {
+    var output = [VPSFloat16](repeating: 0, count: count)
     float32to16(input: input, output: &output, count: count)
     return output
 }

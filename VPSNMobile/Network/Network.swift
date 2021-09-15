@@ -1,10 +1,4 @@
-//
-//  Network.swift
-//  VPS
-//
-//  Created by Eugene Smolyakov on 03.09.2020.
-//  Copyright © 2020 ES. All rights reserved.
-//
+
 
 import UIKit
 
@@ -24,7 +18,7 @@ class Network: NSObject {
         self.neuroLink = settings.neuroLink
     }
     
-    var observation:NSKeyValueObservation!
+    var observation: NSKeyValueObservation!
     func downloadNeuro(url: @escaping ((URL) -> Void),
                        downProgr: @escaping ((Double) -> Void),
                        failure: @escaping ((NSError) -> Void)) {
@@ -48,8 +42,8 @@ class Network: NSObject {
         }
     }
     
-    func uploadMultipart(url:String,
-                         body:Data,
+    func uploadMultipart(url: String,
+                         body: Data,
                          boundary: String,
                          success: @escaping ((NSDictionary) -> Void),
                          failure: @escaping ((NSError) -> Void)) {
@@ -67,7 +61,6 @@ class Network: NSObject {
 //                if let response = response {
 //                                    print("resp",response)
 //                }
-                
                 if let data = data {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary
@@ -80,10 +73,9 @@ class Network: NSObject {
                                     self?.s(ans[0], success)
                                     self?.executeNext()
                                 } else {
-                                    
                                 }
                         }) { (err) in
-                            print("err",err)
+                            print("err", err)
                             self?.f(err, failure)
                             self?.executeNext()
                         }
@@ -97,12 +89,12 @@ class Network: NSObject {
         }
     }
     
-    private func commonParsingResponse(_ response: (data:NSDictionary?, response:URLResponse?),
+    private func commonParsingResponse(_ response: (data: NSDictionary?, response: URLResponse?),
                                        success: ([NSDictionary]) -> Void,
                                        failure: ((NSError) -> Void)?) {
         var headerError: NSError?
-        if let c = response.response as? HTTPURLResponse {
-            headerError = checkStatusCode(c.statusCode)
+        if let resp = response.response as? HTTPURLResponse {
+            headerError = checkStatusCode(resp.statusCode)
         }
         if let json = response.data {
             var err: NSError? = nil
@@ -125,17 +117,17 @@ class Network: NSObject {
                 let code: Int
                 let errData = unwrap(json, "data")
                 var errCode = ""
-                if let c = json["error"] as? String {
-                    errCode = c
+                if let err = json["error"] as? String {
+                    errCode = err
                 }
                 let errDescription: String
                 var defDescr = ""
-                if let d = json["message"] as? NSDictionary {
-                    errDescription = localizedDescriptionFrom(dict: d)
-                    defDescr = defaultDescriptionFrom(dict: d)
-                } else if let d = json["message"] as? String {
-                    errDescription = d
-                    defDescr = d
+                if let message = json["message"] as? NSDictionary {
+                    errDescription = localizedDescriptionFrom(dict: message)
+                    defDescr = defaultDescriptionFrom(dict: message)
+                } else if let message = json["message"] as? String {
+                    errDescription = message
+                    defDescr = message
                 } else {
                     if let hdr = headerError {
                         errDescription = hdr.localizedDescription
@@ -147,40 +139,39 @@ class Network: NSObject {
                 // over the body's error code:
                 if let hdr = headerError {
                     code = hdr.code
-                }
-                else if errCode.count > 0 {
+                } else if errCode.count > 0 {
                     switch errCode {
                     // describe all other codes if needed
                     default:
-                        code = Const.err.kNet
+                        code = Const.Err.kNet
                     }
                 } else {
                     if defDescr.contains("authorization") {
-                        code = Const.err.kNetAuth
+                        code = Const.Err.kNetAuth
                     } else {
-                        code = Const.err.kNet
+                        code = Const.Err.kNet
                     }
                 }
                 err = NSError(domain: Const.domain,
                               code: code,
                               userInfo: [
-                                Const.err.fields.data: errData as Any,
-                                Const.err.fields.kindOfErr: errCode,
-                                Const.err.fields.defDescr: defDescr,
+                                Const.Err.Fields.data: errData as Any,
+                                Const.Err.Fields.kindOfErr: errCode,
+                                Const.Err.Fields.defDescr: defDescr,
                                 NSLocalizedDescriptionKey: errDescription
                 ])
             } else {
                 statusOk = true
             }
             if statusOk {
-                if let d = data {
-                    success(d)
+                if let data = data {
+                    success(data)
                 } else { // try to parse it somewhere else:
                     success([json])
                 }
             } else {
-                if let e = err {
-                    failure?(e)
+                if let err = err {
+                    failure?(err)
                 } else {
                     handle(failure: failure, descr: "Cannot parse json".localized)
                 }
@@ -196,30 +187,30 @@ class Network: NSObject {
     }
     
     private func handle(failure: ((NSError) -> Void)?, descr: String) {
-        if let f = failure {
+        if let failure = failure {
             let error = NSError(domain: Const.domain,
-                                code: Const.err.kNet,
+                                code: Const.Err.kNet,
                                 userInfo: [NSLocalizedDescriptionKey: descr])
-            f(error)
+            failure(error)
         }
     }
     private func localizedDescriptionFrom(dict: NSDictionary, field: String) -> String {
-        if let d = dict[field] as? String {
-            return d
-        } else if let d = dict[field] as? [String] {
-            return d.joined(separator: "\n")
-        } else if let dd = dict[field] as? [NSDictionary] {
+        if let field = dict[field] as? String {
+            return field
+        } else if let field = dict[field] as? [String] {
+            return field.joined(separator: "\n")
+        } else if let field = dict[field] as? [NSDictionary] {
             var out = ""
-            for d in dd {
-                let e = localizedDescriptionFrom(dict: d)
+            for dict in field {
+                let str = localizedDescriptionFrom(dict: dict)
                 if out.count > 0 {
                     out += "\n"
                 }
-                out.append(contentsOf: e)
+                out.append(contentsOf: str)
             }
             return out
-        } else if let d = dict[field] as? NSDictionary {
-            return localizedDescriptionFrom(dict: d)
+        } else if let dict = dict[field] as? NSDictionary {
+            return localizedDescriptionFrom(dict: dict)
         }
         return ""
     }
@@ -254,7 +245,7 @@ class Network: NSObject {
 //                            userInfo: [NSLocalizedDescriptionKey: "Authorization failure".localized])
         default:
             error = NSError(domain: Const.domain,
-                            code: Const.err.kNet,
+                            code: Const.Err.kNet,
                             userInfo: [NSLocalizedDescriptionKey: "Network failure".localized])
         }
         return error
@@ -280,9 +271,9 @@ class Network: NSObject {
     }
 
     internal func errHandler(_ failure: ((NSError) -> Void)?) -> ((NSError) -> Void) {
-        return { e in
+        return { err in
             DispatchQueue.main.async {
-                failure?(e)
+                failure?(err)
             }
         }
     }
@@ -293,8 +284,8 @@ class Network: NSObject {
             self?.lock.lock()
             opp = self?.operations.popLast()
             self?.lock.unlock()
-            if let op = opp {
-                op()
+            if let opp = opp {
+                opp()
             }
         }
     }
@@ -309,6 +300,3 @@ class Network: NSObject {
     internal var user = ""
     private let lock = NSLock()
 }
-
-
-

@@ -1,9 +1,4 @@
-//
-//  LocationManager.swift
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 23.03.2021.
-//
+
 
 import CoreLocation
 
@@ -75,7 +70,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager,
-                    didChangeAuthorization status: CLAuthorizationStatus) {
+                         didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
             if #available(iOS 14.0, *) {
@@ -98,6 +93,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager,
-                   didFailWithError error: Error) {
+                         didFailWithError error: Error) {
     }
 }

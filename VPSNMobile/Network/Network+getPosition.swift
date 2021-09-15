@@ -1,10 +1,4 @@
-//
-//  Network+getPosition.swift
-//  VPSService
-//
-//  Created by Eugene Smolyakov on 07.09.2020.
-//  Copyright © 2020 ARVRLAB. All rights reserved.
-//
+
 
 import Foundation
 protocol NetVPSService {
@@ -17,10 +11,9 @@ protocol NetVPSService {
     func downloadNeuroModel(url: ((URL) -> Void)?,
                             downProgr: ((Double) -> Void)?,
                             failure: ((NSError) -> Void)?)
-    
 }
 
-extension Network:NetVPSService {
+extension Network: NetVPSService {
     func singleLocalize(photo: UploadVPSPhoto,
                         success: ((ResponseVPSPhoto) -> Void)?,
                         failure: ((NSError) -> Void)?) {
@@ -37,7 +30,7 @@ extension Network:NetVPSService {
     }
     func serialLocalize(reqs: [UploadVPSPhoto],
                         success: ((ResponseVPSPhoto) -> Void)?,
-                        failure: ((NSError) -> Void)?){
+                        failure: ((NSError) -> Void)?) {
         let bodyCreator = RequestBodyCreator(apiVersion: self.APIversion)
         for (num, item) in reqs.enumerated() {
             bodyCreator.addToBody(photo: item, metaKey: "mes\(num)", imageKey: "mes\(num)", featuresKey: "embd\(num)")
@@ -57,8 +50,8 @@ extension Network:NetVPSService {
                             failure: ((NSError) -> Void)?) {
         downloadNeuro { (path) in
             url?(path)
-        } downProgr: { (pr) in
-            downProgr?(pr)
+        } downProgr: { (progr) in
+            downProgr?(progr)
         } failure: { (err) in
             failure?(err)
         }

@@ -1,29 +1,24 @@
-//
-//  TimerManager.swift
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 23.03.2021.
-//
+
 
 import Foundation
 
-protocol TimerManagerDelegate:AnyObject {
+protocol TimerManagerDelegate: AnyObject {
     func timerFired()
 }
 
 final class TimerManager {
     weak var delegate: TimerManagerDelegate? = nil
-    private var timer:Timer?
-    var delayTime:TimeInterval = 0
+    private var timer: Timer?
+    var delayTime: TimeInterval = 0
     
     @objc private func updateTimer() {
         delegate?.timerFired()
     }
 
-    func startTimer(timeInterval:TimeInterval,
-                    delegate:TimerManagerDelegate,
+    func startTimer(timeInterval: TimeInterval,
+                    delegate: TimerManagerDelegate,
                     fired:Bool = false) {
-        //dont start new timer, when one created
+        // dont start new timer, when one created
         if timer != nil { return }
         self.delegate = delegate
         let date = Date().addingTimeInterval(fired ? 0 : delayTime)
@@ -44,9 +39,9 @@ final class TimerManager {
         self.delegate = nil
     }
     
-    func recreate(timeInterval:TimeInterval,
-                  delegate:TimerManagerDelegate,
-                  fired:Bool = false) {
+    func recreate(timeInterval: TimeInterval,
+                  delegate: TimerManagerDelegate,
+                  fired: Bool = false) {
         if timer == nil { return }
         invalidateTimer()
         startTimer(timeInterval: timeInterval,

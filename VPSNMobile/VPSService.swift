@@ -3,12 +3,13 @@
 import ARKit
 
 public protocol VPSServiceDelegate: AnyObject {
-    func serialcount(doned: Int)
-    /// Returns an instance of the response
+    /// Invokes when a new photo for a serial localisation was processed
+    func onSerialProgressUpdate(processedImages: Int)
+    /// Returns an instance of the latest response from the server
     func positionVPS(pos: ResponseVPSPhoto)
     /// Returns a server error
     func error(err: NSError)
-    /// Sending request, debug func
+    /// Invokes when current app started sending request to the server
     func sending()
 }
 /// optional implementation
@@ -17,15 +18,16 @@ public extension VPSServiceDelegate {
 }
 
 public struct Settings {
-    /// Url server of your object
+    /// URL to your VPS server
     let url: String
-    /// Specific object's id
+    /// Unique location ID
     let locationID: String
-    /// Get features on a server
+    /// Should VPS use raw images or processed features for localisation
+    /// Never use raw images in production app
     let recognizeType: RecognizeType
-    /// url for downloading neuro
+    /// URL to Mobile VPS neuro model
     let neuroLink: String
-    /// Time of interpolation
+    /// Time of interpolation between two localisations
     public var animationTime: Float = 1 {
         didSet {
             animationTime = clamped(animationTime, minValue: 0.1, maxValue: Float.infinity)
@@ -75,6 +77,7 @@ public struct Settings {
     }
     /// set GeoReferencing manualy
     public let customGeoReference: GeoReferencing?
+    
     ///
     /// - Parameters:
     ///   - url: Url server of your object

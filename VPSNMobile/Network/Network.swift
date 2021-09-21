@@ -13,8 +13,8 @@ class Network: NSObject {
     init(settings: Settings) {
         self.settings = settings
         super.init()
-        baseURL = "\(settings.url)\(settings.locationID.lowercased())/vps/api/v1/job"
-        firstLocateUrl = "\(settings.url)\(settings.locationID.lowercased())/vps/api/v1/first_loc/job"
+        baseURL = "\(settings.url))vps/api/v1/job"
+        firstLocateUrl = "\(settings.url))vps/api/v1/first_loc/job"
         self.neuroLink = settings.neuroLink
     }
     

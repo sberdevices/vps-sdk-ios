@@ -17,8 +17,8 @@ class TestGeoref: XCTestCase {
                                  posRoll: -1.6587431,
                                  posPitch: -4.6485486,
                                  posYaw: -39.89614,
-                                 gps: Optional(VPSNMobile.ResponseVPSPhoto.gpsResponse(lat: 55.73578619825994, long: 37.53170440360172)),
-                                 compass: Optional(VPSNMobile.ResponseVPSPhoto.compassResponse(heading: 63.8)))
+                                 gps: Optional(VPSNMobile.ResponseVPSPhoto.GPSResponse(lat: 55.73578619825994, long: 37.53170440360172)),
+                                 compass: Optional(VPSNMobile.ResponseVPSPhoto.CompassResponse(heading: 63.8)))
     
     let resp2 = ResponseVPSPhoto(status: true,
                                  posX: 10.065845,
@@ -27,8 +27,8 @@ class TestGeoref: XCTestCase {
                                  posRoll: 180,
                                  posPitch: 180,
                                  posYaw: 41,
-                                 gps: Optional(VPSNMobile.ResponseVPSPhoto.gpsResponse(lat: 55.73578619825994, long: 37.53170440360172)),
-                                 compass: Optional(VPSNMobile.ResponseVPSPhoto.compassResponse(heading: 244)))
+                                 gps: Optional(VPSNMobile.ResponseVPSPhoto.GPSResponse(lat: 55.73578619825994, long: 37.53170440360172)),
+                                 compass: Optional(VPSNMobile.ResponseVPSPhoto.CompassResponse(heading: 244)))
     
     // Checks if status of geoconverter changes correctly for different input
     func testStatus() {

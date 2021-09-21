@@ -1,10 +1,4 @@
-//
-//  Extension.swift
-//  VPS
-//
-//  Created by Eugene Smolyakov on 03.09.2020.
-//  Copyright © 2020 ES. All rights reserved.
-//
+
 
 import UIKit
 import VideoToolbox
@@ -44,7 +38,6 @@ extension String {
 extension UIImage {
     func scaledData(with size: CGSize) -> Data? {
         guard let cgImage = self.cgImage, cgImage.width > 0, cgImage.height > 0 else { return nil }
-        
         let bitmapInfo = CGBitmapInfo(
             rawValue: CGImageAlphaInfo.none.rawValue
         )
@@ -63,7 +56,6 @@ extension UIImage {
         context.draw(cgImage, in: CGRect(origin: .zero, size: size))
         guard let scaledBytes = context.makeImage()?.dataProvider?.data as Data? else { return nil }
         let scaledFloats = scaledBytes.map { Float32($0) }
-        
         return Data(copyingBufferOf: scaledFloats)
     }
     
@@ -116,10 +108,10 @@ extension UIImage {
         return newImage
     }
     
-    func convertToGrayScale(withSize size:CGSize? = nil) -> UIImage? {
+    func convertToGrayScale(withSize size: CGSize? = nil) -> UIImage? {
         let width = size?.width ?? self.size.width
         let height = size?.height ?? self.size.height
-        let imageRect:CGRect = CGRect(x:0, y:0, width:width, height: height)
+        let imageRect: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
         let colorSpace = CGColorSpaceCreateDeviceGray()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue)
         let context = CGContext(data: nil,

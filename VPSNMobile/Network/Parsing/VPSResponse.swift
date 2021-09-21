@@ -1,22 +1,16 @@
-//
-//  VPSResponse.swift
-//  VPS
-//
-//  Created by Eugene Smolyakov on 03.09.2020.
-//  Copyright © 2020 ES. All rights reserved.
-//
+
 
 import Foundation
 
-func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
+func parseVPSResponse(from dict: NSDictionary) -> ResponseVPSPhoto? {
 
-    guard let attributes = d["attributes"] as? NSDictionary else { return nil }
+    guard let attributes = dict["attributes"] as? NSDictionary else { return nil }
     guard let location = attributes["location"] as? NSDictionary else { return nil }
     guard let relative = location["relative"] as? NSDictionary else { return nil }
-    var id:String?
-    if let int = d["id"] as? Int {
+    var id: String?
+    if let int = dict["id"] as? Int {
         id = String(int)
-    } else if let str = d["id"] as? String {
+    } else if let str = dict["id"] as? String {
         id = str
     }
     let pitch = parseDouble(relative, key: "pitch")
@@ -37,13 +31,13 @@ func parseVPSResponse(from d: NSDictionary) -> ResponseVPSPhoto? {
     if let gps = location["gps"] as? NSDictionary {
         let lat = parseDouble(gps, key: "latitude")
         let long = parseDouble(gps, key: "longitude")
-        resp.gps = ResponseVPSPhoto.gpsResponse(lat: lat, long: long)
+        resp.gps = ResponseVPSPhoto.GPSResponse(lat: lat, long: long)
     } else {
         print("no gps")
     }
     if let compass = location["compass"] as? NSDictionary {
         let heading = parseDouble(compass, key: "heading")
-        resp.compass = ResponseVPSPhoto.compassResponse(heading: heading)
+        resp.compass = ResponseVPSPhoto.CompassResponse(heading: heading)
     }
     return resp
 }

@@ -1,10 +1,4 @@
-//
-//  neuro.swift
-//  netvlad
-//
-//  Created by Eugene Smolyakov on 21.08.2020.
-//  Copyright © 2020 ES. All rights reserved.
-//
+
 
 import TensorFlowLite
 import UIKit
@@ -26,7 +20,7 @@ class Neuro {
     
     
     // MARK: - Initialization
-    static func newInstance(path:String, completion: @escaping ((Result<Neuro>) -> Void)) {
+    static func newInstance(path: String, completion: @escaping ((Result<Neuro>) -> Void)) {
         let tfLiteQueue = DispatchQueue(label: "tfliteQueue")
         print("START: newInstance")
         tfLiteQueue.async {
@@ -98,10 +92,10 @@ class Neuro {
             }
             var outputTensor: Tensor
             
-            var gl = [VPS_Float16]()
-            var key = [VPS_Float16]()
-            var ld = [VPS_Float16]()
-            var sc = [VPS_Float16]()
+            var gl = [VPSFloat16]()
+            var key = [VPSFloat16]()
+            var ld = [VPSFloat16]()
+            var sc = [VPSFloat16]()
             do {
                 let data = image.scaledData(with: CGSize(width: self.inputImageHeight, height: self.inputImageWidth))!
                 try self.interpreter.copy(data, toInputAt: 0)
@@ -136,9 +130,9 @@ class Neuro {
                 return
             }
             let result = NResult(
-                global_descriptor: gl,
+                globalDescriptor: gl,
                 keypoints: key,
-                local_descriptors: ld,
+                localDescriptors: ld,
                 scores: sc
             )
             
@@ -150,10 +144,10 @@ class Neuro {
     }
 }
 struct NResult {
-    let global_descriptor: [VPS_Float16]
-    let keypoints: [VPS_Float16]
-    let local_descriptors: [VPS_Float16]
-    let scores: [VPS_Float16]
+    let globalDescriptor: [VPSFloat16]
+    let keypoints: [VPSFloat16]
+    let localDescriptors: [VPSFloat16]
+    let scores: [VPSFloat16]
 }
 
 enum Result<T> {

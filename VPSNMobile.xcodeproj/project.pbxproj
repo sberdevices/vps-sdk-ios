@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */; };
 		1C7EFE54269EAEE00049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1C7EFE55269EAF190049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1CCDEF60269E433000B1D4AA /* TestGeoref.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */; };
-		1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */; };
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
 		8C21284725469D250073D755 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283B25469D250073D755 /* Entities.swift */; };
-		8C21284925469D250073D755 /* Network+getPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283E25469D250073D755 /* Network+getPosition.swift */; };
+		8C21284925469D250073D755 /* NetworkExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283E25469D250073D755 /* NetworkExtensions.swift */; };
 		8C21284A25469D260073D755 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283F25469D250073D755 /* Network.swift */; };
-		8C21284B25469D260073D755 /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284125469D250073D755 /* common.swift */; };
+		8C21284B25469D260073D755 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284125469D250073D755 /* Common.swift */; };
 		8C21284C25469D260073D755 /* VPSResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284225469D250073D755 /* VPSResponse.swift */; };
 		8C21284D25469D260073D755 /* VPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284325469D250073D755 /* VPS.swift */; };
 		8C21284E25469D260073D755 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21284425469D250073D755 /* Const.swift */; };
-		8C21285225469F370073D755 /* neuro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21285125469F370073D755 /* neuro.swift */; };
+		8C21285225469F370073D755 /* Neuro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21285125469F370073D755 /* Neuro.swift */; };
 		8C21285A2546A3D10073D755 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2128592546A3D10073D755 /* Extension.swift */; };
 		8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B18152614938D00751FAC /* MultipartDataCreator.swift */; };
 		8C2D3D14256792680002C140 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D3D13256792680002C140 /* Function.swift */; };
@@ -44,23 +44,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1C7EFE53269EAEE00049D3C9 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
-		1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGeoref.swift; sourceTree = "<group>"; };
 		16E58A48652939ED10D55696 /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFloat16.swift; sourceTree = "<group>"; };
+		1C7EFE53269EAEE00049D3C9 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGeoref.swift; sourceTree = "<group>"; };
 		1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		8C21282A25469B7A0073D755 /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282D25469B7A0073D755 /* VPSNMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPSNMobile.h; sourceTree = "<group>"; };
 		8C21282E25469B7A0073D755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C21283A25469D250073D755 /* VPSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSService.swift; sourceTree = "<group>"; };
 		8C21283B25469D250073D755 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
-		8C21283E25469D250073D755 /* Network+getPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Network+getPosition.swift"; sourceTree = "<group>"; };
+		8C21283E25469D250073D755 /* NetworkExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkExtensions.swift; sourceTree = "<group>"; };
 		8C21283F25469D250073D755 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		8C21284125469D250073D755 /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
+		8C21284125469D250073D755 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		8C21284225469D250073D755 /* VPSResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPSResponse.swift; sourceTree = "<group>"; };
 		8C21284325469D250073D755 /* VPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPS.swift; sourceTree = "<group>"; };
 		8C21284425469D250073D755 /* Const.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
-		8C21285125469F370073D755 /* neuro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = neuro.swift; sourceTree = "<group>"; };
+		8C21285125469F370073D755 /* Neuro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Neuro.swift; sourceTree = "<group>"; };
 		8C2128592546A3D10073D755 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		8C2B18152614938D00751FAC /* MultipartDataCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartDataCreator.swift; sourceTree = "<group>"; };
 		8C2D3D13256792680002C140 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 				8C21283B25469D250073D755 /* Entities.swift */,
 				8C21283D25469D250073D755 /* Network */,
 				8C21284325469D250073D755 /* VPS.swift */,
-				8C21285125469F370073D755 /* neuro.swift */,
+				8C21285125469F370073D755 /* Neuro.swift */,
 				8C21283A25469D250073D755 /* VPSService.swift */,
 				8C2D3D13256792680002C140 /* Function.swift */,
 				8C21282D25469B7A0073D755 /* VPSNMobile.h */,
@@ -140,20 +140,20 @@
 			isa = PBXGroup;
 			children = (
 				8C2B18152614938D00751FAC /* MultipartDataCreator.swift */,
-				8C21283E25469D250073D755 /* Network+getPosition.swift */,
+				8C21283E25469D250073D755 /* NetworkExtensions.swift */,
 				8C21283F25469D250073D755 /* Network.swift */,
-				8C21284025469D250073D755 /* parsing */,
+				8C21284025469D250073D755 /* Parsing */,
 			);
 			path = Network;
 			sourceTree = "<group>";
 		};
-		8C21284025469D250073D755 /* parsing */ = {
+		8C21284025469D250073D755 /* Parsing */ = {
 			isa = PBXGroup;
 			children = (
-				8C21284125469D250073D755 /* common.swift */,
+				8C21284125469D250073D755 /* Common.swift */,
 				8C21284225469D250073D755 /* VPSResponse.swift */,
 			);
-			path = parsing;
+			path = Parsing;
 			sourceTree = "<group>";
 		};
 		8CC7164C260B101700CF1089 /* VPSNMobileTests */ = {
@@ -170,7 +170,7 @@
 		98AADC8995441A98D8E12F9F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-                1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */,
+				1D67D2B14776220437A3B1A3 /* Pods-VPSNMobile.debug.xcconfig */,
 				D54DEAFF9FB6F71A3CD2F3C9 /* Pods-VPSNMobile.release.xcconfig */,
 			);
 			path = Pods;
@@ -202,8 +202,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C21283225469B7A0073D755 /* Build configuration list for PBXNativeTarget "VPSNMobile" */;
 			buildPhases = (
-                02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */,
-                8C21282525469B7A0073D755 /* Headers */,
+				02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */,
+				8C21282525469B7A0073D755 /* Headers */,
 				8C21282625469B7A0073D755 /* Sources */,
 				8C21282725469B7A0073D755 /* Frameworks */,
 				8C21282825469B7A0073D755 /* Resources */,
@@ -293,7 +293,7 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		02C12DD5A85A521531420A0F /* [CP] Check Pods Manifest.lock */ = {
-            isa = PBXShellScriptBuildPhase;
+			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -323,20 +323,20 @@
 			files = (
 				8C21284A25469D260073D755 /* Network.swift in Sources */,
 				8C2B18162614938D00751FAC /* MultipartDataCreator.swift in Sources */,
-				8C21284B25469D260073D755 /* common.swift in Sources */,
+				8C21284B25469D260073D755 /* Common.swift in Sources */,
 				8C789688260A337A00C12D7F /* TimerManager.swift in Sources */,
 				8C2D3D14256792680002C140 /* Function.swift in Sources */,
 				8C21284725469D250073D755 /* Entities.swift in Sources */,
 				1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */,
 				8C21285A2546A3D10073D755 /* Extension.swift in Sources */,
-				8C21284925469D250073D755 /* Network+getPosition.swift in Sources */,
+				8C21284925469D250073D755 /* NetworkExtensions.swift in Sources */,
 				8C21284D25469D260073D755 /* VPS.swift in Sources */,
 				8CE7DAC925F03CDF006E0F78 /* DebugPopVC.swift in Sources */,
 				8C21284625469D250073D755 /* VPSService.swift in Sources */,
 				8CCC9AF7260A1B240007FFC4 /* LocationManager.swift in Sources */,
 				8C21284C25469D260073D755 /* VPSResponse.swift in Sources */,
 				8C21284E25469D260073D755 /* Const.swift in Sources */,
-				8C21285225469F370073D755 /* neuro.swift in Sources */,
+				8C21285225469F370073D755 /* Neuro.swift in Sources */,
 				8CAA31B62696C289001BBEE3 /* ConverterGPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

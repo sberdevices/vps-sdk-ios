@@ -1,9 +1,4 @@
-//
-//  DebugPopVC.swift
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 04.03.2021.
-//
+
 
 import UIKit
 
@@ -23,11 +18,11 @@ public class DebugPopVC: UIViewController {
     
     let closebtn = UIButton(type: .system)
     
-    public required init(docalibrateON:Bool,
-                         autoFocusOn:Bool,
-                         showModels:Bool,
-                         gpsOn:Bool,
-                         serialOn:Bool) {
+    public required init(docalibrateON: Bool,
+                         autoFocusOn: Bool,
+                         showModels: Bool,
+                         gpsOn: Bool,
+                         serialOn: Bool) {
         docalibrlbl.text = docalibrateON ? "ForceLocal ON" : "ForceLocal OFF"
         docalibrsw.isOn = docalibrateON
         focuslbl.text = autoFocusOn  ? "Focus ON" : "Focus OFF"
@@ -57,11 +52,11 @@ public class DebugPopVC: UIViewController {
         gpssw.addTarget(self, action: #selector(gpsact), for: .valueChanged)
         serialsw.addTarget(self, action: #selector(serialact), for: .valueChanged)
         
-        let docalibrStack = stacked(vs: [docalibrsw,docalibrlbl])
-        let focusStack = stacked(vs: [focussw,focuslbl])
-        let modelsStack = stacked(vs: [showmodelsw,showmodellbl])
-        let gpsStack = stacked(vs: [gpssw,gpslbl])
-        let serialStack = stacked(vs: [serialsw,seriallbl])
+        let docalibrStack = stacked(vs: [docalibrsw, docalibrlbl])
+        let focusStack = stacked(vs: [focussw, focuslbl])
+        let modelsStack = stacked(vs: [showmodelsw, showmodellbl])
+        let gpsStack = stacked(vs: [gpssw, gpslbl])
+        let serialStack = stacked(vs: [serialsw, seriallbl])
         
         mainStack = UIStackView(arrangedSubviews: [docalibrStack,focusStack,modelsStack,gpsStack,serialStack])
         mainStack.axis = .vertical

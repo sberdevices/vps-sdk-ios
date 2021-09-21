@@ -148,7 +148,7 @@ class VPSNMobileTests: XCTestCase {
     }
     
     func testInitPublicStruct() {
-        let gps = ResponseVPSPhoto.gpsResponse(lat: 1, long: 1)
+        let gps = ResponseVPSPhoto.GPSResponse(lat: 1, long: 1)
         let resp = ResponseVPSPhoto(status: true, posX: 1, posY: 1, posZ: 1, posRoll: 1, posPitch: 1, posYaw: 1)
         XCTAssertNotNil(gps)
         XCTAssertNotNil(resp)

@@ -1,24 +1,18 @@
-//
-//  ConverterGPS.swift
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 07.07.2021.
-//
+
 
 import Foundation
 import CoreLocation
 import simd
 /// Local coordinate in vps
-public struct PoseVPS:Codable {
+public struct PoseVPS: Codable {
     public let transform: simd_float4x4
-    public var position:SIMD3<Float> {
+    public var position: SIMD3<Float> {
         get {
             return SIMD3<Float>(transform[3][0],transform[3][1],transform[3][2])
         }
     }
-    ///Euler angl in degree
-    public var rotation:SIMD3<Float>
-    {
+    /// Euler angl in degree
+    public var rotation: SIMD3<Float> {
         get {
             let rot = getEulereFrom(transform: transform)
             return SIMD3(rot.x.inDegrees(),rot.y.inDegrees(),rot.z.inDegrees())
@@ -60,9 +54,9 @@ public struct PoseVPS:Codable {
 
 /// World Map coordinate
 public struct MapPoseVPS:Codable {
-    public let latitude:Double
-    public let longitude:Double
-    public let course:Double
+    public let latitude: Double
+    public let longitude: Double
+    public let course: Double
     public init(lat: Double, long: Double, course: Double) {
         self.latitude = lat
         self.longitude = long
@@ -75,7 +69,7 @@ public struct MapPoseVPS:Codable {
 }
 
 /// Anchor point for converting coordinates
-public struct GeoReferencing:Codable {
+public struct GeoReferencing: Codable {
     public let geopoint: MapPoseVPS
     public let coordinateVPS: PoseVPS
     public init(geopoint: MapPoseVPS, coordinate: PoseVPS) {
@@ -85,7 +79,7 @@ public struct GeoReferencing:Codable {
     
     public static func initFromUrl(url:URL) -> GeoReferencing? {
         guard let data = try? Data(contentsOf: url),
-              let model:GeoReferencing = try? JSONDecoder().decode(GeoReferencing.self, from: data)  else { return nil }
+              let model: GeoReferencing = try? JSONDecoder().decode(GeoReferencing.self, from: data)  else { return nil }
         return model
     }
 }
@@ -103,7 +97,7 @@ public class ConverterGPS {
         case ready
     }
     
-    ///set custom geoReferencing
+    /// set custom geoReferencing
     public func setGeoreference(geoReferencing:GeoReferencing) {
         self.geoReferencing = geoReferencing
         rotateAngl = calculateAngl(geopoint: geoReferencing.geopoint, coordinate: geoReferencing.coordinateVPS)
@@ -131,17 +125,17 @@ public class ConverterGPS {
     }
     
     private func calculateMapPoseForConverter(pos: SIMD3<Float>,
-                                              poseAngl:Float,
-                                              geoRef:GeoReferencing,
+                                              poseAngl: Float,
+                                              geoRef: GeoReferencing,
                                               rotateAngl: Float) -> MapPoseVPS {
         let rotatedPoint = rotatedCoordinate(angl: rotateAngl, point: pos)
         let rotatedRef = rotatedCoordinate(angl: rotateAngl, point: geoRef.coordinateVPS.position)
         let loc =  getCurrentLocationFrom(p1: rotatedRef,
                                       p2: rotatedPoint,
-                                      geoPoint: (lat:geoRef.geopoint.latitude,long:geoRef.geopoint.longitude))
+                                      geoPoint: (lat:geoRef.geopoint.latitude, long:geoRef.geopoint.longitude))
         let pose360Angl = tan180To360Degree(poseAngl)
         var course = pose360Angl - rotateAngl
-        //some maps cant work with value x<0 or 360>x
+        // some maps cant work with value x<0 or 360>x
         if course > 360 { course = course - 360 }
         if course < 0 { course = course + 360 }
         return MapPoseVPS(lat: loc.lat, long: loc.long, course: Double(course))
@@ -151,7 +145,7 @@ public class ConverterGPS {
     /// - Parameters:
     ///   - geoPoint: target geo coordinate
     /// - Returns: new local coodeinate
-    public func convertToXYZ(mapPose:MapPoseVPS) throws -> PoseVPS {
+    public func convertToXYZ(mapPose: MapPoseVPS) throws -> PoseVPS {
         guard let geoRef = geoReferencing, let rotateAngl = rotateAngl else {
             throw status
         }
@@ -162,7 +156,7 @@ public class ConverterGPS {
                             angl: -rotateAngl,
                             geoPoint: (mapPose.latitude,
                                        mapPose.longitude))
-        return PoseVPS(pos: coord, rot: SIMD3<Float>(0,yAngl,0))
+        return PoseVPS(pos: coord, rot: SIMD3<Float>(0, yAngl, 0))
     }
     
     func calculateAngl(geopoint: MapPoseVPS, coordinate: PoseVPS) -> Float {
@@ -178,21 +172,21 @@ public class ConverterGPS {
     ///   - geoPoint: geo coordinates
     /// - Returns: where i am in planet
     /// - We calculate the difference in meters by how much we have gone from the anchor point. Add to the value of latitude and longitude the value of the difference (meters / 1 value of latitude or longitude)
-    func getCurrentLocationFrom(p1      :SIMD3<Float>,
-                                p2      :SIMD3<Float>,
-                                geoPoint:(lat:Double,long:Double)) -> (lat:Double,long:Double) {
+    func getCurrentLocationFrom(p1: SIMD3<Float>,
+                                p2: SIMD3<Float>,
+                                geoPoint: (lat: Double, long: Double)) -> (lat: Double, long: Double) {
         let dx = Double(p2.x - p1.x)
         let dz = Double(p2.z - p1.z)
         
-        ///Latitude. The circumference is different - 40.075.696 km at the equator, 0 at the poles. Calculated as the length of one degree at the equator times the cosine of the latitude angle. One degree at the equator - 40,075.696 km / 360 ° = 111.321377778 km / ° (111321.377778 m / °)
+        /// Latitude. The circumference is different - 40.075.696 km at the equator, 0 at the poles. Calculated as the length of one degree at the equator times the cosine of the latitude angle. One degree at the equator - 40,075.696 km / 360 ° = 111.321377778 km / ° (111321.377778 m / °)
         let onelat = Earth.meridianInMtr / 360
-        ///Longitude. Everything is simple here: the circumference (meridian) is constant - 40,008 km, divide by 360 °, we get:111.134861111 km in one degree, we divide by 60 minutes:1.85224768519 km in one minute, divided by 60 seconds:0.0308707947531 km (30.8707947531 m) in one second.
+        /// Longitude. Everything is simple here: the circumference (meridian) is constant - 40,008 km, divide by 360 °, we get:111.134861111 km in one degree, we divide by 60 minutes:1.85224768519 km in one minute, divided by 60 seconds:0.0308707947531 km (30.8707947531 m) in one second.
         let onelong = cos(geoPoint.lat * Double.pi / 180.0 ) * Earth.parallelsInMtr / 360
         
         let lat = geoPoint.lat - dz / onelat
         let long = geoPoint.long + dx / onelong
         
-        return (lat,long)
+        return (lat, long)
     }
     
     
@@ -204,13 +198,13 @@ public class ConverterGPS {
     ///   - geoPoint: target geo coordinate
     /// - Returns: new local coodeinate
     /// - Calculate the difference in meters between the new point and the geo anchor point. Add it to the anchor values x and z
-    func getArkitFrom(lastgeo: (lat:Double,long:Double),
-                      p1     : SIMD3<Float>,
-                      angl   : Float,
-                      geoPoint:(lat:Double,long:Double)) -> SIMD3<Float>{
-        ///Latitude. The circumference is different - 40.075.696 km at the equator, 0 at the poles. Calculated as the length of one degree at the equator times the cosine of the latitude angle. One degree at the equator - 40,075.696 km / 360 ° = 111.321377778 km / ° (111321.377778 m / °)
+    func getArkitFrom(lastgeo: (lat: Double, long: Double),
+                      p1: SIMD3<Float>,
+                      angl: Float,
+                      geoPoint: (lat: Double,long: Double)) -> SIMD3<Float> {
+        /// Latitude. The circumference is different - 40.075.696 km at the equator, 0 at the poles. Calculated as the length of one degree at the equator times the cosine of the latitude angle. One degree at the equator - 40,075.696 km / 360 ° = 111.321377778 km / ° (111321.377778 m / °)
         let onelat = Earth.meridianInMtr / 360
-        ///Longitude. Everything is simple here: the circumference (meridian) is constant - 40,008 km, divide by 360 °, we get:111.134861111 km in one degree, we divide by 60 minutes:1.85224768519 km in one minute, divided by 60 seconds:0.0308707947531 km (30.8707947531 m) in one second.
+        /// Longitude. Everything is simple here: the circumference (meridian) is constant - 40,008 km, divide by 360 °, we get:111.134861111 km in one degree, we divide by 60 minutes:1.85224768519 km in one minute, divided by 60 seconds:0.0308707947531 km (30.8707947531 m) in one second.
         let onelong = cos(lastgeo.lat * Double.pi / 180.0 ) * Earth.parallelsInMtr / 360
         
         let dz = -(geoPoint.lat - lastgeo.lat) * onelat
@@ -227,7 +221,7 @@ public class ConverterGPS {
     ///   - x: x
     ///   - z: z
     /// - Returns: rotated points
-    func rotatedCoordinate(angl:Float, point:SIMD3<Float>) -> SIMD3<Float> {
+    func rotatedCoordinate(angl: Float, point: SIMD3<Float>) -> SIMD3<Float> {
         let rad = (angl) * Float.pi / 180.0
         let newX = (point.x)*cos(rad) + (point.z)*sin(rad)
         let newZ = (point.x)*sin(rad) - (point.z)*cos(rad)
@@ -236,8 +230,8 @@ public class ConverterGPS {
 }
 
 fileprivate struct Earth {
-    ///Circumference  equatorial from wiki
+    /// Circumference  equatorial from wiki
     static let meridianInMtr = 40007.863 * 1000
-    ///Circumference  meridional from wiki
+    /// Circumference  meridional from wiki
     static let parallelsInMtr = 40075.0 * 1000
 }

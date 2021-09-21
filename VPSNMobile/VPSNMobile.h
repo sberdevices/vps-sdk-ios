@@ -1,9 +1,4 @@
-//
-//  VPSNMobile.h
-//  VPSNMobile
-//
-//  Created by Eugene Smolyakov on 26.10.2020.
-//
+
 
 #import <Foundation/Foundation.h>
 

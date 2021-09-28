@@ -31,7 +31,7 @@ class Neuro {
         }
         
         neuroGroup.enter()
-        TFLite.newInstance(path: msp.path) { result in
+        TFLite.newInstance(path: msp.path, metalEnabled: false) { result in
             switch result {
             case let .success(segmentator):
                 self.msp = segmentator
@@ -137,7 +137,7 @@ class TFLite {
     static func newInstance(path: String,
                             metalEnabled:Bool = true,
                             completion: @escaping ((Result<TFLite>) -> Void)) {
-        let tfLiteQueue = DispatchQueue(label: "tfliteQueue")
+        let tfLiteQueue = DispatchQueue(label: "tfliteQueue\(UUID().uuidString)")
         print("START: newInstance")
         tfLiteQueue.async {
             var delegates: [Delegate]?

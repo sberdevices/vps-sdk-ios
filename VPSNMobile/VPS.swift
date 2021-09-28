@@ -115,9 +115,14 @@ class VPS {
                    failure: ((NSError) -> Void)?) {
         var mnv:URL?
         var msp:URL?
-        var progr: Double = 0 {
+        var progressmnv: Double = 0 {
             didSet {
-                downProgr?(progr)
+                downProgr?(progressmnv+progressmsp)
+            }
+        }
+        var progressmsp: Double = 0 {
+            didSet {
+                downProgr?(progressmnv+progressmsp)
             }
         }
         let neuroGroup = DispatchGroup()
@@ -135,7 +140,7 @@ class VPS {
                 }
                 neuroGroup.leave()
             } downProgr: { (pr) in
-                progr += pr/2.0
+                progressmnv = pr
             } failure: { (err) in
                 failure?(err)
                 neuroGroup.leave()
@@ -155,7 +160,7 @@ class VPS {
                 }
                 neuroGroup.leave()
             } downProgr: { (pr) in
-                progr += pr/2.0
+                progressmsp = pr
             } failure: { (err) in
                 failure?(err)
                 neuroGroup.leave()

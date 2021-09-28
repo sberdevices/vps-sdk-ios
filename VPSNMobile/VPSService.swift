@@ -26,7 +26,8 @@ public struct Settings {
     /// Never use raw images in production app
     let recognizeType: RecognizeType
     /// URL to Mobile VPS neuro model
-    let neuroLink: String
+    let neuroLinkmnv: String
+    let neuroLinkmsp: String
     /// Time of interpolation between two localisations
     public var animationTime: Float = 1 {
         didSet {
@@ -88,12 +89,14 @@ public struct Settings {
     public init(url: String,
                 locationID: String,
                 recognizeType: RecognizeType,
-                neuroLink: String = "https://testable1.s3pd01.sbercloud.ru/vpsmobiletflite/230421/hfnet_i8_960.tflite",
+                neuroLinkmnv: String = "https://testable1.s3pd01.sbercloud.ru/mobilevpstflite/mnv_960x540x1_4096.tflite",
+                neuroLinkmsp: String = "https://testable1.s3pd01.sbercloud.ru/mobilevpstflite/msp_960x540x1_256_400.tflite",
                 customGeoReference: GeoReferencing? = nil) {
         self.url = url
         self.locationID = locationID
         self.recognizeType = recognizeType
-        self.neuroLink = neuroLink
+        self.neuroLinkmnv = neuroLinkmnv
+        self.neuroLinkmsp = neuroLinkmsp
         self.customGeoReference = customGeoReference
     }
 }

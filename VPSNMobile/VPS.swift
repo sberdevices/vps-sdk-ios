@@ -73,7 +73,7 @@ class VPS {
     /// serial request packages
     var serialReqests = [UploadVPSPhoto]()
     
-    var neuro: Neuro?
+    var neuro: Neuro!
     
     /// Send the next request only after receiving a response
     var getAnswer = true
@@ -107,43 +107,68 @@ class VPS {
         if let customGeoref = settings.customGeoReference {
             converterGPS.setGeoreference(geoReferencing: customGeoref)
         }
+        neuro = Neuro()
     }
     /// Init for Tensorflow. If the model is not on the device, then it will be downloaded from the server
     func neuroInit(succes: (() -> Void)?,
                    downProgr: ((Double) -> Void)?,
                    failure: ((NSError) -> Void)?) {
-        if let url = modelPath(name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
-            Neuro.newInstance(path: url.path) { result in
-                switch result {
-                case let .success(segmentator):
-                    self.neuro = segmentator
-                    succes?()
-                case .error(_):
-                    let er = makeErr(with: Errors.e1)
-                    failure?(er)
-                }
+        var mnv:URL?
+        var msp:URL?
+        var progr: Double = 0 {
+            didSet {
+                downProgr?(progr)
             }
+        }
+        let neuroGroup = DispatchGroup()
+        neuroGroup.enter()
+        if let url = modelPath(name: NeuroName.mnv, folder: ModelsFolder.name) {
+            mnv = url
+            neuroGroup.leave()
         } else {
-            network.downloadNeuroModel { (url) in
-                if let path = saveModel(from: url, name: "hfnet_i8_960.tflite", folder: ModelsFolder.name) {
-                    Neuro.newInstance(path: path.path) { result in
-                        switch result {
-                        case let .success(segmentator):
-                            self.neuro = segmentator
-                            succes?()
-                        case .error(_):
-                            let er = makeErr(with: Errors.e1)
-                            failure?(er)
-                        }
-                    }
+            network.download(url: settings.neuroLinkmnv){ (url) in
+                if let path = saveModel(from: url, name: NeuroName.mnv, folder: ModelsFolder.name) {
+                    mnv = path
                 } else {
                     let er = makeErr(with: Errors.e2)
                     failure?(er)
                 }
+                neuroGroup.leave()
             } downProgr: { (pr) in
-                downProgr?(pr)
+                progr += pr/2.0
             } failure: { (err) in
                 failure?(err)
+                neuroGroup.leave()
+            }
+        }
+        neuroGroup.enter()
+        if let url = modelPath(name: NeuroName.msp, folder: ModelsFolder.name) {
+            msp = url
+            neuroGroup.leave()
+        } else {
+            network.download(url: settings.neuroLinkmsp){ (url) in
+                if let path = saveModel(from: url, name: NeuroName.msp, folder: ModelsFolder.name) {
+                    msp = path
+                } else {
+                    let er = makeErr(with: Errors.e2)
+                    failure?(er)
+                }
+                neuroGroup.leave()
+            } downProgr: { (pr) in
+                progr += pr/2.0
+            } failure: { (err) in
+                failure?(err)
+                neuroGroup.leave()
+            }
+        }
+        
+        neuroGroup.notify(queue: queue) {
+            if let mnv = mnv, let msp = msp {
+                self.neuro.tfLiteInit(mnv: mnv, msp: msp) {
+                    succes?()
+                } failure: { err in
+                    failure?(err)
+                }
             }
         }
     }
@@ -352,11 +377,11 @@ class VPS {
                         completion: { result in
             switch result {
             case let .success(segmentationResult):
-                let data = NeuroData(globalDescriptor: segmentationResult.globalDescriptor,
-                                     keyPoints: segmentationResult.keypoints,
-                                     scores: segmentationResult.scores,
-                                     desc: segmentationResult.localDescriptors)
-                success?(data)
+//                let data = NeuroData(globalDescriptor: segmentationResult.globalDescriptor,
+//                                     keyPoints: segmentationResult.keypoints,
+//                                     scores: segmentationResult.scores,
+//                                     desc: segmentationResult.localDescriptors)
+                success?(segmentationResult)
             case let .error(error):
                 let er = makeErr(with: Errors.e3)
                 DispatchQueue.main.async {

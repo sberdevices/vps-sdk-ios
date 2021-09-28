@@ -36,7 +36,7 @@ extension String {
 }
 
 extension UIImage {
-    func scaledData(with size: CGSize) -> Data? {
+    func scaledData(with size: CGSize, gray:Bool) -> Data? {
         guard let cgImage = self.cgImage, cgImage.width > 0, cgImage.height > 0 else { return nil }
         let bitmapInfo = CGBitmapInfo(
             rawValue: CGImageAlphaInfo.none.rawValue
@@ -47,8 +47,8 @@ extension UIImage {
                 width: width,
                 height: Int(size.height),
                 bitsPerComponent: cgImage.bitsPerComponent,
-                bytesPerRow: width * 1,
-                space: CGColorSpaceCreateDeviceGray(),
+                bytesPerRow: gray ? width : width*3,
+                space: gray ? CGColorSpaceCreateDeviceGray() : CGColorSpaceCreateDeviceRGB(),
                 bitmapInfo: bitmapInfo.rawValue)
         else {
             return nil

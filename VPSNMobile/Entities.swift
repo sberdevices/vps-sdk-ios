@@ -71,7 +71,7 @@ struct NeuroData {
         let versionData = Data(bytes: &version,
                                count: MemoryLayout.size(ofValue: version))
         filedata.append(versionData)
-        var ident: UInt8 = UInt8(0)
+        var ident: UInt8 = UInt8(2)
         let identData = Data(bytes: &ident,
                              count: MemoryLayout.size(ofValue: ident))
         filedata.append(identData)

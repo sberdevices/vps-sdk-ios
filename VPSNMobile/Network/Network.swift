@@ -7,31 +7,29 @@ class Network: NSObject {
     var APIversion = 1
     var baseURL = ""
     var firstLocateUrl = ""
-    var neuroLink = ""
     var settings: Settings
     
     init(settings: Settings) {
         self.settings = settings
         super.init()
-        baseURL = "\(settings.url))vps/api/v1/job"
-        firstLocateUrl = "\(settings.url))vps/api/v1/first_loc/job"
-        self.neuroLink = settings.neuroLink
+        baseURL = "\(settings.url)vps/api/v1/job"
+        firstLocateUrl = "\(settings.url)vps/api/v1/first_loc/job"
     }
     
     var observation: NSKeyValueObservation!
-    func downloadNeuro(url: @escaping ((URL) -> Void),
-                       downProgr: @escaping ((Double) -> Void),
-                       failure: @escaping ((NSError) -> Void)) {
-        let path = URL(string: neuroLink)!
+    func download(url:String,
+                  outputURL: @escaping ((URL) -> Void),
+                  downProgr: @escaping ((Double) -> Void),
+                  failure: @escaping ((NSError) -> Void)) {
         put { [weak self] in
-            let task = self?.session.downloadTask(with: path, completionHandler: { (URL, Responce, Error) in
+            let task = self?.session.downloadTask(with: URL(string: url)!, completionHandler: { (URL, Responce, Error) in
                 if let err = Error {
                     print(err)
                     self?.f(err as NSError, failure)
                     self?.executeNext()
                 }
                 if let path = URL {
-                    url(path)
+                    outputURL(path)
                     self?.executeNext()
                 }
             })
@@ -47,6 +45,7 @@ class Network: NSObject {
                          boundary: String,
                          success: @escaping ((NSDictionary) -> Void),
                          failure: @escaping ((NSError) -> Void)) {
+        print("ASD",url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         request.timeoutInterval = settings.timeOutDuration

@@ -6,5 +6,5 @@ target 'VPSNMobile' do
   use_frameworks!
 
   # Pods for VPSNMobile
-	pod 'TensorFlowLiteSwift', '2.5.0'
+	pod 'TensorFlowLiteSwift', '2.6.0', :subspecs => ['Metal']
 end

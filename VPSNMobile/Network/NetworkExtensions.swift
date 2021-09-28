@@ -8,9 +8,10 @@ protocol NetVPSService {
     func serialLocalize(reqs: [UploadVPSPhoto],
                         success: ((ResponseVPSPhoto) -> Void)?,
                         failure: ((NSError) -> Void)?)
-    func downloadNeuroModel(url: ((URL) -> Void)?,
-                            downProgr: ((Double) -> Void)?,
-                            failure: ((NSError) -> Void)?)
+    func download(url:String,
+                  outputURL: ((URL) -> Void)?,
+                  downProgr: ((Double) -> Void)?,
+                  failure: ((NSError) -> Void)?)
 }
 
 extension Network: NetVPSService {
@@ -45,11 +46,12 @@ extension Network: NetVPSService {
         }
     }
     
-    func downloadNeuroModel(url: ((URL) -> Void)?,
-                            downProgr: ((Double) -> Void)?,
-                            failure: ((NSError) -> Void)?) {
-        downloadNeuro { (path) in
-            url?(path)
+    func download(url:String,
+                  outputURL: ((URL) -> Void)?,
+                  downProgr: ((Double) -> Void)?,
+                  failure: ((NSError) -> Void)?) {
+        download(url: url) { (path) in
+            outputURL?(path)
         } downProgr: { (progr) in
             downProgr?(progr)
         } failure: { (err) in

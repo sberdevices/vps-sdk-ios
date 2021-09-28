@@ -144,7 +144,7 @@ class TFLite {
             #if !targetEnvironment(simulator)
                   // Use GPU on real device for inference as this model is fully supported.
             if metalEnabled {
-//                delegates = [MetalDelegate()]
+                delegates = [MetalDelegate()]
             }
             #endif
             do {

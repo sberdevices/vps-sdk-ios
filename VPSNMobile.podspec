@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.static_framework = true
   s.dependency 'TensorFlowLiteSwift', '2.5.0'
-  s.dependency 'TensorFlowLiteSwift/Metal'
+  s.dependency 'TensorFlowLiteSwift/Metal', '2.5.0'
   s.pod_target_xcconfig = {
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
   }

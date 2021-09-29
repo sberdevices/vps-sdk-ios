@@ -45,7 +45,6 @@ class Network: NSObject {
                          boundary: String,
                          success: @escaping ((NSDictionary) -> Void),
                          failure: @escaping ((NSError) -> Void)) {
-        print("ASD",url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         request.timeoutInterval = settings.timeOutDuration

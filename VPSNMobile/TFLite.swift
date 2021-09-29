@@ -20,7 +20,7 @@ class Neuro {
         var err: NSError?
         
         neuroGroup.enter()
-        TFLite.newInstance(path: mnv.path) { result in
+        TFLite.newInstance(path: mnv.path, metalEnabled: false) { result in
             switch result {
             case let .success(segmentator):
                 self.mnv = segmentator
@@ -31,7 +31,7 @@ class Neuro {
         }
         
         neuroGroup.enter()
-        TFLite.newInstance(path: msp.path, metalEnabled: false) { result in
+        TFLite.newInstance(path: msp.path, metalEnabled: true) { result in
             switch result {
             case let .success(segmentator):
                 self.msp = segmentator

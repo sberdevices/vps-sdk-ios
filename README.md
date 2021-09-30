@@ -1,7 +1,11 @@
 # VPS SDK (iOS)
 [![CocoaPods Compatible](https://img.shields.io/badge/pod-0.1.2-brightgreen)](https://img.shields.io/badge/pod-0.1.2-brightgreen)  
 
-This SDK allows to determine users position via Visual Positioning System (VPS) API.
+This is **Visual Positioning System** SDK for Native iOS apps. Main features are:
+- High-precision user position localization for your AR apps
+- Easy to use public API
+- Integration in SceneKit and RealityKit
+- Works both for UIKit and SwiftUI apps
 
 ## Requirements
 
@@ -42,7 +46,7 @@ Add flags to access user's location and camera into `info.plist`. TemporaryAuth 
 ```
 ## Usage
 
-* You must define a `ARSCNViewDelegate` delegate and call the method `vps?.frameUpdated()` each frame update
+* You must define a `ARSCNViewDelegate` delegate and call the method `vps?.frameUpdated()` each frame
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported.
 * You can use the delegate method `sessionWasInterrupted` to stop the VPS when the application moves foreground and start it again in `sessionInterruptionEnded`
 
@@ -103,7 +107,7 @@ class Example:UIViewController, ARSCNViewDelegate {
 
 ### Mobile VPS
 
-To enable the mobile VPS mode, you need to select it in the settings `recognizeType: .mobile`. In this case, the neural network will be downloaded to the device, the progress of which can be tracked in the `loadingProgress` handler, if the model was not downloaded, or could not be initialized, the `failure` handler will report this.
+To enable the mobile VPS mode, you need to select it in the settings `recognizeType: .mobile`. In this case, the neural network will be downloaded to the device, the progress of which can be tracked in the `loadingProgress` handler. If the model failed to download or could not be initialized, the `failure` handler will report this.
 ```swift
 VPSBuilder.initializeVPS(arsession: arview.session,
                          settings: set,
@@ -121,7 +125,7 @@ VPSBuilder.initializeVPS(arsession: arview.session,
 
 ### RealityKit
 
-Using realitykit is similar to using scenekit. Instead of using `func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval)` you need to use `func session(_ session: ARSession, didUpdate frame: ARFrame)` using ARSessionDelegate for call call the method `vps?.frameUpdated()` each frame
+Using RealityKit is similar to using SceneKit. Instead of using `func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval)` you need to use `func session(_ session: ARSession, didUpdate frame: ARFrame)` using ARSessionDelegate for call call the method `vps?.frameUpdated()` each frame.
 
 ```swift
 func session(_ session: ARSession, didUpdate frame: ARFrame) {
@@ -130,8 +134,7 @@ func session(_ session: ARSession, didUpdate frame: ARFrame) {
 ```
 
 ### SwiftUI
-For better use in SwiftUI, you can use the MVVM architecture. Create a reference to the ViewModel class in the main VIEW structure. In the ViewModel, place the vps service and subscribe to the VPSServiceDelegate protocol. You can now manage the VPSservice using the ViewModel. But we must not forget about the method of updating frames. Since we are using ARSCNView and it is not displayed automatically in the VIEW, we need to create a new VIEW structure according to the UIViewRepresentable protocol. Inside, create a link to the ViewModel. Assign your ViewModel as the ARSCNView delegate. Subscribe the ViewModel to the ARSCNViewDelegate protocol. Now you can call the `frameUpdated()` method inside the ViewModel in `func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval)`.
-
+For better use in SwiftUI, you should use the MVVM architecture. Here is a quick example:
 ```swift
 struct ContentView: View {
     @StateObject var vm = ViewModel()

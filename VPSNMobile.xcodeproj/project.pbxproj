@@ -12,6 +12,47 @@
 		1C7EFE54269EAEE00049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1C7EFE55269EAF190049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1CCDEF60269E433000B1D4AA /* TestGeoref.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */; };
+		1CE564792707064600C7BF96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE564782707064600C7BF96 /* AppDelegate.swift */; };
+		1CE5647B2707064600C7BF96 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5647A2707064600C7BF96 /* SceneDelegate.swift */; };
+		1CE56498270707A500C7BF96 /* FakeARS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5648A270707A400C7BF96 /* FakeARS.swift */; };
+		1CE56499270707A500C7BF96 /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5648B270707A400C7BF96 /* DownLaunchAR.swift */; };
+		1CE5649A270707A500C7BF96 /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1CE5648C270707A500C7BF96 /* DownLaunchAR.xib */; };
+		1CE5649B270707A500C7BF96 /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1CE5648E270707A500C7BF96 /* Polytech.scn */; };
+		1CE5649C270707A500C7BF96 /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE5648F270707A500C7BF96 /* Dialog Bubble_Base_Color.png */; };
+		1CE5649D270707A500C7BF96 /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56490270707A500C7BF96 /* SphereAndRings_Base_Color.png */; };
+		1CE5649E270707A500C7BF96 /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56491270707A500C7BF96 /* sb02.png */; };
+		1CE5649F270707A500C7BF96 /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56492270707A500C7BF96 /* Material_baseColor.png */; };
+		1CE564A0270707A500C7BF96 /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56493270707A500C7BF96 /* Poly Logo_Base_Color.png */; };
+		1CE564A1270707A500C7BF96 /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56494270707A500C7BF96 /* Char body_Base_Color.png */; };
+		1CE564A2270707A500C7BF96 /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56495270707A500C7BF96 /* Balls01_Base_Color.png */; };
+		1CE564A3270707A500C7BF96 /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56496270707A500C7BF96 /* palette_baseColor.png */; };
+		1CE564A4270707A500C7BF96 /* scn.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CE56497270707A500C7BF96 /* scn.scnassets */; };
+		1CE564A6270707D000C7BF96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564A5270707D000C7BF96 /* Assets.xcassets */; };
+		1CE564A9270707E300C7BF96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564A7270707E300C7BF96 /* LaunchScreen.storyboard */; };
+		1CE564AA270707E300C7BF96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564A8270707E300C7BF96 /* Main.storyboard */; };
+		1CE564AC2707087300C7BF96 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE564AB2707087300C7BF96 /* ViewController.swift */; };
+		1CE564AD2707088800C7BF96 /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; platformFilter = ios; };
+		1CE564AE2707088800C7BF96 /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1CE564B92707097A00C7BF96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE564B82707097A00C7BF96 /* AppDelegate.swift */; };
+		1CE564BB2707097A00C7BF96 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE564BA2707097A00C7BF96 /* SceneDelegate.swift */; };
+		1CE564CA270709A600C7BF96 /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5648B270707A400C7BF96 /* DownLaunchAR.swift */; };
+		1CE564CB270709AC00C7BF96 /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1CE5648C270707A500C7BF96 /* DownLaunchAR.xib */; };
+		1CE564D8270709D000C7BF96 /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564CD270709D000C7BF96 /* Polytech.scn */; };
+		1CE564D9270709D000C7BF96 /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564CE270709D000C7BF96 /* Dialog Bubble_Base_Color.png */; };
+		1CE564DA270709D000C7BF96 /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564CF270709D000C7BF96 /* SphereAndRings_Base_Color.png */; };
+		1CE564DB270709D000C7BF96 /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D0270709D000C7BF96 /* sb02.png */; };
+		1CE564DC270709D000C7BF96 /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D1270709D000C7BF96 /* Material_baseColor.png */; };
+		1CE564DD270709D000C7BF96 /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D2270709D000C7BF96 /* Poly Logo_Base_Color.png */; };
+		1CE564DE270709D000C7BF96 /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D3270709D000C7BF96 /* Char body_Base_Color.png */; };
+		1CE564DF270709D000C7BF96 /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D4270709D000C7BF96 /* Balls01_Base_Color.png */; };
+		1CE564E0270709D000C7BF96 /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D5270709D000C7BF96 /* palette_baseColor.png */; };
+		1CE564E1270709D000C7BF96 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE564D6270709D000C7BF96 /* ViewController.swift */; };
+		1CE564E2270709D000C7BF96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564D7270709D000C7BF96 /* Assets.xcassets */; };
+		1CE564E5270709DA00C7BF96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564E3270709DA00C7BF96 /* LaunchScreen.storyboard */; };
+		1CE564E6270709DA00C7BF96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564E4270709DA00C7BF96 /* Main.storyboard */; };
+		1CE564E7270709F300C7BF96 /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; platformFilter = ios; };
+		1CE564E8270709F300C7BF96 /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C21282A25469B7A0073D755 /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1CE564ED27070E8500C7BF96 /* scn.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CE564EC27070E8500C7BF96 /* scn.scnassets */; };
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
 		8C21284725469D250073D755 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283B25469D250073D755 /* Entities.swift */; };
@@ -34,6 +75,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1CE564AF2707088800C7BF96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C21282125469B7A0073D755 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C21282925469B7A0073D755;
+			remoteInfo = VPSNMobile;
+		};
+		1CE564E9270709F300C7BF96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C21282125469B7A0073D755 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C21282925469B7A0073D755;
+			remoteInfo = VPSNMobile;
+		};
 		8CC71651260B101700CF1089 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8C21282125469B7A0073D755 /* Project object */;
@@ -43,10 +98,74 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1CE564B12707088800C7BF96 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1CE564AE2707088800C7BF96 /* VPSNMobile.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CE564EB270709F300C7BF96 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1CE564E8270709F300C7BF96 /* VPSNMobile.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFloat16.swift; sourceTree = "<group>"; };
 		1C7EFE53269EAEE00049D3C9 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGeoref.swift; sourceTree = "<group>"; };
+		1CE564762707064600C7BF96 /* PolytechContentPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolytechContentPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CE564782707064600C7BF96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1CE5647A2707064600C7BF96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1CE564862707064700C7BF96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1CE5648A270707A400C7BF96 /* FakeARS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeARS.swift; sourceTree = "<group>"; };
+		1CE5648B270707A400C7BF96 /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
+		1CE5648C270707A500C7BF96 /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
+		1CE5648E270707A500C7BF96 /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
+		1CE5648F270707A500C7BF96 /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
+		1CE56490270707A500C7BF96 /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
+		1CE56491270707A500C7BF96 /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
+		1CE56492270707A500C7BF96 /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
+		1CE56493270707A500C7BF96 /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
+		1CE56494270707A500C7BF96 /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
+		1CE56495270707A500C7BF96 /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
+		1CE56496270707A500C7BF96 /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
+		1CE56497270707A500C7BF96 /* scn.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scn.scnassets; sourceTree = "<group>"; };
+		1CE564A5270707D000C7BF96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1CE564A7270707E300C7BF96 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1CE564A8270707E300C7BF96 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		1CE564AB2707087300C7BF96 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1CE564B62707097A00C7BF96 /* Polytech_VPS_Testing_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Polytech_VPS_Testing_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CE564B82707097A00C7BF96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1CE564BA2707097A00C7BF96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		1CE564C62707097C00C7BF96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1CE564CD270709D000C7BF96 /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
+		1CE564CE270709D000C7BF96 /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
+		1CE564CF270709D000C7BF96 /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
+		1CE564D0270709D000C7BF96 /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
+		1CE564D1270709D000C7BF96 /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
+		1CE564D2270709D000C7BF96 /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
+		1CE564D3270709D000C7BF96 /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
+		1CE564D4270709D000C7BF96 /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
+		1CE564D5270709D000C7BF96 /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
+		1CE564D6270709D000C7BF96 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1CE564D7270709D000C7BF96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1CE564E3270709DA00C7BF96 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1CE564E4270709DA00C7BF96 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		1CE564EC27070E8500C7BF96 /* scn.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scn.scnassets; sourceTree = "<group>"; };
 		5E9519E6B75B322BBEC6975B /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		8C21282A25469B7A0073D755 /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282D25469B7A0073D755 /* VPSNMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPSNMobile.h; sourceTree = "<group>"; };
@@ -75,6 +194,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1CE564732707064600C7BF96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564AD2707088800C7BF96 /* VPSNMobile.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CE564B32707097A00C7BF96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564E7270709F300C7BF96 /* VPSNMobile.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8C21282725469B7A0073D755 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -102,11 +237,80 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1CE564772707064600C7BF96 /* PolytechContentPreview */ = {
+			isa = PBXGroup;
+			children = (
+				1CE564782707064600C7BF96 /* AppDelegate.swift */,
+				1CE5648B270707A400C7BF96 /* DownLaunchAR.swift */,
+				1CE5648C270707A500C7BF96 /* DownLaunchAR.xib */,
+				1CE5648A270707A400C7BF96 /* FakeARS.swift */,
+				1CE5648D270707A500C7BF96 /* ggg */,
+				1CE56497270707A500C7BF96 /* scn.scnassets */,
+				1CE5647A2707064600C7BF96 /* SceneDelegate.swift */,
+				1CE564A7270707E300C7BF96 /* LaunchScreen.storyboard */,
+				1CE564AB2707087300C7BF96 /* ViewController.swift */,
+				1CE564A8270707E300C7BF96 /* Main.storyboard */,
+				1CE564A5270707D000C7BF96 /* Assets.xcassets */,
+				1CE564862707064700C7BF96 /* Info.plist */,
+			);
+			path = PolytechContentPreview;
+			sourceTree = "<group>";
+		};
+		1CE5648D270707A500C7BF96 /* ggg */ = {
+			isa = PBXGroup;
+			children = (
+				1CE5648E270707A500C7BF96 /* Polytech.scn */,
+				1CE5648F270707A500C7BF96 /* Dialog Bubble_Base_Color.png */,
+				1CE56490270707A500C7BF96 /* SphereAndRings_Base_Color.png */,
+				1CE56491270707A500C7BF96 /* sb02.png */,
+				1CE56492270707A500C7BF96 /* Material_baseColor.png */,
+				1CE56493270707A500C7BF96 /* Poly Logo_Base_Color.png */,
+				1CE56494270707A500C7BF96 /* Char body_Base_Color.png */,
+				1CE56495270707A500C7BF96 /* Balls01_Base_Color.png */,
+				1CE56496270707A500C7BF96 /* palette_baseColor.png */,
+			);
+			path = ggg;
+			sourceTree = "<group>";
+		};
+		1CE564B72707097A00C7BF96 /* Polytech_VPS_Testing_App */ = {
+			isa = PBXGroup;
+			children = (
+				1CE564B82707097A00C7BF96 /* AppDelegate.swift */,
+				1CE564EC27070E8500C7BF96 /* scn.scnassets */,
+				1CE564E3270709DA00C7BF96 /* LaunchScreen.storyboard */,
+				1CE564E4270709DA00C7BF96 /* Main.storyboard */,
+				1CE564D7270709D000C7BF96 /* Assets.xcassets */,
+				1CE564CC270709D000C7BF96 /* models */,
+				1CE564D6270709D000C7BF96 /* ViewController.swift */,
+				1CE564BA2707097A00C7BF96 /* SceneDelegate.swift */,
+				1CE564C62707097C00C7BF96 /* Info.plist */,
+			);
+			path = Polytech_VPS_Testing_App;
+			sourceTree = "<group>";
+		};
+		1CE564CC270709D000C7BF96 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				1CE564CD270709D000C7BF96 /* Polytech.scn */,
+				1CE564CE270709D000C7BF96 /* Dialog Bubble_Base_Color.png */,
+				1CE564CF270709D000C7BF96 /* SphereAndRings_Base_Color.png */,
+				1CE564D0270709D000C7BF96 /* sb02.png */,
+				1CE564D1270709D000C7BF96 /* Material_baseColor.png */,
+				1CE564D2270709D000C7BF96 /* Poly Logo_Base_Color.png */,
+				1CE564D3270709D000C7BF96 /* Char body_Base_Color.png */,
+				1CE564D4270709D000C7BF96 /* Balls01_Base_Color.png */,
+				1CE564D5270709D000C7BF96 /* palette_baseColor.png */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		8C21282025469B7A0073D755 = {
 			isa = PBXGroup;
 			children = (
 				8C21282C25469B7A0073D755 /* VPSNMobile */,
 				8CC7164C260B101700CF1089 /* VPSNMobileTests */,
+				1CE564772707064600C7BF96 /* PolytechContentPreview */,
+				1CE564B72707097A00C7BF96 /* Polytech_VPS_Testing_App */,
 				8C21282B25469B7A0073D755 /* Products */,
 				98AADC8995441A98D8E12F9F /* Pods */,
 				1C648523566E3F3FCCD9C9DE /* Frameworks */,
@@ -118,6 +322,8 @@
 			children = (
 				8C21282A25469B7A0073D755 /* VPSNMobile.framework */,
 				8CC7164B260B101700CF1089 /* VPSNMobileTests.xctest */,
+				1CE564762707064600C7BF96 /* PolytechContentPreview.app */,
+				1CE564B62707097A00C7BF96 /* Polytech_VPS_Testing_App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -198,6 +404,44 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		1CE564752707064600C7BF96 /* PolytechContentPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CE564892707064700C7BF96 /* Build configuration list for PBXNativeTarget "PolytechContentPreview" */;
+			buildPhases = (
+				1CE564722707064600C7BF96 /* Sources */,
+				1CE564732707064600C7BF96 /* Frameworks */,
+				1CE564742707064600C7BF96 /* Resources */,
+				1CE564B12707088800C7BF96 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1CE564B02707088800C7BF96 /* PBXTargetDependency */,
+			);
+			name = PolytechContentPreview;
+			productName = PolytechContentPreview;
+			productReference = 1CE564762707064600C7BF96 /* PolytechContentPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1CE564B52707097A00C7BF96 /* Polytech_VPS_Testing_App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CE564C72707097C00C7BF96 /* Build configuration list for PBXNativeTarget "Polytech_VPS_Testing_App" */;
+			buildPhases = (
+				1CE564B22707097A00C7BF96 /* Sources */,
+				1CE564B32707097A00C7BF96 /* Frameworks */,
+				1CE564B42707097A00C7BF96 /* Resources */,
+				1CE564EB270709F300C7BF96 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1CE564EA270709F300C7BF96 /* PBXTargetDependency */,
+			);
+			name = Polytech_VPS_Testing_App;
+			productName = Polytech_VPS_Testing_App;
+			productReference = 1CE564B62707097A00C7BF96 /* Polytech_VPS_Testing_App.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8C21282925469B7A0073D755 /* VPSNMobile */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C21283225469B7A0073D755 /* Build configuration list for PBXNativeTarget "VPSNMobile" */;
@@ -241,9 +485,15 @@
 		8C21282125469B7A0073D755 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
+					1CE564752707064600C7BF96 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					1CE564B52707097A00C7BF96 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					8C21282925469B7A0073D755 = {
 						CreatedOnToolsVersion = 12.1;
 						LastSwiftMigration = 1210;
@@ -268,11 +518,55 @@
 			targets = (
 				8C21282925469B7A0073D755 /* VPSNMobile */,
 				8CC7164A260B101700CF1089 /* VPSNMobileTests */,
+				1CE564752707064600C7BF96 /* PolytechContentPreview */,
+				1CE564B52707097A00C7BF96 /* Polytech_VPS_Testing_App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1CE564742707064600C7BF96 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564A3270707A500C7BF96 /* palette_baseColor.png in Resources */,
+				1CE5649B270707A500C7BF96 /* Polytech.scn in Resources */,
+				1CE5649C270707A500C7BF96 /* Dialog Bubble_Base_Color.png in Resources */,
+				1CE564A1270707A500C7BF96 /* Char body_Base_Color.png in Resources */,
+				1CE564A6270707D000C7BF96 /* Assets.xcassets in Resources */,
+				1CE5649F270707A500C7BF96 /* Material_baseColor.png in Resources */,
+				1CE5649E270707A500C7BF96 /* sb02.png in Resources */,
+				1CE564AA270707E300C7BF96 /* Main.storyboard in Resources */,
+				1CE564A9270707E300C7BF96 /* LaunchScreen.storyboard in Resources */,
+				1CE564A0270707A500C7BF96 /* Poly Logo_Base_Color.png in Resources */,
+				1CE564A2270707A500C7BF96 /* Balls01_Base_Color.png in Resources */,
+				1CE5649A270707A500C7BF96 /* DownLaunchAR.xib in Resources */,
+				1CE564A4270707A500C7BF96 /* scn.scnassets in Resources */,
+				1CE5649D270707A500C7BF96 /* SphereAndRings_Base_Color.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CE564B42707097A00C7BF96 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564D8270709D000C7BF96 /* Polytech.scn in Resources */,
+				1CE564DB270709D000C7BF96 /* sb02.png in Resources */,
+				1CE564E2270709D000C7BF96 /* Assets.xcassets in Resources */,
+				1CE564DA270709D000C7BF96 /* SphereAndRings_Base_Color.png in Resources */,
+				1CE564D9270709D000C7BF96 /* Dialog Bubble_Base_Color.png in Resources */,
+				1CE564DD270709D000C7BF96 /* Poly Logo_Base_Color.png in Resources */,
+				1CE564CB270709AC00C7BF96 /* DownLaunchAR.xib in Resources */,
+				1CE564E6270709DA00C7BF96 /* Main.storyboard in Resources */,
+				1CE564DC270709D000C7BF96 /* Material_baseColor.png in Resources */,
+				1CE564DE270709D000C7BF96 /* Char body_Base_Color.png in Resources */,
+				1CE564E5270709DA00C7BF96 /* LaunchScreen.storyboard in Resources */,
+				1CE564E0270709D000C7BF96 /* palette_baseColor.png in Resources */,
+				1CE564ED27070E8500C7BF96 /* scn.scnassets in Resources */,
+				1CE564DF270709D000C7BF96 /* Balls01_Base_Color.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8C21282825469B7A0073D755 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,6 +611,29 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1CE564722707064600C7BF96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564AC2707087300C7BF96 /* ViewController.swift in Sources */,
+				1CE56498270707A500C7BF96 /* FakeARS.swift in Sources */,
+				1CE56499270707A500C7BF96 /* DownLaunchAR.swift in Sources */,
+				1CE564792707064600C7BF96 /* AppDelegate.swift in Sources */,
+				1CE5647B2707064600C7BF96 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1CE564B22707097A00C7BF96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE564B92707097A00C7BF96 /* AppDelegate.swift in Sources */,
+				1CE564BB2707097A00C7BF96 /* SceneDelegate.swift in Sources */,
+				1CE564E1270709D000C7BF96 /* ViewController.swift in Sources */,
+				1CE564CA270709A600C7BF96 /* DownLaunchAR.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8C21282625469B7A0073D755 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,6 +670,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1CE564B02707088800C7BF96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 8C21282925469B7A0073D755 /* VPSNMobile */;
+			targetProxy = 1CE564AF2707088800C7BF96 /* PBXContainerItemProxy */;
+		};
+		1CE564EA270709F300C7BF96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 8C21282925469B7A0073D755 /* VPSNMobile */;
+			targetProxy = 1CE564E9270709F300C7BF96 /* PBXContainerItemProxy */;
+		};
 		8CC71652260B101700CF1089 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
@@ -362,6 +691,126 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1CE564872707064700C7BF96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PolytechContentPreview/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechContentPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1CE564882707064700C7BF96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PolytechContentPreview/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechContentPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1CE564C82707097C00C7BF96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Polytech_VPS_Testing_App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arvrlab.Polytech-VPS-Testing-App";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1CE564C92707097C00C7BF96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Polytech_VPS_Testing_App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arvrlab.Polytech-VPS-Testing-App";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8C21283025469B7A0073D755 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -583,6 +1032,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1CE564892707064700C7BF96 /* Build configuration list for PBXNativeTarget "PolytechContentPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CE564872707064700C7BF96 /* Debug */,
+				1CE564882707064700C7BF96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1CE564C72707097C00C7BF96 /* Build configuration list for PBXNativeTarget "Polytech_VPS_Testing_App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CE564C82707097C00C7BF96 /* Debug */,
+				1CE564C92707097C00C7BF96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8C21282425469B7A0073D755 /* Build configuration list for PBXProject "VPSNMobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

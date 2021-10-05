@@ -215,6 +215,10 @@ extension ViewController: VPSServiceDelegate {
     func onSerialProgressUpdate(processedImages: Int) {
         
     }
+    
+    func serialcount(doned: Int) {
+        
+    }
 
     func sending() {
         statuslbl.backgroundColor = .cyan

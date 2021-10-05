@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  Polytech_VPS_Testing_App
+//  polyscene
 //
-//  Created by Evgeniy Smolyakov on 01.10.2021.
+//  Created by Eugene Smolyakov on 24.09.2020.
 //
 
 import UIKit

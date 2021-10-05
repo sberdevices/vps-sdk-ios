@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  PolytechContentPreview
+//  polytest
 //
-//  Created by Evgeniy Smolyakov on 01.10.2021.
+//  Created by Eugene Smolyakov on 25.09.2020.
 //
 
 import UIKit

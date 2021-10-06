@@ -9,17 +9,18 @@
 /* Begin PBXBuildFile section */
 		1CC80A24270C725F005424DD /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A23270C725F005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		1CC80A28270C73AC005424DD /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A23270C725F005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1CC80A33270E527E005424DD /* polyoccluder2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A32270E527E005424DD /* polyoccluder2.usdz */; };
+		1CC80A40270E5384005424DD /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A37270E5384005424DD /* Polytech.scn */; };
+		1CC80A41270E5384005424DD /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A38270E5384005424DD /* Dialog Bubble_Base_Color.png */; };
+		1CC80A42270E5384005424DD /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A39270E5384005424DD /* SphereAndRings_Base_Color.png */; };
+		1CC80A43270E5384005424DD /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3A270E5384005424DD /* sb02.png */; };
+		1CC80A44270E5384005424DD /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3B270E5384005424DD /* Material_baseColor.png */; };
+		1CC80A45270E5384005424DD /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3C270E5384005424DD /* Poly Logo_Base_Color.png */; };
+		1CC80A46270E5384005424DD /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3D270E5384005424DD /* Char body_Base_Color.png */; };
+		1CC80A47270E5384005424DD /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3E270E5384005424DD /* Balls01_Base_Color.png */; };
+		1CC80A48270E5384005424DD /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A3F270E5384005424DD /* palette_baseColor.png */; };
 		8C728ECF25F971BB00E0FDDE /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */; };
 		8C728ED025F971BB00E0FDDE /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */; };
-		8C9F1E3B25D54CF1006ACEC4 /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3125D54CF1006ACEC4 /* Balls01_Base_Color.png */; };
-		8C9F1E3C25D54CF1006ACEC4 /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3225D54CF1006ACEC4 /* Polytech.scn */; };
-		8C9F1E3D25D54CF1006ACEC4 /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3325D54CF1006ACEC4 /* sb02.png */; };
-		8C9F1E3E25D54CF1006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3425D54CF1006ACEC4 /* Dialog Bubble_Base_Color.png */; };
-		8C9F1E4025D54CF1006ACEC4 /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3625D54CF1006ACEC4 /* Material_baseColor.png */; };
-		8C9F1E4125D54CF1006ACEC4 /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3725D54CF1006ACEC4 /* Char body_Base_Color.png */; };
-		8C9F1E4225D54CF1006ACEC4 /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3825D54CF1006ACEC4 /* Poly Logo_Base_Color.png */; };
-		8C9F1E4325D54CF1006ACEC4 /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3925D54CF1006ACEC4 /* SphereAndRings_Base_Color.png */; };
-		8C9F1E4425D54CF1006ACEC4 /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E3A25D54CF1006ACEC4 /* palette_baseColor.png */; };
 		8CA5609225E101C0004BBF2F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA5609125E101BF004BBF2F /* ViewController.swift */; };
 		8CA5609425E1068D004BBF2F /* FakeARS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA5609325E1068D004BBF2F /* FakeARS.swift */; };
 		8CF7ECF5251D25C300B03900 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ECF4251D25C300B03900 /* AppDelegate.swift */; };
@@ -27,7 +28,6 @@
 		8CF7ECFC251D25C300B03900 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFA251D25C300B03900 /* Main.storyboard */; };
 		8CF7ECFE251D25C600B03900 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFD251D25C600B03900 /* Assets.xcassets */; };
 		8CF7ED01251D25C600B03900 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFF251D25C600B03900 /* LaunchScreen.storyboard */; };
-		8CF7ED0A251D268200B03900 /* scn.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ED09251D268200B03900 /* scn.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,17 +46,18 @@
 
 /* Begin PBXFileReference section */
 		1CC80A23270C725F005424DD /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CC80A32270E527E005424DD /* polyoccluder2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = polyoccluder2.usdz; sourceTree = "<group>"; };
+		1CC80A37270E5384005424DD /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
+		1CC80A38270E5384005424DD /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
+		1CC80A39270E5384005424DD /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
+		1CC80A3A270E5384005424DD /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
+		1CC80A3B270E5384005424DD /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
+		1CC80A3C270E5384005424DD /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
+		1CC80A3D270E5384005424DD /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
+		1CC80A3E270E5384005424DD /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
+		1CC80A3F270E5384005424DD /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
 		8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
 		8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
-		8C9F1E3125D54CF1006ACEC4 /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
-		8C9F1E3225D54CF1006ACEC4 /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
-		8C9F1E3325D54CF1006ACEC4 /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
-		8C9F1E3425D54CF1006ACEC4 /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E3625D54CF1006ACEC4 /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
-		8C9F1E3725D54CF1006ACEC4 /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E3825D54CF1006ACEC4 /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E3925D54CF1006ACEC4 /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
-		8C9F1E3A25D54CF1006ACEC4 /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
 		8CA5609125E101BF004BBF2F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8CA5609325E1068D004BBF2F /* FakeARS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeARS.swift; sourceTree = "<group>"; };
 		8CF7ECF1251D25C300B03900 /* PolytechContentPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolytechContentPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,7 +67,6 @@
 		8CF7ECFD251D25C600B03900 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8CF7ED00251D25C600B03900 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8CF7ED02251D25C600B03900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8CF7ED09251D268200B03900 /* scn.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = scn.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,20 +89,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8C9F1E0225D53E9B006ACEC4 /* ggg */ = {
+		1CC80A36270E5384005424DD /* models */ = {
 			isa = PBXGroup;
 			children = (
-				8C9F1E3125D54CF1006ACEC4 /* Balls01_Base_Color.png */,
-				8C9F1E3725D54CF1006ACEC4 /* Char body_Base_Color.png */,
-				8C9F1E3425D54CF1006ACEC4 /* Dialog Bubble_Base_Color.png */,
-				8C9F1E3625D54CF1006ACEC4 /* Material_baseColor.png */,
-				8C9F1E3A25D54CF1006ACEC4 /* palette_baseColor.png */,
-				8C9F1E3825D54CF1006ACEC4 /* Poly Logo_Base_Color.png */,
-				8C9F1E3225D54CF1006ACEC4 /* Polytech.scn */,
-				8C9F1E3325D54CF1006ACEC4 /* sb02.png */,
-				8C9F1E3925D54CF1006ACEC4 /* SphereAndRings_Base_Color.png */,
+				1CC80A37270E5384005424DD /* Polytech.scn */,
+				1CC80A38270E5384005424DD /* Dialog Bubble_Base_Color.png */,
+				1CC80A39270E5384005424DD /* SphereAndRings_Base_Color.png */,
+				1CC80A3A270E5384005424DD /* sb02.png */,
+				1CC80A3B270E5384005424DD /* Material_baseColor.png */,
+				1CC80A3C270E5384005424DD /* Poly Logo_Base_Color.png */,
+				1CC80A3D270E5384005424DD /* Char body_Base_Color.png */,
+				1CC80A3E270E5384005424DD /* Balls01_Base_Color.png */,
+				1CC80A3F270E5384005424DD /* palette_baseColor.png */,
 			);
-			path = ggg;
+			path = models;
 			sourceTree = "<group>";
 		};
 		8CF7ECE8251D25C300B03900 = {
@@ -125,15 +125,15 @@
 		8CF7ECF3251D25C300B03900 /* PolytechContentPreview */ = {
 			isa = PBXGroup;
 			children = (
+				1CC80A36270E5384005424DD /* models */,
 				8CA5609125E101BF004BBF2F /* ViewController.swift */,
-				8C9F1E0225D53E9B006ACEC4 /* ggg */,
 				8CF7ECF4251D25C300B03900 /* AppDelegate.swift */,
+				1CC80A32270E527E005424DD /* polyoccluder2.usdz */,
 				8CF7ECF6251D25C300B03900 /* SceneDelegate.swift */,
 				8CF7ECFA251D25C300B03900 /* Main.storyboard */,
 				8CF7ECFD251D25C600B03900 /* Assets.xcassets */,
 				8CF7ECFF251D25C600B03900 /* LaunchScreen.storyboard */,
 				8CF7ED02251D25C600B03900 /* Info.plist */,
-				8CF7ED09251D268200B03900 /* scn.scnassets */,
 				8CA5609325E1068D004BBF2F /* FakeARS.swift */,
 				8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */,
 				8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */,
@@ -199,20 +199,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C9F1E4425D54CF1006ACEC4 /* palette_baseColor.png in Resources */,
+				1CC80A41270E5384005424DD /* Dialog Bubble_Base_Color.png in Resources */,
+				1CC80A40270E5384005424DD /* Polytech.scn in Resources */,
+				1CC80A43270E5384005424DD /* sb02.png in Resources */,
 				8C728ED025F971BB00E0FDDE /* DownLaunchAR.xib in Resources */,
-				8C9F1E3B25D54CF1006ACEC4 /* Balls01_Base_Color.png in Resources */,
-				8C9F1E4125D54CF1006ACEC4 /* Char body_Base_Color.png in Resources */,
-				8C9F1E4225D54CF1006ACEC4 /* Poly Logo_Base_Color.png in Resources */,
-				8C9F1E3D25D54CF1006ACEC4 /* sb02.png in Resources */,
+				1CC80A47270E5384005424DD /* Balls01_Base_Color.png in Resources */,
+				1CC80A45270E5384005424DD /* Poly Logo_Base_Color.png in Resources */,
+				1CC80A48270E5384005424DD /* palette_baseColor.png in Resources */,
 				8CF7ED01251D25C600B03900 /* LaunchScreen.storyboard in Resources */,
-				8C9F1E4025D54CF1006ACEC4 /* Material_baseColor.png in Resources */,
 				8CF7ECFE251D25C600B03900 /* Assets.xcassets in Resources */,
-				8CF7ED0A251D268200B03900 /* scn.scnassets in Resources */,
-				8C9F1E3C25D54CF1006ACEC4 /* Polytech.scn in Resources */,
+				1CC80A46270E5384005424DD /* Char body_Base_Color.png in Resources */,
+				1CC80A42270E5384005424DD /* SphereAndRings_Base_Color.png in Resources */,
 				8CF7ECFC251D25C300B03900 /* Main.storyboard in Resources */,
-				8C9F1E3E25D54CF1006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */,
-				8C9F1E4325D54CF1006ACEC4 /* SphereAndRings_Base_Color.png in Resources */,
+				1CC80A33270E527E005424DD /* polyoccluder2.usdz in Resources */,
+				1CC80A44270E5384005424DD /* Material_baseColor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

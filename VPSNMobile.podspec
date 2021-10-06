@@ -3,8 +3,8 @@ Pod::Spec.new do |s|
   s.version          = '0.1.3'
   s.summary          = 'VPSNMobile'
   s.homepage         = 'https://gitlab.com/labsallday/vps-client-apps/vpsnmobile'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { "Eugene Smolyakov" => "jendby@gmail.com" }
+  s.license          = { :type => 'Sber Public License at-nc-sa v.2', :file => 'LICENSE' }
+  s.author           = { "ARVRLab" => "arvrlab@sberbank.ru" }
   s.source           = { :git => 'https://gitlab.com/labsallday/vps-client-apps/vpsnmobile.git', :tag => "#{s.version}" }
   s.ios.deployment_target = '12.0'
   s.swift_version = '5.0'

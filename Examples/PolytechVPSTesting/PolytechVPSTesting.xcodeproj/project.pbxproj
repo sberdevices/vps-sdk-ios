@@ -1,0 +1,440 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1CC80A27270C733C005424DD /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A26270C733C005424DD /* VPSNMobile.framework */; };
+		1CC80A29270C73D2005424DD /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A26270C733C005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1CC80A35270E52B3005424DD /* polyoccluder2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A34270E52B3005424DD /* polyoccluder2.usdz */; };
+		8C32A4332632334E00498A7A /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C32A4312632334E00498A7A /* DownLaunchAR.xib */; };
+		8C32A4342632334E00498A7A /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32A4322632334E00498A7A /* DownLaunchAR.swift */; };
+		8C9F1E2225D54A64006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */; };
+		8C9F1E2425D54A64006ACEC4 /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */; };
+		8C9F1E2525D54A64006ACEC4 /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */; };
+		8C9F1E2625D54A64006ACEC4 /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */; };
+		8C9F1E2825D54A64006ACEC4 /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */; };
+		8C9F1E2925D54A64006ACEC4 /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */; };
+		8C9F1E2A25D54A64006ACEC4 /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */; };
+		8C9F1E2B25D54A64006ACEC4 /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2125D54A64006ACEC4 /* sb02.png */; };
+		8C9F1E2F25D54BE7006ACEC4 /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */; };
+		8CF7ED2F251DC0E900B03900 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */; };
+		8CF7ED31251DC0E900B03900 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */; };
+		8CF7ED33251DC0E900B03900 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED32251DC0E900B03900 /* ViewController.swift */; };
+		8CF7ED36251DC0E900B03900 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ED34251DC0E900B03900 /* Main.storyboard */; };
+		8CF7ED38251DC0ED00B03900 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ED37251DC0ED00B03900 /* Assets.xcassets */; };
+		8CF7ED3B251DC0ED00B03900 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ED39251DC0ED00B03900 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8CF7ED48251DC32700B03900 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1CC80A29270C73D2005424DD /* VPSNMobile.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1CC80A26270C733C005424DD /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CC80A34270E52B3005424DD /* polyoccluder2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = polyoccluder2.usdz; sourceTree = "<group>"; };
+		8C32A4312632334E00498A7A /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
+		8C32A4322632334E00498A7A /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
+		8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
+		8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
+		8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
+		8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
+		8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
+		8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
+		8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
+		8C9F1E2125D54A64006ACEC4 /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
+		8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
+		8CF7ED2B251DC0E900B03900 /* PolytechVPSTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolytechVPSTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8CF7ED32251DC0E900B03900 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8CF7ED35251DC0E900B03900 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8CF7ED37251DC0ED00B03900 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8CF7ED3A251DC0ED00B03900 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8CF7ED3C251DC0ED00B03900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8CF7ED28251DC0E900B03900 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CC80A27270C733C005424DD /* VPSNMobile.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1CC80A25270C733C005424DD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1CC80A26270C733C005424DD /* VPSNMobile.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C9F1E1725D54A53006ACEC4 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */,
+				8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */,
+				8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */,
+				8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */,
+				8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */,
+				8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */,
+				8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */,
+				8C9F1E2125D54A64006ACEC4 /* sb02.png */,
+				8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		8CF7ED22251DC0E900B03900 = {
+			isa = PBXGroup;
+			children = (
+				8CF7ED2D251DC0E900B03900 /* PolytechVPSTesting */,
+				8CF7ED2C251DC0E900B03900 /* Products */,
+				1CC80A25270C733C005424DD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8CF7ED2C251DC0E900B03900 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CF7ED2B251DC0E900B03900 /* PolytechVPSTesting.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8CF7ED2D251DC0E900B03900 /* PolytechVPSTesting */ = {
+			isa = PBXGroup;
+			children = (
+				8C32A4322632334E00498A7A /* DownLaunchAR.swift */,
+				8C32A4312632334E00498A7A /* DownLaunchAR.xib */,
+				8C9F1E1725D54A53006ACEC4 /* models */,
+				8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */,
+				8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */,
+				1CC80A34270E52B3005424DD /* polyoccluder2.usdz */,
+				8CF7ED32251DC0E900B03900 /* ViewController.swift */,
+				8CF7ED34251DC0E900B03900 /* Main.storyboard */,
+				8CF7ED37251DC0ED00B03900 /* Assets.xcassets */,
+				8CF7ED39251DC0ED00B03900 /* LaunchScreen.storyboard */,
+				8CF7ED3C251DC0ED00B03900 /* Info.plist */,
+			);
+			path = PolytechVPSTesting;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8CF7ED2A251DC0E900B03900 /* PolytechVPSTesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CF7ED3F251DC0ED00B03900 /* Build configuration list for PBXNativeTarget "PolytechVPSTesting" */;
+			buildPhases = (
+				8CF7ED27251DC0E900B03900 /* Sources */,
+				8CF7ED28251DC0E900B03900 /* Frameworks */,
+				8CF7ED29251DC0E900B03900 /* Resources */,
+				8CF7ED48251DC32700B03900 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PolytechVPSTesting;
+			productName = polytest;
+			productReference = 8CF7ED2B251DC0E900B03900 /* PolytechVPSTesting.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8CF7ED23251DC0E900B03900 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					8CF7ED2A251DC0E900B03900 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+				};
+			};
+			buildConfigurationList = 8CF7ED26251DC0E900B03900 /* Build configuration list for PBXProject "PolytechVPSTesting" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8CF7ED22251DC0E900B03900;
+			productRefGroup = 8CF7ED2C251DC0E900B03900 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8CF7ED2A251DC0E900B03900 /* PolytechVPSTesting */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8CF7ED29251DC0E900B03900 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C9F1E2525D54A64006ACEC4 /* Balls01_Base_Color.png in Resources */,
+				8C32A4332632334E00498A7A /* DownLaunchAR.xib in Resources */,
+				8C9F1E2825D54A64006ACEC4 /* Char body_Base_Color.png in Resources */,
+				8CF7ED3B251DC0ED00B03900 /* LaunchScreen.storyboard in Resources */,
+				8C9F1E2625D54A64006ACEC4 /* Material_baseColor.png in Resources */,
+				8C9F1E2A25D54A64006ACEC4 /* Poly Logo_Base_Color.png in Resources */,
+				8C9F1E2B25D54A64006ACEC4 /* sb02.png in Resources */,
+				8C9F1E2925D54A64006ACEC4 /* SphereAndRings_Base_Color.png in Resources */,
+				8CF7ED38251DC0ED00B03900 /* Assets.xcassets in Resources */,
+				1CC80A35270E52B3005424DD /* polyoccluder2.usdz in Resources */,
+				8CF7ED36251DC0E900B03900 /* Main.storyboard in Resources */,
+				8C9F1E2225D54A64006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */,
+				8C9F1E2425D54A64006ACEC4 /* palette_baseColor.png in Resources */,
+				8C9F1E2F25D54BE7006ACEC4 /* Polytech.scn in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8CF7ED27251DC0E900B03900 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CF7ED33251DC0E900B03900 /* ViewController.swift in Sources */,
+				8CF7ED2F251DC0E900B03900 /* AppDelegate.swift in Sources */,
+				8CF7ED31251DC0E900B03900 /* SceneDelegate.swift in Sources */,
+				8C32A4342632334E00498A7A /* DownLaunchAR.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8CF7ED34251DC0E900B03900 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CF7ED35251DC0E900B03900 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8CF7ED39251DC0ED00B03900 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CF7ED3A251DC0ED00B03900 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8CF7ED3D251DC0ED00B03900 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8CF7ED3E251DC0ED00B03900 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8CF7ED40251DC0ED00B03900 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PolytechVPSTesting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.05;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechVPSTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8CF7ED41251DC0ED00B03900 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = G6HAS4FMP3;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PolytechVPSTesting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.05;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechVPSTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8CF7ED26251DC0E900B03900 /* Build configuration list for PBXProject "PolytechVPSTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CF7ED3D251DC0ED00B03900 /* Debug */,
+				8CF7ED3E251DC0ED00B03900 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CF7ED3F251DC0ED00B03900 /* Build configuration list for PBXNativeTarget "PolytechVPSTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CF7ED40251DC0ED00B03900 /* Debug */,
+				8CF7ED41251DC0ED00B03900 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8CF7ED23251DC0E900B03900 /* Project object */;
+}

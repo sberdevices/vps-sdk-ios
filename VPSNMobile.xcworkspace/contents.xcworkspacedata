@@ -8,9 +8,9 @@
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Examples/Polytech_VPS_Testing_App/Polytech_VPS_Testing_App.xcodeproj">
+      location = "group:Examples/PolytechContentPreview/PolytechContentPreview.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Examples/PolytechContentPreview/PolytechContentPreview.xcodeproj">
+      location = "group:Examples/PolytechVPSTesting/PolytechVPSTesting.xcodeproj">
    </FileRef>
 </Workspace>

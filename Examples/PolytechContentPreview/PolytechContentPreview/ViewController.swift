@@ -85,9 +85,12 @@ class ViewController: UIViewController {
     func addContent() {
         DispatchQueue.global().async {
             let scene = self.sceneView.scene!
-            let roomscene = SCNScene(named: "scn.scnassets/polytechcopy.scn")!
-            let sten = roomscene.rootNode.childNode(withName: "Mesh534", recursively: true)!
+            let roomscene = SCNScene(named: "polyoccluder2.usdz")!
+            let sten = roomscene.rootNode.childNode(withName: "polyoccluder", recursively: true)!
+                .childNode(withName: "Geom", recursively: true)!
+                .childNode(withName: "polyoccluder_Mesh134_OuterShell5________________1_Group4_Model_011", recursively: true)!
             sten.renderingOrder = -100
+            sten.geometry?.firstMaterial?.transparency = 0.5
             self.stens = sten
             scene.rootNode.addChildNode(sten)
             let objectS = SCNScene(named: "Polytech.scn")!

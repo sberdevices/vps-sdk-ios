@@ -3,7 +3,7 @@ import SceneKit
 import VPSNMobile
 
 struct CONSTS {
-    static let PhNum = 17
+    static let PhNum = 10
 }
 class ViewController: UIViewController {
     @IBOutlet weak var labell: UILabel!

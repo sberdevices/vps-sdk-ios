@@ -7,10 +7,4 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Examples/PolytechContentPreview/PolytechContentPreview.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Examples/PolytechVPSTesting/PolytechVPSTesting.xcodeproj">
-   </FileRef>
 </Workspace>

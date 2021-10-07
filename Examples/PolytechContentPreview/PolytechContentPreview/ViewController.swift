@@ -223,7 +223,7 @@ extension ViewController: VPSServiceDelegate {
             }
         } else {
 //            self.activity.stopAnimating()
-            let ac = UIAlertController(title: "Ошибка", message: "не локализовался", preferredStyle: .alert)
+            let ac = UIAlertController(title: "Error", message: "Localization failed!", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             ac.addAction(okAction)
             present(ac, animated: true, completion: nil)
@@ -232,7 +232,7 @@ extension ViewController: VPSServiceDelegate {
     
     func error(err: NSError) {
         self.activity.stopAnimating()
-        let ac = UIAlertController(title: "Ошибка", message: "\(err.localizedDescription)", preferredStyle: .alert)
+        let ac = UIAlertController(title: "Error", message: "\(err.localizedDescription)", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         ac.addAction(okAction)
         self.present(ac, animated: true, completion: nil)

@@ -46,14 +46,14 @@ class DownLaunchAR: UIView {
         limage.isHidden = true
         progtext.isHidden = false
         progbar.isHidden = false
-        descrlbl.text = "Дождитесь окончания загрузки"
+        descrlbl.text = "Downloading..."
     }
     
     func loading() {
         limage.isHidden = false
         progtext.isHidden = true
         progbar.isHidden = true
-        descrlbl.text = "Подождите, модель открывается"
+        descrlbl.text = "Loading 3d content..."
     }
     
     @IBAction func close(_ sender: Any) {

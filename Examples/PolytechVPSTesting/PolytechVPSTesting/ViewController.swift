@@ -233,7 +233,7 @@ extension ViewController: VPSServiceDelegate {
             statuslbl.backgroundColor = .yellow
         } else {
             statuslbl.backgroundColor = .green
-            statuslbl.text = "Succes"
+            statuslbl.text = "Success"
             if firstLocalize {
                 firstLocalize = false
                 switc.isHidden = false

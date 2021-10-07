@@ -1,11 +1,3 @@
-//
-//  DownLaunchAR.swift
-//  Polytech
-//
-//  Created by Eugene Smolyakov on 27.11.2020.
-//  Copyright © 2020 4Taps. All rights reserved.
-//
-
 import UIKit
 
 class DownLaunchAR: UIView {

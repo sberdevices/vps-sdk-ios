@@ -1,9 +1,3 @@
-//
-//  ViewController.swift
-//  polyscene
-//
-//  Created by Eugene Smolyakov on 24.09.2020.
-//
 import UIKit
 import SceneKit
 import VPSNMobile

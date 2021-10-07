@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  polytest
-//
-//  Created by Eugene Smolyakov on 25.09.2020.
-//
-
 import UIKit
 
 @main

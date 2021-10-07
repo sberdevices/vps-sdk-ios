@@ -325,7 +325,7 @@
 				DEVELOPMENT_TEAM = G6HAS4FMP3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = PolytechVPSTesting/Info.plist;
+				INFOPLIST_FILE = ExampleAppVPS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -349,7 +349,7 @@
 				DEVELOPMENT_TEAM = G6HAS4FMP3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = PolytechVPSTesting/Info.plist;
+				INFOPLIST_FILE = ExampleAppVPS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -329,7 +329,7 @@
 				DEVELOPMENT_TEAM = G6HAS4FMP3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = PolytechContentPreview/Info.plist;
+				INFOPLIST_FILE = ContentPreviewVPS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -353,7 +353,7 @@
 				DEVELOPMENT_TEAM = G6HAS4FMP3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = PolytechContentPreview/Info.plist;
+				INFOPLIST_FILE = ContentPreviewVPS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

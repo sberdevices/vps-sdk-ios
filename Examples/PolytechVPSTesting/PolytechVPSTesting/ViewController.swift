@@ -20,7 +20,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     var oldGraphics: SCNNode = SCNNode()
     var configuration: ARWorldTrackingConfiguration!
-    let url = "https://vps.arvr.sberlabs.com/polytech-stage/"
+    
+    let url = "https://vps.arvr.sberlabs.com/polytech-pub/"
+    let locationID = "Polytech"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.scene = SCNScene()
@@ -38,7 +41,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let set = Settings(
                 url: url,
-                locationID: "Polytech",
+                locationID: locationID,
             recognizeType: .mobile)
         
         VPSBuilder.initializeVPS(arsession: sceneView.session,
@@ -157,7 +160,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         vps = nil
         let set = Settings(
             url: url,
-            locationID: "Polytech",
+            locationID: locationID,
             recognizeType: sender.isOn ? .mobile : .server)
         VPSBuilder.initializeVPS(arsession: sceneView.session,
                                  settings: set,

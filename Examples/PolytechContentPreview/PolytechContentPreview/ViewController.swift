@@ -30,8 +30,9 @@ class ViewController: UIViewController {
         }
     }
     
-    let url = "https://vps.arvr.sberlabs.com/polytech-stage/"
-//    let url = "http://api.polytech.vps.arvr.sberlabs.com/"
+    let url = "https://vps.arvr.sberlabs.com/polytech-pub/"
+    let locationID = "Polytech"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.scene = SCNScene()
@@ -53,7 +54,7 @@ class ViewController: UIViewController {
         secslider.maximumValue = Float(CONSTS.PhNum)
         let set = Settings(
             url: url,
-            locationID: "Polytech",
+            locationID: locationID,
             recognizeType: .mobile)
         VPSBuilder.initializeVPS(arsession: fakears.session,
                                  settings: set,
@@ -136,7 +137,7 @@ class ViewController: UIViewController {
         
         let set = Settings(
             url: url,
-            locationID: "Polytech",
+            locationID: locationID,
             recognizeType: sender.isOn ? .mobile : .server)
         VPSBuilder.initializeVPS(arsession: fakears.session,
                                  settings: set,

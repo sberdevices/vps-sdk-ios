@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1CB63301270F07FB00F0FB23 /* DemoRobot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CB63300270F07FB00F0FB23 /* DemoRobot.usdz */; };
-		1CC80A24270C725F005424DD /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A23270C725F005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		1CC80A28270C73AC005424DD /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A23270C725F005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CC80A33270E527E005424DD /* polyoccluder2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A32270E527E005424DD /* polyoccluder2.usdz */; };
 		8C728ECF25F971BB00E0FDDE /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */; };
 		8C728ED025F971BB00E0FDDE /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */; };
@@ -22,20 +20,6 @@
 		8CF7ED01251D25C600B03900 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFF251D25C600B03900 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		8CA5607D25E0F0F4004BBF2F /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				1CC80A28270C73AC005424DD /* VPSNMobile.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		1CB63300270F07FB00F0FB23 /* DemoRobot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = DemoRobot.usdz; sourceTree = "<group>"; };
 		1CC80A23270C725F005424DD /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,7 +28,7 @@
 		8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
 		8CA5609125E101BF004BBF2F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8CA5609325E1068D004BBF2F /* FakeARS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeARS.swift; sourceTree = "<group>"; };
-		8CF7ECF1251D25C300B03900 /* PolytechContentPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolytechContentPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CF7ECF1251D25C300B03900 /* ContentPreviewVPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentPreviewVPS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF7ECF4251D25C300B03900 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CF7ECF6251D25C300B03900 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8CF7ECFB251D25C300B03900 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CC80A24270C725F005424DD /* VPSNMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +68,7 @@
 		8CF7ECE8251D25C300B03900 = {
 			isa = PBXGroup;
 			children = (
-				8CF7ECF3251D25C300B03900 /* PolytechContentPreview */,
+				8CF7ECF3251D25C300B03900 /* ContentPreviewVPS */,
 				8CF7ECF2251D25C300B03900 /* Products */,
 				1CC80A22270C725E005424DD /* Frameworks */,
 			);
@@ -94,12 +77,12 @@
 		8CF7ECF2251D25C300B03900 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8CF7ECF1251D25C300B03900 /* PolytechContentPreview.app */,
+				8CF7ECF1251D25C300B03900 /* ContentPreviewVPS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8CF7ECF3251D25C300B03900 /* PolytechContentPreview */ = {
+		8CF7ECF3251D25C300B03900 /* ContentPreviewVPS */ = {
 			isa = PBXGroup;
 			children = (
 				1CC80A36270E5384005424DD /* models */,
@@ -114,28 +97,27 @@
 				8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */,
 				8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */,
 			);
-			path = PolytechContentPreview;
+			path = ContentPreviewVPS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8CF7ECF0251D25C300B03900 /* PolytechContentPreview */ = {
+		8CF7ECF0251D25C300B03900 /* ContentPreviewVPS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8CF7ED05251D25C600B03900 /* Build configuration list for PBXNativeTarget "PolytechContentPreview" */;
+			buildConfigurationList = 8CF7ED05251D25C600B03900 /* Build configuration list for PBXNativeTarget "ContentPreviewVPS" */;
 			buildPhases = (
 				8CF7ECED251D25C300B03900 /* Sources */,
 				8CF7ECEE251D25C300B03900 /* Frameworks */,
 				8CF7ECEF251D25C300B03900 /* Resources */,
-				8CA5607D25E0F0F4004BBF2F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = PolytechContentPreview;
+			name = ContentPreviewVPS;
 			productName = polyscene;
-			productReference = 8CF7ECF1251D25C300B03900 /* PolytechContentPreview.app */;
+			productReference = 8CF7ECF1251D25C300B03900 /* ContentPreviewVPS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -152,7 +134,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8CF7ECEC251D25C300B03900 /* Build configuration list for PBXProject "PolytechContentPreview" */;
+			buildConfigurationList = 8CF7ECEC251D25C300B03900 /* Build configuration list for PBXProject "ContentPreviewVPS" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -165,7 +147,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8CF7ECF0251D25C300B03900 /* PolytechContentPreview */,
+				8CF7ECF0251D25C300B03900 /* ContentPreviewVPS */,
 			);
 		};
 /* End PBXProject section */
@@ -354,7 +336,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.05;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechContentPreview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.ContentPreviewVPS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -378,7 +360,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.05;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechContentPreview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.ContentPreviewVPS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -388,7 +370,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8CF7ECEC251D25C300B03900 /* Build configuration list for PBXProject "PolytechContentPreview" */ = {
+		8CF7ECEC251D25C300B03900 /* Build configuration list for PBXProject "ContentPreviewVPS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8CF7ED03251D25C600B03900 /* Debug */,
@@ -397,7 +379,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8CF7ED05251D25C600B03900 /* Build configuration list for PBXNativeTarget "PolytechContentPreview" */ = {
+		8CF7ED05251D25C600B03900 /* Build configuration list for PBXNativeTarget "ContentPreviewVPS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8CF7ED06251D25C600B03900 /* Debug */,

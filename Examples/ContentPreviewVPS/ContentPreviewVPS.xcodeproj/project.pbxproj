@@ -22,7 +22,6 @@
 
 /* Begin PBXFileReference section */
 		1CB63300270F07FB00F0FB23 /* DemoRobot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = DemoRobot.usdz; sourceTree = "<group>"; };
-		1CC80A23270C725F005424DD /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC80A32270E527E005424DD /* polyoccluder2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = polyoccluder2.usdz; sourceTree = "<group>"; };
 		8C728ECD25F971BB00E0FDDE /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
 		8C728ECE25F971BB00E0FDDE /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
@@ -51,7 +50,6 @@
 		1CC80A22270C725E005424DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1CC80A23270C725F005424DD /* VPSNMobile.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

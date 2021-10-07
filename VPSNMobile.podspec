@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'VPSNMobile'
-  s.version          = '0.1.3'
+  s.version          = '0.2.0'
   s.summary          = 'VPSNMobile'
   s.homepage         = 'https://github.com/sberdevices/vps-sdk-ios'
   s.license          = { :type => 'Sber Public License at-nc-sa v.2', :file => 'LICENSE' }

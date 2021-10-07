@@ -86,6 +86,7 @@ public struct GeoReferencing: Codable {
 
 /// It is used for easy conversion of earth coordinates to coordinates in vps. An anchor point is required, which is taken automatically from a successful localization or a custom one is set
 public class ConverterGPS {
+    public init() {}
     public private(set) var geoReferencing: GeoReferencing?
     ///negative angle from 0 to 360, clockwise
     private(set) var rotateAngl:Float?

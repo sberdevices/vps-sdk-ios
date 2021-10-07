@@ -18,6 +18,7 @@
 		8CF7ECFC251D25C300B03900 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFA251D25C300B03900 /* Main.storyboard */; };
 		8CF7ECFE251D25C600B03900 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFD251D25C600B03900 /* Assets.xcassets */; };
 		8CF7ED01251D25C600B03900 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF7ECFF251D25C600B03900 /* LaunchScreen.storyboard */; };
+		C3E973311EB46A55F4729D64 /* Pods_ContentPreviewVPS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7733C277EA6BA47C23D9E29 /* Pods_ContentPreviewVPS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,9 @@
 		8CF7ECFD251D25C600B03900 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8CF7ED00251D25C600B03900 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8CF7ED02251D25C600B03900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A435E6BF825FAE8893942DC /* Pods-ContentPreviewVPS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentPreviewVPS.debug.xcconfig"; path = "Target Support Files/Pods-ContentPreviewVPS/Pods-ContentPreviewVPS.debug.xcconfig"; sourceTree = "<group>"; };
+		C7733C277EA6BA47C23D9E29 /* Pods_ContentPreviewVPS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentPreviewVPS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB76F2FBE6EC6D2F891DFD9A /* Pods-ContentPreviewVPS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentPreviewVPS.release.xcconfig"; path = "Target Support Files/Pods-ContentPreviewVPS/Pods-ContentPreviewVPS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3E973311EB46A55F4729D64 /* Pods_ContentPreviewVPS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +55,7 @@
 		1CC80A22270C725E005424DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7733C277EA6BA47C23D9E29 /* Pods_ContentPreviewVPS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -63,12 +69,23 @@
 			path = models;
 			sourceTree = "<group>";
 		};
+		21C7AA2F4D97C403BB66446D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9A435E6BF825FAE8893942DC /* Pods-ContentPreviewVPS.debug.xcconfig */,
+				CB76F2FBE6EC6D2F891DFD9A /* Pods-ContentPreviewVPS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		8CF7ECE8251D25C300B03900 = {
 			isa = PBXGroup;
 			children = (
 				8CF7ECF3251D25C300B03900 /* ContentPreviewVPS */,
 				8CF7ECF2251D25C300B03900 /* Products */,
 				1CC80A22270C725E005424DD /* Frameworks */,
+				21C7AA2F4D97C403BB66446D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +122,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CF7ED05251D25C600B03900 /* Build configuration list for PBXNativeTarget "ContentPreviewVPS" */;
 			buildPhases = (
+				8F0FB5F02B9BEFAD5BDF7253 /* [CP] Check Pods Manifest.lock */,
 				8CF7ECED251D25C300B03900 /* Sources */,
 				8CF7ECEE251D25C300B03900 /* Frameworks */,
 				8CF7ECEF251D25C300B03900 /* Resources */,
@@ -165,6 +183,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8F0FB5F02B9BEFAD5BDF7253 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ContentPreviewVPS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8CF7ECED251D25C300B03900 /* Sources */ = {
@@ -319,6 +362,7 @@
 		};
 		8CF7ED06251D25C600B03900 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A435E6BF825FAE8893942DC /* Pods-ContentPreviewVPS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -343,6 +387,7 @@
 		};
 		8CF7ED07251D25C600B03900 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB76F2FBE6EC6D2F891DFD9A /* Pods-ContentPreviewVPS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1CB63303270F09A600F0FB23 /* DemoRobot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CB63302270F09A600F0FB23 /* DemoRobot.usdz */; };
 		1CC80A35270E52B3005424DD /* polyoccluder2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A34270E52B3005424DD /* polyoccluder2.usdz */; };
+		43537AD3874CCEDE91B55470 /* Pods_ExampleAppVPS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EE6D5140D0F17492BC9ACD7 /* Pods_ExampleAppVPS.framework */; };
 		8C32A4332632334E00498A7A /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C32A4312632334E00498A7A /* DownLaunchAR.xib */; };
 		8C32A4342632334E00498A7A /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32A4322632334E00498A7A /* DownLaunchAR.swift */; };
 		8CF7ED2F251DC0E900B03900 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */; };
@@ -20,8 +21,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0EE6D5140D0F17492BC9ACD7 /* Pods_ExampleAppVPS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExampleAppVPS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		14F73F118D240F92052C844D /* Pods-ExampleAppVPS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleAppVPS.debug.xcconfig"; path = "Target Support Files/Pods-ExampleAppVPS/Pods-ExampleAppVPS.debug.xcconfig"; sourceTree = "<group>"; };
 		1CB63302270F09A600F0FB23 /* DemoRobot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = DemoRobot.usdz; sourceTree = "<group>"; };
 		1CC80A34270E52B3005424DD /* polyoccluder2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = polyoccluder2.usdz; sourceTree = "<group>"; };
+		74CDF646F66CB16FA0A8793A /* Pods-ExampleAppVPS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleAppVPS.release.xcconfig"; path = "Target Support Files/Pods-ExampleAppVPS/Pods-ExampleAppVPS.release.xcconfig"; sourceTree = "<group>"; };
 		8C32A4312632334E00498A7A /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
 		8C32A4322632334E00498A7A /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
 		8CF7ED2B251DC0E900B03900 /* ExampleAppVPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppVPS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43537AD3874CCEDE91B55470 /* Pods_ExampleAppVPS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,8 +53,19 @@
 		1CC80A25270C733C005424DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EE6D5140D0F17492BC9ACD7 /* Pods_ExampleAppVPS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7D7DE12CE6FA215B22AEF81B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				14F73F118D240F92052C844D /* Pods-ExampleAppVPS.debug.xcconfig */,
+				74CDF646F66CB16FA0A8793A /* Pods-ExampleAppVPS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		8C9F1E1725D54A53006ACEC4 /* models */ = {
@@ -67,6 +83,7 @@
 				8CF7ED2D251DC0E900B03900 /* ExampleAppVPS */,
 				8CF7ED2C251DC0E900B03900 /* Products */,
 				1CC80A25270C733C005424DD /* Frameworks */,
+				7D7DE12CE6FA215B22AEF81B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +119,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CF7ED3F251DC0ED00B03900 /* Build configuration list for PBXNativeTarget "ExampleAppVPS" */;
 			buildPhases = (
+				27031F371CA37A2027684FF7 /* [CP] Check Pods Manifest.lock */,
 				8CF7ED27251DC0E900B03900 /* Sources */,
 				8CF7ED28251DC0E900B03900 /* Frameworks */,
 				8CF7ED29251DC0E900B03900 /* Resources */,
@@ -162,6 +180,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		27031F371CA37A2027684FF7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ExampleAppVPS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8CF7ED27251DC0E900B03900 /* Sources */ = {
@@ -315,6 +358,7 @@
 		};
 		8CF7ED40251DC0ED00B03900 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14F73F118D240F92052C844D /* Pods-ExampleAppVPS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -339,6 +383,7 @@
 		};
 		8CF7ED41251DC0ED00B03900 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74CDF646F66CB16FA0A8793A /* Pods-ExampleAppVPS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

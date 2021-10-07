@@ -7,20 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CB63303270F09A600F0FB23 /* DemoRobot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CB63302270F09A600F0FB23 /* DemoRobot.usdz */; };
 		1CC80A27270C733C005424DD /* VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A26270C733C005424DD /* VPSNMobile.framework */; };
 		1CC80A29270C73D2005424DD /* VPSNMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC80A26270C733C005424DD /* VPSNMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1CC80A35270E52B3005424DD /* polyoccluder2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1CC80A34270E52B3005424DD /* polyoccluder2.usdz */; };
 		8C32A4332632334E00498A7A /* DownLaunchAR.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C32A4312632334E00498A7A /* DownLaunchAR.xib */; };
 		8C32A4342632334E00498A7A /* DownLaunchAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C32A4322632334E00498A7A /* DownLaunchAR.swift */; };
-		8C9F1E2225D54A64006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */; };
-		8C9F1E2425D54A64006ACEC4 /* palette_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */; };
-		8C9F1E2525D54A64006ACEC4 /* Balls01_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */; };
-		8C9F1E2625D54A64006ACEC4 /* Material_baseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */; };
-		8C9F1E2825D54A64006ACEC4 /* Char body_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */; };
-		8C9F1E2925D54A64006ACEC4 /* SphereAndRings_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */; };
-		8C9F1E2A25D54A64006ACEC4 /* Poly Logo_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */; };
-		8C9F1E2B25D54A64006ACEC4 /* sb02.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2125D54A64006ACEC4 /* sb02.png */; };
-		8C9F1E2F25D54BE7006ACEC4 /* Polytech.scn in Resources */ = {isa = PBXBuildFile; fileRef = 8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */; };
 		8CF7ED2F251DC0E900B03900 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */; };
 		8CF7ED31251DC0E900B03900 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */; };
 		8CF7ED33251DC0E900B03900 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7ED32251DC0E900B03900 /* ViewController.swift */; };
@@ -44,19 +36,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1CB63302270F09A600F0FB23 /* DemoRobot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = DemoRobot.usdz; sourceTree = "<group>"; };
 		1CC80A26270C733C005424DD /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC80A34270E52B3005424DD /* polyoccluder2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = polyoccluder2.usdz; sourceTree = "<group>"; };
 		8C32A4312632334E00498A7A /* DownLaunchAR.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownLaunchAR.xib; sourceTree = "<group>"; };
 		8C32A4322632334E00498A7A /* DownLaunchAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownLaunchAR.swift; sourceTree = "<group>"; };
-		8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dialog Bubble_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = palette_baseColor.png; sourceTree = "<group>"; };
-		8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Balls01_Base_Color.png; sourceTree = "<group>"; };
-		8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Material_baseColor.png; sourceTree = "<group>"; };
-		8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Char body_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SphereAndRings_Base_Color.png; sourceTree = "<group>"; };
-		8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Poly Logo_Base_Color.png"; sourceTree = "<group>"; };
-		8C9F1E2125D54A64006ACEC4 /* sb02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sb02.png; sourceTree = "<group>"; };
-		8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Polytech.scn; sourceTree = "<group>"; };
 		8CF7ED2B251DC0E900B03900 /* PolytechVPSTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolytechVPSTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,15 +74,8 @@
 		8C9F1E1725D54A53006ACEC4 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				8C9F1E1B25D54A64006ACEC4 /* Balls01_Base_Color.png */,
-				8C9F1E1E25D54A64006ACEC4 /* Char body_Base_Color.png */,
-				8C9F1E1825D54A64006ACEC4 /* Dialog Bubble_Base_Color.png */,
-				8C9F1E1C25D54A64006ACEC4 /* Material_baseColor.png */,
-				8C9F1E1A25D54A64006ACEC4 /* palette_baseColor.png */,
-				8C9F1E2E25D54BE7006ACEC4 /* Polytech.scn */,
-				8C9F1E2025D54A64006ACEC4 /* Poly Logo_Base_Color.png */,
-				8C9F1E2125D54A64006ACEC4 /* sb02.png */,
-				8C9F1E1F25D54A64006ACEC4 /* SphereAndRings_Base_Color.png */,
+				1CC80A34270E52B3005424DD /* polyoccluder2.usdz */,
+				1CB63302270F09A600F0FB23 /* DemoRobot.usdz */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -128,7 +105,6 @@
 				8C9F1E1725D54A53006ACEC4 /* models */,
 				8CF7ED2E251DC0E900B03900 /* AppDelegate.swift */,
 				8CF7ED30251DC0E900B03900 /* SceneDelegate.swift */,
-				1CC80A34270E52B3005424DD /* polyoccluder2.usdz */,
 				8CF7ED32251DC0E900B03900 /* ViewController.swift */,
 				8CF7ED34251DC0E900B03900 /* Main.storyboard */,
 				8CF7ED37251DC0ED00B03900 /* Assets.xcassets */,
@@ -196,20 +172,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C9F1E2525D54A64006ACEC4 /* Balls01_Base_Color.png in Resources */,
 				8C32A4332632334E00498A7A /* DownLaunchAR.xib in Resources */,
-				8C9F1E2825D54A64006ACEC4 /* Char body_Base_Color.png in Resources */,
 				8CF7ED3B251DC0ED00B03900 /* LaunchScreen.storyboard in Resources */,
-				8C9F1E2625D54A64006ACEC4 /* Material_baseColor.png in Resources */,
-				8C9F1E2A25D54A64006ACEC4 /* Poly Logo_Base_Color.png in Resources */,
-				8C9F1E2B25D54A64006ACEC4 /* sb02.png in Resources */,
-				8C9F1E2925D54A64006ACEC4 /* SphereAndRings_Base_Color.png in Resources */,
 				8CF7ED38251DC0ED00B03900 /* Assets.xcassets in Resources */,
 				1CC80A35270E52B3005424DD /* polyoccluder2.usdz in Resources */,
 				8CF7ED36251DC0E900B03900 /* Main.storyboard in Resources */,
-				8C9F1E2225D54A64006ACEC4 /* Dialog Bubble_Base_Color.png in Resources */,
-				8C9F1E2425D54A64006ACEC4 /* palette_baseColor.png in Resources */,
-				8C9F1E2F25D54BE7006ACEC4 /* Polytech.scn in Resources */,
+				1CB63303270F09A600F0FB23 /* DemoRobot.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +374,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.05;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.arvrlab.PolytechVPSTesting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

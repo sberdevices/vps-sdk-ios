@@ -87,7 +87,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             sten.renderingOrder = -100
             sten.geometry?.firstMaterial!.colorBufferWriteMask = .alpha
             
-            let old = SCNScene(named: "Polytech.scn")!
+            let old = SCNScene(named: "DemoRobot.usdz")!
             old.rootNode.childNodes.forEach { (node) in
                 scene.rootNode.addChildNode(node)
             }

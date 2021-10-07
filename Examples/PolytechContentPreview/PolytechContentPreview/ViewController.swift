@@ -93,7 +93,7 @@ class ViewController: UIViewController {
             sten.geometry?.firstMaterial?.transparency = 0.5
             self.stens = sten
             scene.rootNode.addChildNode(sten)
-            let objectS = SCNScene(named: "Polytech.scn")!
+            let objectS = SCNScene(named: "DemoRobot.usdz")!
             objectS.rootNode.childNodes.forEach { (node) in
                 scene.rootNode.addChildNode(node)
             }

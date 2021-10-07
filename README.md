@@ -1,23 +1,22 @@
 # VPS SDK (iOS)
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.1.2-brightgreen)](https://img.shields.io/badge/pod-0.1.2-brightgreen)  
+[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.2.0-brightgreen)](https://img.shields.io/badge/pod-0.1.2-brightgreen)  
 
 This is **Visual Positioning System** SDK for Native iOS apps. Main features are:
-- High-precision user position localization for your AR apps
+- High-precision global user position localization for your AR apps
 - Easy to use public API
 - Integration in SceneKit and RealityKit
 - Works both for UIKit and SwiftUI apps
+
+For more information visit [our page on SmartMarket](https://developers.sber.ru/portal/tools/visual-positioning-system-sdk).
 
 ## Requirements
 
 - iOS 12.0+
 - Xcode 12+
 - Swift 5+
+- ARKit supported device
 
 ## Installation
-
-### Examples
-
-run `pod install` from project directory, select target in xcode
 
 ### CocoaPods
 
@@ -25,13 +24,28 @@ run `pod install` from project directory, select target in xcode
 
 ```
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://gitlab.com/labsallday/vps-client-apps-public/labpodspecs'
 target 'YOUR PROJECT NAME HERE' do
   use_frameworks!
 pod 'VPSNMobile'
 end
 ```
-And run `pod install` from project directory
+Run `pod install` from the project directory to create a new workspace file.
+
+### From sources
+
+You can also build VPS framework from this repository. 
+
+Clone this repository and run `pod install` from the project directory. A new workspace file will be created. Now you can build VPS framework and link it to your apps.
+
+## Examples
+
+There are several example apps included in this repository:
+- [ContentPreviewVPS](/Examples/ContentPreviewVPS) - test VPS service from simulator without visiting the real location
+- [ExampleAppVPS](/Examples/ExampleAppVPS) - integration of VPS service in a real end-user app
+
+To install an example project, clone this repository. Run `pod install` from the selected example directory to create a new workspace file.
+
+## Usage
 
 ### User permissions
 
@@ -48,7 +62,8 @@ Add flags to access user's location and camera into `info.plist`. TemporaryAuth 
         <string></string>
     </dict>
 ```
-## Usage
+
+### UIKit
 
 * You must define a `ARSCNViewDelegate` delegate and call the method `vps?.frameUpdated()` each frame
 * Assign the default configuration using a method `getDefaultConfiguration()` that will return nil if the device is not supported.

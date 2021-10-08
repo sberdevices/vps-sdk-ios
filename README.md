@@ -7,7 +7,7 @@ This is **Visual Positioning System** SDK for Native iOS apps. Main features are
 - Integration in SceneKit and RealityKit
 - Works both for UIKit and SwiftUI apps
 
-For more information visit [our page on SmartMarket](https://developers.sber.ru/portal/tools/visual-positioning-system-sdk).
+For more information visit [our page on SmartMarket](https://developers.sber.ru/portal/tools/visual-positioning-system-sdk). If you want access to other VPS locations or want to scan your own proprerty, please contact us at <arvrlab@sberbank.ru>.
 
 ## Requirements
 

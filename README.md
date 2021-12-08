@@ -1,3 +1,5 @@
+![logo](./img/logo.png)
+
 # VPS SDK (iOS)
 [![CocoaPods Compatible](https://img.shields.io/badge/pod-0.2.0-brightgreen)](https://img.shields.io/badge/pod-0.1.2-brightgreen)  
 

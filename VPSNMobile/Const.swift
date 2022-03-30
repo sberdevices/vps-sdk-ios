@@ -2,6 +2,7 @@
 import Foundation
 
 struct Const {
+    static let motionAngle: Double = 40
     static let os = "iOS"
     static let domain = "ServiceVPS"
     // error codes

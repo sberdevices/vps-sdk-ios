@@ -2,8 +2,9 @@ import ARKit
 import VPSNMobile
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-    @IBOutlet weak var stope: UIButton!
+    @IBOutlet weak var debugVV: UITextView!
     @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var motstatus: UILabel!
     
     @IBOutlet weak var statuslbl: UILabel!
     @IBOutlet weak var starte: UIButton!
@@ -41,14 +42,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let set = Settings(
                 url: url,
-                locationID: locationID,
             recognizeType: .mobile)
         
         VPSBuilder.initializeVPS(arsession: sceneView.session,
                                  settings: set,
                                  gpsUsage: true,
-                                 onlyForceMode: true,
-                                 serialLocalizeEnabled: false,
                                  delegate: self) { (serc) in
             self.vps = serc
             self.firstLoading += 1
@@ -104,13 +102,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             guard var vps = vps else { return  }
             let model = self.sceneView.scene.rootNode.childNode(withName: "polyoccluder_Mesh134_OuterShell5________________1_Group4_Model_011", recursively: true)!
             let hid = model.geometry!.firstMaterial!.colorBufferWriteMask != .alpha
-            let vc = DebugPopVC(docalibrateON: vps.onlyForceMode,
-                                autoFocusOn: configuration.isAutoFocusEnabled,
+            let vc = DebugPopVC(autoFocusOn: configuration.isAutoFocusEnabled,
                                 showModels: hid,
-                                gpsOn: vps.gpsUsage,
-                                serialOn: vps.serialLocalizeEnabled)
-            vc.serialsw.isEnabled = false
-            vc.docalibrsw.isEnabled = false
+                                gpsOn: vps.gpsUsage)
             self.present(vc, animated: true, completion: nil)
             vc.closeHandler = {
                 vc.dismiss(animated: true, completion: nil)
@@ -119,17 +113,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 self.configuration.isAutoFocusEnabled = en
                 self.sceneView.session.run(self.configuration)
             }
-            vc.serialHandler = { en in
-                vps.serialLocalizeEnabled = en
-            }
             vc.modelHandler = {(en) in
                 model.geometry?.firstMaterial!.colorBufferWriteMask = en ? .all : .alpha
             }
             vc.gpsHandler = { (en) in
                 vps.gpsUsage = en
-            }
-            vc.docalibHandler = { (en) in
-                vps.onlyForceMode = en
             }
         }
     }
@@ -143,30 +131,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
-    @IBAction func start(_ sender: Any) {
-        vps?.start()
-        starte.isHidden = true
-        stope.isHidden = false
+    @IBAction func start(_ sender: UIButton) {
         statuslbl.isHidden = false
+        if sender.titleLabel?.text == "Start" {
+            vps?.start()
+            sender.backgroundColor = .red
+            sender.setTitle("stop", for: .normal)
+        } else {
+            vps?.stop()
+            sender.backgroundColor = .green
+            sender.setTitle("Start", for: .normal)
+        }
     }
     
-    @IBAction func stop(_ sender: Any) {
-        vps?.stop()
-        starte.isHidden = false
-        stope.isHidden = true
+    @IBAction func showdeb(_ sender: Any) {
+        debugVV.isHidden.toggle()
     }
     
     @IBAction func switched(_ sender: UISwitch) {
         vps = nil
         let set = Settings(
             url: url,
-            locationID: locationID,
             recognizeType: sender.isOn ? .mobile : .server)
         VPSBuilder.initializeVPS(arsession: sceneView.session,
                                  settings: set,
                                  gpsUsage: true,
-                                 onlyForceMode: true,
-                                 serialLocalizeEnabled: false,
                                  delegate: self) { (serc) in
             self.vps = serc
             self.downloadView?.removeFromSuperview()
@@ -186,7 +175,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionWasInterrupted(_ session: ARSession) {
         vps?.stop()
         starte.isHidden = false
-        stope.isHidden = true
+        starte.backgroundColor = .green
+        starte.setTitle("start", for: .normal)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
@@ -213,27 +203,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 }
 
 extension ViewController: VPSServiceDelegate {
-    func onSerialProgressUpdate(processedImages: Int) {
-        
+    func sessID(id: String) {
+        debugVV.text.append(id)
+        debugVV.text.append("\n")
     }
     
-    func serialcount(doned: Int) {
-        
+    func correctMotionAngle(correct: Bool) {
+        motstatus.isHidden = correct
     }
 
     func sending() {
         statuslbl.backgroundColor = .cyan
+        statuslbl.text = "Send"
     }
 
     func error(err: NSError) {
         print("err", err)
         statuslbl.backgroundColor = .red
+        statuslbl.text = "Error"
     }
 
     func positionVPS(pos: ResponseVPSPhoto) {
         print("delegate", pos)
         if !pos.status {
             statuslbl.backgroundColor = .yellow
+            statuslbl.text = "Fail"
         } else {
             statuslbl.backgroundColor = .green
             statuslbl.text = "Success"

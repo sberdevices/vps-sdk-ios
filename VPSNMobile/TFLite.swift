@@ -224,8 +224,6 @@ class TFLite {
                     answer.append(float16)
                 }
                 
-                print("-", Date().timeIntervalSince(date))
-                
             } catch let error {
                 print("Failed to invoke the interpreter with error: \(error.localizedDescription)")
                 DispatchQueue.main.async {

@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1735E02ECC84238CCA3CAB7B /* Pods_VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7313E4D4087B5A71CF76596 /* Pods_VPSNMobile.framework */; };
 		1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */; };
+		1C4C1A4127D05AF50037CB78 /* MotionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4C1A4027D05AF50037CB78 /* MotionTracker.swift */; };
+		1C4C1A4327D05B020037CB78 /* MotionTrackerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4C1A4227D05B020037CB78 /* MotionTrackerService.swift */; };
 		1C7EFE54269EAEE00049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1C7EFE55269EAF190049D3C9 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C7EFE53269EAEE00049D3C9 /* test.json */; };
 		1CCDEF60269E433000B1D4AA /* TestGeoref.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */; };
+		675F3FCA53CD74FEA3A582E0 /* Pods_VPSNMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA2A256C13D31A568C5BD53C /* Pods_VPSNMobile.framework */; };
 		8C21282F25469B7A0073D755 /* VPSNMobile.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C21282D25469B7A0073D755 /* VPSNMobile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C21284625469D250073D755 /* VPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283A25469D250073D755 /* VPSService.swift */; };
 		8C21284725469D250073D755 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21283B25469D250073D755 /* Entities.swift */; };
@@ -44,10 +46,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0537D2A09251B2A0BD9AD13A /* Pods-VPSNMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.release.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.release.xcconfig"; sourceTree = "<group>"; };
 		1C32A70A26A6FDC300CAA1DF /* CustomFloat16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFloat16.swift; sourceTree = "<group>"; };
+		1C4C1A4027D05AF50037CB78 /* MotionTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionTracker.swift; sourceTree = "<group>"; };
+		1C4C1A4227D05B020037CB78 /* MotionTrackerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionTrackerService.swift; sourceTree = "<group>"; };
 		1C7EFE53269EAEE00049D3C9 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		1CCDEF5F269E433000B1D4AA /* TestGeoref.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGeoref.swift; sourceTree = "<group>"; };
-		5E9519E6B75B322BBEC6975B /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		1F70F3D461370F2B1C33B024 /* Pods-VPSNMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.debug.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		8C21282A25469B7A0073D755 /* VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21282D25469B7A0073D755 /* VPSNMobile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPSNMobile.h; sourceTree = "<group>"; };
 		8C21282E25469B7A0073D755 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -70,8 +75,7 @@
 		8CC7164F260B101700CF1089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CCC9AF6260A1B240007FFC4 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8CE7DAC825F03CDF006E0F78 /* DebugPopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPopVC.swift; sourceTree = "<group>"; };
-		B7313E4D4087B5A71CF76596 /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0C17CC6564449474C280578 /* Pods-VPSNMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPSNMobile.release.xcconfig"; path = "Target Support Files/Pods-VPSNMobile/Pods-VPSNMobile.release.xcconfig"; sourceTree = "<group>"; };
+		CA2A256C13D31A568C5BD53C /* Pods_VPSNMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPSNMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1735E02ECC84238CCA3CAB7B /* Pods_VPSNMobile.framework in Frameworks */,
+				675F3FCA53CD74FEA3A582E0 /* Pods_VPSNMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,10 +98,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1C648523566E3F3FCCD9C9DE /* Frameworks */ = {
+		1C4C1A4427D05B090037CB78 /* MotionTracker */ = {
 			isa = PBXGroup;
 			children = (
-				B7313E4D4087B5A71CF76596 /* Pods_VPSNMobile.framework */,
+				1C4C1A4027D05AF50037CB78 /* MotionTracker.swift */,
+				1C4C1A4227D05B020037CB78 /* MotionTrackerService.swift */,
+			);
+			path = MotionTracker;
+			sourceTree = "<group>";
+		};
+		6E0DFA5178FA90F2ABF9581E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA2A256C13D31A568C5BD53C /* Pods_VPSNMobile.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,7 +122,7 @@
 				8CC7164C260B101700CF1089 /* VPSNMobileTests */,
 				8C21282B25469B7A0073D755 /* Products */,
 				98AADC8995441A98D8E12F9F /* Pods */,
-				1C648523566E3F3FCCD9C9DE /* Frameworks */,
+				6E0DFA5178FA90F2ABF9581E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +145,7 @@
 				8C21284325469D250073D755 /* VPS.swift */,
 				8C21285125469F370073D755 /* TFLite.swift */,
 				8C21283A25469D250073D755 /* VPSService.swift */,
+				1C4C1A4427D05B090037CB78 /* MotionTracker */,
 				8C2D3D13256792680002C140 /* Function.swift */,
 				8C21282D25469B7A0073D755 /* VPSNMobile.h */,
 				8C21282E25469B7A0073D755 /* Info.plist */,
@@ -178,8 +192,8 @@
 		98AADC8995441A98D8E12F9F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5E9519E6B75B322BBEC6975B /* Pods-VPSNMobile.debug.xcconfig */,
-				D0C17CC6564449474C280578 /* Pods-VPSNMobile.release.xcconfig */,
+				1F70F3D461370F2B1C33B024 /* Pods-VPSNMobile.debug.xcconfig */,
+				0537D2A09251B2A0BD9AD13A /* Pods-VPSNMobile.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -202,7 +216,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C21283225469B7A0073D755 /* Build configuration list for PBXNativeTarget "VPSNMobile" */;
 			buildPhases = (
-				B8A1945BCAD7819D69682621 /* [CP] Check Pods Manifest.lock */,
+				A1BC42338216BB3D656AA4E5 /* [CP] Check Pods Manifest.lock */,
 				8C21282525469B7A0073D755 /* Headers */,
 				8C21282625469B7A0073D755 /* Sources */,
 				8C21282725469B7A0073D755 /* Frameworks */,
@@ -292,7 +306,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B8A1945BCAD7819D69682621 /* [CP] Check Pods Manifest.lock */ = {
+		A1BC42338216BB3D656AA4E5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -329,6 +343,8 @@
 				8C21284725469D250073D755 /* Entities.swift in Sources */,
 				1C32A70B26A6FDC300CAA1DF /* CustomFloat16.swift in Sources */,
 				8C21285A2546A3D10073D755 /* Extension.swift in Sources */,
+				1C4C1A4327D05B020037CB78 /* MotionTrackerService.swift in Sources */,
+				1C4C1A4127D05AF50037CB78 /* MotionTracker.swift in Sources */,
 				8C21284925469D250073D755 /* NetworkExtensions.swift in Sources */,
 				8C21284D25469D260073D755 /* VPS.swift in Sources */,
 				8CE7DAC925F03CDF006E0F78 /* DebugPopVC.swift in Sources */,
@@ -486,7 +502,7 @@
 		};
 		8C21283325469B7A0073D755 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E9519E6B75B322BBEC6975B /* Pods-VPSNMobile.debug.xcconfig */;
+			baseConfigurationReference = 1F70F3D461370F2B1C33B024 /* Pods-VPSNMobile.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -516,7 +532,7 @@
 		};
 		8C21283425469B7A0073D755 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0C17CC6564449474C280578 /* Pods-VPSNMobile.release.xcconfig */;
+			baseConfigurationReference = 0537D2A09251B2A0BD9AD13A /* Pods-VPSNMobile.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;

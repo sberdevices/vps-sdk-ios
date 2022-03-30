@@ -59,18 +59,17 @@ final class RequestBodyCreator {
         }
     }
     
-    func getParams(from photo: UploadVPSPhoto) -> [String:Any] {
-        let localPos = ["x": photo.locPosX,
-                        "y": photo.locPosY,
-                        "z": photo.locPosZ,
-                        "roll": photo.locPosRoll,
-                        "pitch": photo.locPosPitch,
-                        "yaw": photo.locPosYaw
+    func getParams(from photo: UploadVPSPhoto) -> [String: Any] {
+        let trackingPose = ["x": photo.locPosX,
+                            "y": photo.locPosY,
+                            "z": photo.locPosZ,
+                            
+                            "rx": photo.locPosPitch,
+                            "ry": photo.locPosYaw,
+                            "rz": photo.locPosRoll
+                            
         ]
-        var location = ["type": photo.locationType,
-                        "location_id": photo.locationID,
-                        "clientCoordinateSystem": photo.locationClientCoordSystem,
-                        "localPos": localPos] as [String : Any]
+        var location = [:] as [String : Any]
         if let comp = photo.compas {
             let compass = ["heading": comp.heading,
                            "accuracy": comp.acc,
@@ -85,22 +84,20 @@ final class RequestBodyCreator {
                        "timestamp": gps.timestamp]
             location["gps"] = gps
         }
-        let imtransform = ["orientation": photo.imageTransfOrientation,
-                           "mirrorX": photo.imageTransfMirrorX,
-                           "mirrorY": photo.imageTransfMirrorY] as [String : Any]
         let intrinsics = ["fx": photo.instrinsicsFX,
                           "fy": photo.instrinsicsFY,
                           "cx": photo.instrinsicsCX,
                           "cy": photo.instrinsicsCY]
-        let attributes = ["location": location,
-                          "version": self.APIVersion,
-                          "imageTransform": imtransform,
+        var attributes = ["client_coordinate_system": photo.locationClientCoordSystem,
                           "intrinsics": intrinsics,
-                          "forced_localization": photo.forceLocalization,
                           "user_id": photo.clientID,
+                          "session_id": photo.sessionID,
+                          "tracking_pose": trackingPose,
                           "timestamp": photo.timestamp] as [String : Any]
+        if !location.isEmpty {
+            attributes["location"] = location
+        }
         let data = ["id": photo.jobID,
-                    "type": "job",
                     "attributes": attributes] as [String : Any]
         let datakey = ["data": data] as [String : Any]
 //        print("senddadta",datakey as NSDictionary)

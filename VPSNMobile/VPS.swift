@@ -1,8 +1,17 @@
 
 
 import ARKit
+import CoreMotion
 
 class VPS {
+    enum VPSStatus {
+        case fastLocalized
+        case normal
+        case stoped
+    }
+    
+    var vpsStatus: VPSStatus = .stoped
+    
     var clientID:String {
         get {
             let usrd = UserDefaults.standard
@@ -16,6 +25,7 @@ class VPS {
             }
         }
     }
+    var sessionId: String = UUID().uuidString.lowercased()
     public var settings: Settings
     public var converterGPS: ConverterGPS
     var gpsUsage: Bool {
@@ -25,31 +35,19 @@ class VPS {
             }
         }
     }
-    /// Turns on or off the recalibration mode
-    var onlyForceMode: Bool
-    /// Enable serial localize when localize falled
-    var serialLocalizeEnabled: Bool {
-        didSet {
-            if !serialLocalizeEnabled {
-                serialReqests.removeAll()
-                neuroSerialrequested = 0
-                timer.recreate(timeInterval: settings.sendPhotoDelay, delegate: self, fired: true)
-            }
-        }
-    }
     /// Used for gps tracking
     var locationManager: LocationManagering!
-    /// what location are we scanning
-    var locationType: String!
     var arsession: ARSession
     /// Need for sending request
     var timer: TimerManager
-    /// need for async setting position
-    var photoTransform: simd_float4x4!
     /// Saved last success responce
     var lastpose: ResponseVPSPhoto?
     /// if we have already set the position, it is needed for the reverse transformation
     var simdWorldTransform: simd_float4x4?
+    ///motion tracker
+    var motionTracker: MotionTrackerService
+    
+    var motionCorrect = true
     
     /// Unlock interpolation
     var moveWorld = false
@@ -57,26 +55,21 @@ class VPS {
     var array: [simd_float4x4]!
     var currenttick = 0
     
-    var neuroSerialrequested = 0
     // max failer count
-    let failerConst = 3
+    let failerConst = 5
     // init with same value above, that first localize was force
-    var failerCount = 3
-    var needForced: Bool {
-        get {
-            return failerCount >= failerConst
-        }
-        set {
-            failerCount = newValue ? failerConst : 0
+    var failerCount = 0 {
+        didSet {
+            if failerCount >= failerConst {
+                vpsStatus = .fastLocalized
+                failerCount = 0
+                updateSesionId()
+                timer.recreate(timeInterval: settings.sendFastPhotoDelay, delegate: self, fired: false)
+            }
         }
     }
-    /// serial request packages
-    var serialReqests = [UploadVPSPhoto]()
     
     var neuro: Neuro!
-    
-    /// Send the next request only after receiving a response
-    var getAnswer = true
     
     var network: NetVPSService
     
@@ -87,18 +80,14 @@ class VPS {
     
     init(arsession: ARSession,
          gpsUsage: Bool,
-         onlyForceMode: Bool,
-         serialLocalizeEnabled: Bool,
          settings: Settings) {
         self.arsession = arsession
         self.network = Network(settings: settings)
         self.gpsUsage = gpsUsage
-        self.onlyForceMode = onlyForceMode
-        self.serialLocalizeEnabled = serialLocalizeEnabled
         self.settings = settings
-        self.locationType = settings.locationID
         self.locationManager = LocationManager()
         self.timer = TimerManager()
+        self.motionTracker = MotionTracker()
         self.timer.delayTime = settings.firstRequestDelay
         if gpsUsage {
             locationManager.attemptLocationAccess()
@@ -178,77 +167,25 @@ class VPS {
         }
     }
     
-    func createRequest(serial: Bool) {
+    func createRequest() {
         guard let frame = arsession.currentFrame else {
             return
         }
         guard var up = self.getPosition(frame: frame,
-                                        orient: getOrientation(),
-                                        serial: serialLocalizeEnabled) else { return }
+                                        orient: getOrientation()) else { return }
         switch settings.recognizeType {
         case .server:
             let image = UIImage.createFromPB(pixelBuffer: frame.capturedImage)!
-                .convertToGrayScale(withSize: CGSize(width: 960, height: 540))!
+                .rotate(radians: .pi/2)!
+                .convertToGrayScale(withSize: CGSize(width: 540, height: 960))!
             up.image = image
-            if serial {
-                createSerialRequest(part: up)
-            } else {
-                sendRequest(meta: up)
-            }
+            sendRequest(meta: up)
         case .mobile:
-            if serial {
-                if neuroSerialrequested >= settings.serialCount {
-                    return
-                }
-                neuroSerialrequested += 1
-            }
             getNeuroData(frame: frame) { (neurodata) in
                 up.features = neurodata
-                if serial {
-                    self.createSerialRequest(part: up)
-                } else {
-                    self.sendRequest(meta: up)
-                }
+                self.sendRequest(meta: up)
             } failure: { (err) in
                 self.delegate?.error(err: err)
-            }
-        }
-    }
-    
-    func createSerialRequest(part: UploadVPSPhoto) {
-        serialReqests.append(part)
-        DispatchQueue.main.async {
-            self.delegate?.onSerialProgressUpdate(processedImages: self.serialReqests.count)
-        }
-        if serialReqests.count == settings.serialCount {
-            DispatchQueue.main.async {
-                self.delegate?.sending()
-            }
-            self.getAnswer = false
-            network.serialLocalize(reqs: serialReqests) { (ph) in
-                if ph.status, let id = ph.id, let intid = Int(id), self.serialReqests.indices.contains(intid), let tr = self.serialReqests[intid].photoTransform {
-                    self.needForced = false
-                    self.setupWorld(from: ph, transform: tr, interpolate: false)
-                    self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
-                    if self.converterGPS.status == .waiting {
-                        if let geref = VPS.getGeoref(ph: ph) {
-                            self.converterGPS.setGeoreference(geoReferencing: geref)
-                        } else {
-                            self.converterGPS.setStatusUnavalable()
-                        }
-                    }
-                }
-                self.getAnswer = true
-                self.lastpose = ph
-                self.delegate?.positionVPS(pos: ph)
-                self.lastpose = ph
-                self.serialReqests.removeAll()
-                self.neuroSerialrequested = 0
-            } failure: { (err) in
-                self.delegate?.error(err: err)
-                self.getAnswer = true
-                self.serialReqests.removeAll()
-                self.neuroSerialrequested = 0
             }
         }
     }
@@ -257,11 +194,12 @@ class VPS {
         DispatchQueue.main.async {
             self.delegate?.sending()
         }
-        getAnswer = false
         network.singleLocalize(photo: meta) { (ph) in
-            if ph.status {
-                self.needForced = false
-                self.setupWorld(from: ph, transform: self.photoTransform)
+            if self.vpsStatus == .stoped { return }
+            if ph.status,
+               let pose = ph.vpsPose {
+                self.failerCount = 0
+                self.setupWorld(from: pose, transform: meta.photoTransform, vpsSend: ph.vpsSendPose)
                 if self.converterGPS.status == .waiting {
                     if let geref = VPS.getGeoref(ph: ph) {
                         self.converterGPS.setGeoreference(geoReferencing: geref)
@@ -269,21 +207,23 @@ class VPS {
                         self.converterGPS.setStatusUnavalable()
                     }
                 }
+                if self.vpsStatus == .fastLocalized {
+                    self.vpsStatus = .normal
+                    self.timer.recreate(timeInterval: self.settings.sendPhotoDelay, delegate: self, fired: false)
+                }
             } else {
                 self.failerCount += 1
             }
-            self.getAnswer = true
             self.lastpose = ph
             self.delegate?.positionVPS(pos: ph)
         } failure: { (err) in
             self.delegate?.error(err: err)
-            self.getAnswer = true
         }
 
     }
     
     ///Forms a request for the current frame
-    func getPosition(frame: ARFrame?, orient: Int, serial: Bool) -> UploadVPSPhoto? {
+    func getPosition(frame: ARFrame?, orient: Int) -> UploadVPSPhoto? {
         var intrinsics:(fx: Float, fy: Float, cx: Float, cy: Float) =
             (fx: 1592.2678,
              fy: 1592.2678,
@@ -307,65 +247,71 @@ class VPS {
             break
         }
         
-        let force = needForced || onlyForceMode
-        let usedForSerialReq = needForced && serial
         var newpos = SCNVector3(0, 0, 0)
         var newangl = SCNVector3(0, 0, 0)
-        if !force || usedForSerialReq, let fr = frame {
+        if let fr = frame {
             let node = SCNNode()
-            node.simdTransform = fr.camera.transform
+            if let transform = simdWorldTransform {
+                node.simdTransform = transform * fr.camera.transform
+            } else {
+                node.simdTransform = fr.camera.transform
+            }
+            let or = node.convertVector(SCNVector3(0, 0, 1), to: node.parent)
+            let aq = GLKQuaternionMake(Float(node.orientation.x),
+                                       Float(node.orientation.y),
+                                       Float(node.orientation.z),
+                                       Float(node.orientation.w))
+            let cq = GLKQuaternionMakeWithAngleAndAxis(.pi/2, or.x, or.y, or.z)
+            let q = GLKQuaternionMultiply(cq, aq)
+            let final = SCNVector4(x: q.x, y: q.y, z: q.z, w: q.w)
+            node.orientation = SCNVector4Make(final.x, final.y, final.z, final.w)
             newpos = node.position
             newangl = node.eulerAngles
         }
-        photoTransform = frame?.camera.transform
-        var uploadReq = UploadVPSPhoto(clientID: self.clientID,
-                                timestamp: Date().timeIntervalSince1970,
-                                jobID: UUID().uuidString.lowercased(),
-                                locationType: "relative",
-                                locationID: locationType,
-                                locationClientCoordSystem: "arkit",
-                                locPosX: newpos.x,
-                                locPosY: newpos.y,
-                                locPosZ: newpos.z,
-                                locPosRoll: newangl.z.inDegrees(),
-                                locPosPitch: newangl.x.inDegrees(),
-                                locPosYaw: newangl.y.inDegrees(),
-                                imageTransfOrientation: orient,
-                                imageTransfMirrorX: false,
-                                imageTransfMirrorY: false,
-                                instrinsicsFX: intrinsics.fx/2,
-                                instrinsicsFY: intrinsics.fy/2,
-                                instrinsicsCX: intrinsics.cx/2,
-                                instrinsicsCY: intrinsics.cy/2,
-                                image: nil,
-                                forceLocalization: force,
-                                photoTransform: frame?.camera.transform)
-        if gpsUsage, locationManager.canGetCorrectGPS(), !(serial && needForced) {
+        var uploadReq = UploadVPSPhoto(sessionID: self.sessionId,
+                                       clientID: self.clientID,
+                                       timestamp: Date().timeIntervalSince1970,
+                                       jobID: UUID().uuidString.lowercased(),
+                                       locationClientCoordSystem: "arkit",
+                                       locPosX: newpos.x,
+                                       locPosY: newpos.y,
+                                       locPosZ: newpos.z,
+                                       locPosRoll: newangl.z.inDegrees(),
+                                       locPosPitch: newangl.x.inDegrees(),
+                                       locPosYaw: newangl.y.inDegrees(),
+                                       instrinsicsFX: intrinsics.fx/2,
+                                       instrinsicsFY: intrinsics.fy/2,
+                                       instrinsicsCX: intrinsics.cx/2,
+                                       instrinsicsCY: intrinsics.cy/2,
+                                       image: nil,
+                                       photoTransform: frame?.camera.transform ?? .init(simd_quatf(angle: 0.1, axis: SIMD3<Float>(0.1,0.1,0.1))))
+        if gpsUsage, locationManager.canGetCorrectGPS() {
             guard let loc = locationManager.getLocation() else { return nil }
             if loc.horizontalAccuracy > settings.gpsAccuracyBarrier {
                 return nil
             }
             uploadReq.gps = GPS(lat: loc.coordinate.latitude,
-                         long: loc.coordinate.longitude,
-                         alt: loc.altitude,
-                         acc: loc.horizontalAccuracy,
-                         timestamp: loc.timestamp.timeIntervalSince1970)
+                                long: loc.coordinate.longitude,
+                                alt: loc.altitude,
+                                acc: loc.horizontalAccuracy,
+                                timestamp: loc.timestamp.timeIntervalSince1970)
         }
         return uploadReq
     }
     
     public static func getGeoref(ph: ResponseVPSPhoto) -> GeoReferencing? {
         if let gps = ph.gps,
-           let compass = ph.compass {
+           let compass = ph.compass,
+           let pos = ph.vpsPose {
             let mapPos = MapPoseVPS(lat: gps.lat,
                                     long: gps.long,
                                     course: compass.heading)
-            let poseVPS = PoseVPS(pos: SIMD3<Float>(x: ph.posX,
-                                             y: ph.posY,
-                                             z: ph.posZ),
-                                  rot: SIMD3<Float>(ph.posPitch,
-                                                    ph.posYaw,
-                                                    ph.posRoll))
+            let poseVPS = PoseVPS(pos: SIMD3<Float>(x: pos.posX,
+                                             y: pos.posY,
+                                             z: pos.posZ),
+                                  rot: SIMD3<Float>(pos.posPitch,
+                                                    pos.posYaw,
+                                                    pos.posRoll))
             return GeoReferencing(geopoint: mapPos, coordinate: poseVPS)
         }
         return nil
@@ -382,10 +328,6 @@ class VPS {
                         completion: { result in
             switch result {
             case let .success(segmentationResult):
-//                let data = NeuroData(globalDescriptor: segmentationResult.globalDescriptor,
-//                                     keyPoints: segmentationResult.keypoints,
-//                                     scores: segmentationResult.scores,
-//                                     desc: segmentationResult.localDescriptors)
                 success?(segmentationResult)
             case let .error(error):
                 let er = makeErr(with: Errors.e3)
@@ -405,10 +347,23 @@ class VPS {
     /// - Parameters:
     ///   - ph: Position to change
     ///   - transform: Position when the photo was sent
-    func setupWorld(from ph: ResponseVPSPhoto, transform: simd_float4x4?, interpolate: Bool = true) {
-        guard let transform = transform, arsession.currentFrame != nil else {
-            return
+    func setupWorld(from ph: ResponseVPSPhoto.VPSPose, transform: simd_float4x4, interpolate: Bool = true, vpsSend: ResponseVPSPhoto.VPSPose? = nil) {
+        guard arsession.currentFrame != nil,
+              !moveWorld else {
+                  return
+              }
+        var transform = transform
+        if let sendPose = vpsSend,
+           let lastTransform = self.simdWorldTransform{
+            let node = SCNNode()
+            node.position = SCNVector3(sendPose.posX,sendPose.posY,sendPose.posZ)
+            node.eulerAngles = SCNVector3(sendPose.posPitch.inRadians(),
+                                          sendPose.posYaw.inRadians(),
+                                          sendPose.posRoll.inRadians())
+            transform = lastTransform.inverse * node.simdTransform
         }
+        
+        
         let yangl = getAngleFrom(eulere: SCNVector3(ph.posPitch.inRadians(),
                                                     ph.posYaw.inRadians(),
                                                     ph.posRoll.inRadians()))
@@ -416,7 +371,7 @@ class VPS {
         let myPos = getTransformPosition(from: transform)
         
         if let lastTransform = self.simdWorldTransform {
-            let photoTransformWorld = lastTransform * photoTransform
+            let photoTransformWorld = lastTransform * transform
             let photoTransformWorldPosition = getTransformPosition(from: photoTransformWorld)
             let photoTransformWorldEul = getAngleFrom(transform: photoTransformWorld)
             let fangl = SIMD3<Float>(0, -yangl+photoTransformWorldEul, 0)
@@ -474,42 +429,59 @@ class VPS {
     func getOrientation() -> Int {
         switch settings.recognizeType {
         case .server:
-            return 0
+            return 1
         case .mobile:
             return 1
         }
+    }
+    
+    func updateSesionId() {
+        sessionId = UUID().uuidString.lowercased()
     }
 }
 
 extension VPS: TimerManagerDelegate {
     func timerFired() {
-        if getAnswer {
-            var serial = false
-            if needForced && serialLocalizeEnabled {
-                if serialReqests.isEmpty {
-                    // create new fast timer for localization
-                    timer.recreate(timeInterval: 1.5, delegate: self, fired: false)
-                }
-                serial = true
-            }
+        if motionCorrect {
             queue.async {
-                self.createRequest(serial: serial)
+                self.createRequest()
             }
         }
     }
 }
 
+extension VPS: MotionTrackerServiceListener {
+    func changed(motion: CMDeviceMotion?, error: Error?) {
+        guard let deviceMotion = motion else { return }
+        var pitch = deviceMotion.attitude.pitch * 180.0 / .pi
+        if pitch > 0 {
+            pitch = 90 - pitch
+        } else {
+            pitch += 90
+        }
+        let correct = pitch <= Const.motionAngle
+        if correct != motionCorrect {
+            DispatchQueue.main.async {
+                self.delegate?.correctMotionAngle(correct: correct)
+            }
+        }
+        motionCorrect = correct
+    }
+}
+
 extension VPS: VPSService {
     public func start() {
-        serialReqests.removeAll()
-        neuroSerialrequested = 0
-        timer.startTimer(timeInterval: settings.sendPhotoDelay, delegate: self)
+        motionTracker.startTrackingFor(delegate: self)
+        vpsStatus = .fastLocalized
+        timer.startTimer(timeInterval: settings.sendFastPhotoDelay, delegate: self)
+        updateSesionId()
     }
     
     public func stop() {
+        motionTracker.stopTrackingFor()
+        vpsStatus = .stoped
         timer.invalidateTimer()
-        needForced = true
-        self.getAnswer = true
+        failerCount = 0
     }
     
     public func getLatestPose() {
@@ -520,12 +492,11 @@ extension VPS: VPSService {
     
     public func setupMock(mock: ResponseVPSPhoto) {
         timer.invalidateTimer()
-        self.getAnswer = true
-        guard let frame = arsession.currentFrame else {
+        guard let frame = arsession.currentFrame,
+        let pose = mock.vpsPose else {
             return
         }
-        photoTransform = frame.camera.transform
-        setupWorld(from: mock, transform: frame.camera.transform)
+        setupWorld(from: pose, transform: frame.camera.transform)
         self.lastpose = mock
         delegate?.positionVPS(pos: mock)
         self.lastpose = mock
@@ -542,12 +513,9 @@ extension VPS: VPSService {
         timer.invalidateTimer()
         
         let frame = arsession.currentFrame
-        if let fr = frame {
-            photoTransform = fr.camera.transform
-        }
+        
         guard var up = self.getPosition(frame: frame,
-                                        orient: 1,
-                                        serial: false) else { return }
+                                        orient: 1) else { return }
         switch settings.recognizeType {
         case .server:
             let image = image.convertToGrayScale(withSize: CGSize(width: 540, height: 960))!

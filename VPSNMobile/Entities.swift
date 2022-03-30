@@ -4,11 +4,10 @@ import UIKit
 import simd
 
 struct UploadVPSPhoto {
+    var sessionID: String
     var clientID: String
     var timestamp: Double
     var jobID: String
-    var locationType: String
-    var locationID: String
     var locationClientCoordSystem: String
     var locPosX: Float
     var locPosY: Float
@@ -16,9 +15,6 @@ struct UploadVPSPhoto {
     var locPosRoll: Float
     var locPosPitch: Float
     var locPosYaw: Float
-    var imageTransfOrientation: Int
-    var imageTransfMirrorX: Bool
-    var imageTransfMirrorY: Bool
     var instrinsicsFX: Float
     var instrinsicsFY: Float
     var instrinsicsCX: Float
@@ -27,8 +23,7 @@ struct UploadVPSPhoto {
     var features: NeuroData?
     var gps: GPS?
     var compas: Compas?
-    var forceLocalization: Bool
-    var photoTransform: simd_float4x4?
+    var photoTransform: simd_float4x4
 }
 
 struct GPS {

@@ -6,14 +6,12 @@ class Network: NSObject {
     var session = URLSession.shared
     var APIversion = 1
     var baseURL = ""
-    var firstLocateUrl = ""
     var settings: Settings
     
     init(settings: Settings) {
         self.settings = settings
         super.init()
-        baseURL = "\(settings.url)vps/api/v1/job"
-        firstLocateUrl = "\(settings.url)vps/api/v1/first_loc/job"
+        baseURL = "\(settings.url)vps/api/v2"
     }
     
     var observation: NSKeyValueObservation!
@@ -24,7 +22,6 @@ class Network: NSObject {
         put { [weak self] in
             let task = self?.session.downloadTask(with: URL(string: url)!, completionHandler: { (URL, Responce, Error) in
                 if let err = Error {
-                    print(err)
                     self?.f(err as NSError, failure)
                     self?.executeNext()
                 }
@@ -78,7 +75,6 @@ class Network: NSObject {
                             self?.executeNext()
                         }
                     } catch {
-                        print(error)
                         self?.f(error as NSError, failure)
                         self?.executeNext()
                     }

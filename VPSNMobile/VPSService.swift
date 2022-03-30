@@ -3,14 +3,14 @@
 import ARKit
 
 public protocol VPSServiceDelegate: AnyObject {
-    /// Invokes when a new photo for a serial localisation was processed
-    func onSerialProgressUpdate(processedImages: Int)
     /// Returns an instance of the latest response from the server
     func positionVPS(pos: ResponseVPSPhoto)
     /// Returns a server error
     func error(err: NSError)
     /// Invokes when current app started sending request to the server
     func sending()
+    /// Shows that the device is directed parallel to the ground
+    func correctMotionAngle(correct: Bool)
 }
 /// optional implementation
 public extension VPSServiceDelegate {
@@ -20,8 +20,6 @@ public extension VPSServiceDelegate {
 public struct Settings {
     /// URL to your VPS server
     let url: String
-    /// Unique location ID
-    let locationID: String
     /// Should VPS use raw images or processed features for localisation
     /// Never use raw images in production app
     let recognizeType: RecognizeType
@@ -32,6 +30,12 @@ public struct Settings {
     public var animationTime: Float = 1 {
         didSet {
             animationTime = clamped(animationTime, minValue: 0.1, maxValue: Float.infinity)
+        }
+    }
+    /// Delay between sending photos in fast mode
+    public var sendFastPhotoDelay: TimeInterval = 1.0 {
+        didSet {
+            sendFastPhotoDelay = clamped(sendFastPhotoDelay, minValue: 2, maxValue: TimeInterval.infinity)
         }
     }
     /// Delay between sending photos
@@ -50,12 +54,6 @@ public struct Settings {
     public var gpsAccuracyBarrier = 20.0 {
         didSet {
             gpsAccuracyBarrier = clamped(gpsAccuracyBarrier, minValue: 0, maxValue: Double.infinity)
-        }
-    }
-    /// number of serial requests
-    public var serialCount = 5 {
-        didSet {
-            serialCount = clamped(serialCount, minValue: 1, maxValue: Int.max)
         }
     }
     /// The timeout interval of the request.
@@ -82,18 +80,15 @@ public struct Settings {
     ///
     /// - Parameters:
     ///   - url: Url server of your object
-    ///   - locationID: Specific object's id
     ///   - recognizeType: Get features on a server
     ///   - neuroLink: url for downloading neuro
     ///   - customGeoReference: set customGeoReference
     public init(url: String,
-                locationID: String,
                 recognizeType: RecognizeType,
                 neuroLinkmnv: String = "https://testable1.s3pd01.sbercloud.ru/mobilevpstflite/mnv_960x540x1_4096.tflite",
                 neuroLinkmsp: String = "https://testable1.s3pd01.sbercloud.ru/mobilevpstflite/msp_960x540x1_256_400.tflite",
                 customGeoReference: GeoReferencing? = nil) {
         self.url = url
-        self.locationID = locationID
         self.recognizeType = recognizeType
         self.neuroLinkmnv = neuroLinkmnv
         self.neuroLinkmsp = neuroLinkmsp
@@ -106,10 +101,6 @@ public protocol VPSService {
     var converterGPS: ConverterGPS { get }
     /// Send of not gps
     var gpsUsage: Bool { get set }
-    /// Turns of or onf the recalibration mode
-    var onlyForceMode: Bool { get set }
-    /// Enable serial localize when localize falled
-    var serialLocalizeEnabled: Bool { get set }
     /// start tracking position
     func start()
     /// stop tracking position
@@ -129,7 +120,7 @@ public class VPSBuilder {
     public static func getDefaultConfiguration() -> ARWorldTrackingConfiguration? {
         if !ARWorldTrackingConfiguration.isSupported { return nil }
         let configuration = ARWorldTrackingConfiguration()
-        configuration.isAutoFocusEnabled = false
+//        configuration.isAutoFocusEnabled = false
         var format: ARConfiguration.VideoFormat?
         for frm in ARWorldTrackingConfiguration.supportedVideoFormats {
             if frm.imageResolution == CGSize(width: 1920, height: 1080) {
@@ -154,21 +145,17 @@ public class VPSBuilder {
     ///   - delegate: VPSServiceDelegate
     ///   - success: Return vps module
     ///   - failure:
-    ///   - serialLocalizeEnabled: Enable serial localize when localize falled
     ///   - loadingProgress: Shows download progress within 0...1
     public static func initializeVPS(arsession: ARSession,
                                      settings: Settings,
                                      gpsUsage: Bool = false,
                                      onlyForceMode: Bool = false,
-                                     serialLocalizeEnabled: Bool = false,
                                      delegate: VPSServiceDelegate?,
                                      success: ((VPSService) -> Void)?,
                                      loadingProgress: ((Double) -> Void)? = nil,
                                      failure: ((NSError) -> Void)? = nil) {
         let vps = VPS(arsession: arsession,
                       gpsUsage: gpsUsage,
-                      onlyForceMode: onlyForceMode,
-                      serialLocalizeEnabled: serialLocalizeEnabled,
                       settings: settings)
         vps.delegate = delegate
         switch settings.recognizeType {
@@ -180,7 +167,6 @@ public class VPSBuilder {
             } downProgr: { (dProgr) in
                 loadingProgress?(dProgr)
             } failure: { (err) in
-                print("err", err)
                 failure?(err)
             }
         }
@@ -191,15 +177,34 @@ public class VPSBuilder {
 public struct ResponseVPSPhoto {
     /// false or not status localize
     public var status: Bool
-    public var posX: Float
-    public var posY: Float
-    public var posZ: Float
-    public var posRoll: Float
-    public var posPitch: Float
-    public var posYaw: Float
+    public var vpsPose: VPSPose?
+    public var vpsSendPose: VPSPose?
     public var gps: GPSResponse?
     public var compass: CompassResponse?
     var id: String?
+    
+    public struct VPSPose {
+        public var posX: Float
+        public var posY: Float
+        public var posZ: Float
+        public var posRoll: Float
+        public var posPitch: Float
+        public var posYaw: Float
+        
+        public init(posX: Float,
+                    posY: Float,
+                    posZ: Float,
+                    posRoll: Float,
+                    posPitch: Float,
+                    posYaw: Float) {
+            self.posX = posX
+            self.posY = posY
+            self.posZ = posZ
+            self.posRoll = posRoll
+            self.posPitch = posPitch
+            self.posYaw = posYaw
+        }
+    }
     
     public struct CompassResponse {
         public var heading: Double
@@ -225,16 +230,12 @@ public struct ResponseVPSPhoto {
     ///   - posRoll: roll
     ///   - posPitch: pitch
     ///   - posYaw: yaw
-    public init(status: Bool, posX: Float, posY: Float, posZ: Float, posRoll: Float, posPitch: Float, posYaw: Float, gps: GPSResponse? = nil, compass: CompassResponse? = nil) {
+    public init(status: Bool, vpsPose: VPSPose? = nil, vpsSendPose: VPSPose? = nil, gps: GPSResponse? = nil, compass: CompassResponse? = nil) {
         self.status = status
-        self.posX = posX
-        self.posY = posY
-        self.posZ = posZ
-        self.posRoll = posRoll
-        self.posPitch = posPitch
-        self.posYaw = posYaw
+        self.vpsPose = vpsPose
         self.gps = gps
         self.compass = compass
+        self.vpsSendPose = vpsSendPose
     }
 }
 /// Get features on a server or device

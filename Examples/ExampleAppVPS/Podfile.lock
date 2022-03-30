@@ -11,7 +11,7 @@ PODS:
   - TensorFlowLiteSwift/Metal (2.5.0):
     - TensorFlowLiteC/Metal (= 2.5.0)
     - TensorFlowLiteSwift/Core (= 2.5.0)
-  - VPSNMobile (0.1.3):
+  - VPSNMobile (0.2.0):
     - TensorFlowLiteSwift (= 2.5.0)
     - TensorFlowLiteSwift/Metal (= 2.5.0)
 
@@ -30,8 +30,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   TensorFlowLiteC: 9115580176f050caa70fea478dba3d5a75c612a4
   TensorFlowLiteSwift: 50063271b9ba99202c4d96a969a518eee2b5807e
-  VPSNMobile: 2d8d4eedfd70eeabe7b7b6d772ea26d5eebdcb4c
+  VPSNMobile: ab44ee893c31f1e15d3dbb12e2526ed329c844eb
 
-PODFILE CHECKSUM: 57a45d50da1e1e90927fb0082f574eea004ed90d
+PODFILE CHECKSUM: 83063742b633170f57efeb150ce5bf88c44e20c3
 
 COCOAPODS: 1.11.2

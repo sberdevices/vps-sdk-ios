@@ -1,7 +1,7 @@
 ![logo](./img/logo.png)
 
 # VPS SDK (iOS)
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.2.0-brightgreen)](https://img.shields.io/badge/pod-0.1.2-brightgreen)  
+[![CocoaPods Compatible](https://img.shields.io/badge/pod-0.3.0-brightgreen)](https://img.shields.io/badge/pod-0.3.0-brightgreen)  
 
 This is **Visual Positioning System** SDK for Native iOS apps. Main features are:
 - High-precision global user position localization for your AR apps
@@ -93,14 +93,11 @@ class Example:UIViewController, ARSCNViewDelegate {
         
         let set = Settings(
             url: "https://...",
-            locationID: "ID",
             recognizeType: .server)
             
         VPSBuilder.initializeVPS(arsession: arview.session,
                                  settings: set,
                                  gpsUsage: false,
-                                 onlyForceMode: true,
-                                 serialLocalizeEnabled: false,
                                  delegate: nil) { (vps) in
             self.vps = vps
         }
@@ -133,8 +130,6 @@ To enable the mobile VPS mode, you need to select it in the settings `recognizeT
 VPSBuilder.initializeVPS(arsession: arview.session,
                          settings: set,
                          gpsUsage: false,
-                         onlyForceMode: true,
-                         serialLocalizeEnabled: false,
                          delegate: self) { (serc) in
     self.vps = serc
 } loadingProgress: { (pr) in
@@ -186,23 +181,16 @@ class ViewModel:NSObject, ObservableObject, ARSCNViewDelegate, VPSServiceDelegat
     func initVPS(session:ARSession) {
         let set = Settings(
             url: "...",
-            locationID: "...",
             recognizeType: .server)
         VPSBuilder.initializeVPS(arsession: session,
                                  settings: set,
                                  gpsUsage: false,
-                                 onlyForceMode: true,
-                                 serialLocalizeEnabled: false,
                                  delegate: self) { (vps) in
             self.vps = vps
         } loadingProgress: { (pr) in
         } failure: { (er) in
             print("err",er)
         }
-    }
-    
-    func serialcount(doned: Int) {
-        
     }
     
     func positionVPS(pos: ResponseVPSPhoto) {
